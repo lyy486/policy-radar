@@ -55,6 +55,49 @@ export function findUnnotifiedPolicies(policies, notifiedHashes) {
   return (policies ?? []).filter((policy) => policy.contentHash && !notified.has(String(policy.contentHash)));
 }
 
+export function parseNotifiedState(raw) {
+  let parsed;
+  try { parsed = JSON.parse(raw); } catch { throw new Error('提醒去重状态无效'); }
+  if (!parsed || Array.isArray(parsed) || !Array.isArray(parsed.hashes)
+    || !parsed.hashes.every((hash) => typeof hash === 'string' && hash.trim().length > 0)) {
+    throw new Error('提醒去重状态无效');
+  }
+  return { ...parsed, hashes: [...parsed.hashes] };
+}
+
+export async function deliverPolicyAlerts({ policies, readState, writeState, sendAlert, logger = console, now = () => new Date().toISOString() }) {
+  let state;
+  try { state = await readState(); } catch {
+    logger.warn('::warning::提醒去重状态损坏或无法读取，已停止本次发信并保留原状态；网页数据已更新。');
+    return;
+  }
+  if (state === null) {
+    await writeState({ hashes: policies.map((policy) => policy.contentHash), initializedAt: now() });
+    logger.log('免费提醒已建立基线；首次运行不会发送历史公告。');
+    return;
+  }
+  const batch = findUnnotifiedPolicies(policies, state.hashes).slice(0, 20);
+  if (batch.length === 0) {
+    logger.log('没有发现需要发送的新公告。');
+    return;
+  }
+  let sent;
+  try { sent = await sendAlert(batch); } catch (error) {
+    logger.warn('::warning::邮件发送失败，网页数据仍已更新。错误代码：' + String(error?.code ?? 'unknown'));
+    return;
+  }
+  if (!sent) {
+    logger.log('发现新公告，但未配置完整邮箱 Secrets；数据网页已更新。');
+    return;
+  }
+  await writeState({
+    ...state,
+    hashes: [...new Set([...state.hashes, ...batch.map((policy) => policy.contentHash)])],
+    updatedAt: now()
+  });
+  logger.log('已发送新公告邮件：' + batch.length + ' 条。');
+}
+
 export function createAlertEmail(policies, siteUrl = '') {
   const items = policies.map((policy) => {
     const title = escapeHtml(policy.title);
