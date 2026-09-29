@@ -2,6 +2,12 @@ name: 免费政策雷达更新与发布
 
 on:
   workflow_dispatch:
+    inputs:
+      test_email:
+        description: 发送一封测试邮件（需先配置邮箱 Secrets）
+        required: false
+        type: boolean
+        default: false
   schedule:
     - cron: '17 * * * *'
 
@@ -23,42 +29,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v7
-      - name: 修复首次上传的目录结构
-        shell: bash
-        run: |
-          set -euo pipefail
-          move_file() {
-            if [ -f "$1" ]; then
-              if [ -e "$2" ]; then
-                cmp -s -- "$1" "$2" || { echo "Conflicting duplicate: $1"; exit 1; }
-              else
-                mkdir -p -- "$(dirname "$2")"
-                git mv -- "$1" "$2"
-              fi
-            fi
-          }
-          move_file "free-notified.json" "data/free-notified.json"
-          move_file "free-store.json" "data/free-store.json"
-          move_file "FREE-MOBILE-DEPLOYMENT.md" "docs/FREE-MOBILE-DEPLOYMENT.md"
-          move_file "app.js" "free-site/app.js"
-          move_file "policies.json" "free-site/data/policies.json"
-          move_file "icon.svg" "free-site/icon.svg"
-          move_file "index.html" "free-site/index.html"
-          move_file "manifest.webmanifest" "free-site/manifest.webmanifest"
-          move_file "privacy.html" "free-site/privacy.html"
-          move_file "styles.css" "free-site/styles.css"
-          move_file "sw.js" "free-site/sw.js"
-          move_file "free-preview.js" "scripts/free-preview.js"
-          move_file "free-release-manifest.js" "scripts/free-release-manifest.js"
-          move_file "free-site-lib.js" "scripts/free-site-lib.js"
-          move_file "free-update.js" "scripts/free-update.js"
-          move_file "send-test-email.js" "scripts/send-test-email.js"
-          move_file "policy-service.js" "src/policy-service.js"
-          move_file "source-registry.js" "src/source-registry.js"
-          move_file "store.js" "src/store.js"
-          move_file "sync-service.js" "src/sync-service.js"
-          move_file "free-site.test.js" "test/free-site.test.js"
-          move_file "free-policy-radar.yml" "docs/initial-upload-workflow.yml.txt"
       - uses: actions/setup-node@v7
         with:
           node-version: 22
@@ -67,6 +37,16 @@ jobs:
       - run: npm run check
       - run: npm test
       - run: npm audit --omit=dev --audit-level=high
+      - name: 按需发送邮箱测试信
+        if: github.event_name == 'workflow_dispatch' && inputs.test_email == true
+        run: node scripts/send-test-email.js
+        env:
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          SMTP_FROM: ${{ secrets.SMTP_FROM }}
+          ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
       - name: 同步官方来源并生成静态网页数据
         run: npm run free:update
         env:
@@ -81,8 +61,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -u
-          git add -- src scripts test docs free-site
           git add -f data/free-store.json data/free-notified.json free-site/data/policies.json
           git diff --cached --quiet || git commit -m "chore: refresh free policy data"
           git push
