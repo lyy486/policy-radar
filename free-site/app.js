@@ -35,12 +35,33 @@ function readKnownHashes(policies) {
   }
 }
 
+function coverageNotice() {
+  const coverage = state.payload?.coverage ?? [];
+  const byRegion = new Map(coverage.map((item) => [item.regionId, item]));
+  const changchun = [...CHANGCHUN_REGION_IDS].map((id) => byRegion.get(id));
+  const connected = changchun.filter((item) => item?.status === 'active').length;
+  const allConnected = connected === CHANGCHUN_REGION_IDS.size;
+  const changchunNote = allConnected ? '长春市及各区县已有接入来源。'
+    : connected > 0 ? '长春市及各区县仅部分来源已接入。'
+      : changchun.every((item) => item?.status === 'pending') ? '长春市及各区县官方来源尚未接入。'
+        : '长春市及各区县来源接入状态尚未全部核验。';
+  const region = element('region-filter').value;
+  const selectionConnected = region === 'all' || (region === 'changchun-all' ? allConnected : byRegion.get(region)?.status === 'active');
+  const selectedNote = selectionConnected ? '' : (region === 'changchun-all' ? '所选长春地区' : regionName(region)) + '官方来源尚未完全接入或接入状态未核验。';
+  const caution = !allConnected || !selectionConnected ? '当前无结果不代表没有公告，请同时关注官方渠道。' : '';
+  const provinceNote = region !== 'all' && region !== 'jilin' ? '同时保留省级可能相关公告，是否适用请核对官方原文。' : '';
+  const activeCount = [...byRegion.values()].filter((item) => item.status === 'active').length;
+  const failedCount = Object.values(state.payload?.sourceState ?? {}).filter((item) => item?.lastError).length;
+  const failureNote = failedCount > 0 ? failedCount + ' 个来源最近一次读取失败，已保留此前公告；最新情况请核对官网。' : '';
+  return failureNote + activeCount + ' 个地区有已接入来源（不代表完整覆盖）。' + changchunNote + selectedNote + caution + provinceNote;
+}
+
 function matchesFilters(policy) {
   const region = element('region-filter').value;
   const type = element('type-filter').value;
   const category = element('category-filter').value;
   const keyword = element('keyword-filter').value.trim().toLowerCase();
-  const regionMatch = region === 'all' || policy.regionId === region || (region === 'changchun-all' && CHANGCHUN_REGION_IDS.has(policy.regionId));
+  const regionMatch = region === 'all' || policy.regionId === region || policy.regionId === 'jilin' || (region === 'changchun-all' && CHANGCHUN_REGION_IDS.has(policy.regionId));
   return regionMatch && (type === 'all' || policy.policyType === type) && (category === 'all' || policy.category === category) && (!keyword || (policy.title + ' ' + policy.summary).toLowerCase().includes(keyword));
 }
 
@@ -70,7 +91,8 @@ function render() {
   const list = element('policy-list');
   list.replaceChildren();
   policies.forEach((policy) => list.append(policyCard(policy)));
-  if (!policies.length) list.append(create('div', { className: 'empty', text: '暂无匹配公告。免费版只展示当前已核验且可稳定读取的官方来源。' }));
+  if (!policies.length) list.append(create('div', { className: 'empty', text: '暂无匹配公告。当前无结果不代表没有公告，请同时关注官方渠道。免费版仅展示已接入的核验来源。' }));
+  element('coverage-status').textContent = coverageNotice();
   element('result-count').textContent = String(policies.length);
   element('new-count').textContent = String(currentNewPolicies().length);
 }
@@ -112,8 +134,6 @@ async function loadData({ background = false } = {}) {
   const newlyFetched = (payload.policies ?? []).filter((policy) => !previousHashes.has(policy.contentHash));
   if (background) notifyNewPolicies(newlyFetched);
   element('sync-status').textContent = payload.generatedAt ? '数据更新：' + safeDate(payload.generatedAt) : '等待首次自动更新';
-  const activeCount = (payload.coverage ?? []).filter((item) => item.status === 'active').length;
-  element('coverage-status').textContent = activeCount + ' 个地区已有核验来源；其他地区会在来源验证后逐步接入';
   render();
 }
 
