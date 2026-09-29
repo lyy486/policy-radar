@@ -1,0 +1,186 @@
+{
+  "policies": [
+    {
+      "id": "33c085b68a48301296c172aa",
+      "title": "2025年吉林省省直中小学“强师计划”招聘第二批拟聘用人员公示",
+      "summary": "来自官方来源列表页，详情请打开原文核对。",
+      "regionId": "jilin",
+      "policyType": "教师招聘",
+      "category": "拟聘用名单",
+      "publishedAt": "2026-07-03T01:00:00.000Z",
+      "fetchedAt": "2026-09-27T13:39:01.407Z",
+      "sourceId": "jilin-education-announcements",
+      "sourceName": "吉林省教育厅公示公告（教师考试相关）",
+      "sourceUrl": "https://jyt.jl.gov.cn/zwgk/ggl/202607/t20260703_9659516.html",
+      "contentHash": "fa9742815c823b80faabfa65fc7737913812b8d37effafc31a42fa3eee72ea3c",
+      "isDemo": false
+    },
+    {
+      "id": "c99ae150598b7d2d8498258e",
+      "title": "吉林省2026年农村义务教育阶段学校特设岗位教师招聘办法",
+      "summary": "来自官方来源列表页，详情请打开原文核对。",
+      "regionId": "jilin",
+      "policyType": "特岗教师",
+      "category": "招聘公告",
+      "publishedAt": "2026-06-08T01:00:00.000Z",
+      "fetchedAt": "2026-09-27T13:39:01.407Z",
+      "sourceId": "jilin-education-announcements",
+      "sourceName": "吉林省教育厅公示公告（教师考试相关）",
+      "sourceUrl": "https://jyt.jl.gov.cn/zwgk/ggl/202606/t20260608_9645990.html",
+      "contentHash": "b647684f4e81e06e8f6cb294764f8e889057319deb30a9b8c1a45d3433a371fe",
+      "isDemo": false
+    }
+  ],
+  "subscriptions": [],
+  "notifications": [],
+  "users": [],
+  "wechatDeliveries": [],
+  "auditLogs": [],
+  "syncRuns": [],
+  "lastSync": {
+    "completedAt": "2026-09-27T13:39:04.733Z",
+    "results": [
+      {
+        "runId": "77a4e5a97f2c862caea6f47d2a76aaee",
+        "sourceId": "jilin-education-announcements",
+        "status": "ok",
+        "inserted": 0,
+        "notifications": 0,
+        "seen": 2,
+        "startedAt": "2026-09-27T13:39:01.405Z",
+        "completedAt": "2026-09-27T13:39:02.290Z",
+        "etag": "\"bee36e1d-6862-65b6a29b70080\"",
+        "lastModified": "Mon, 14 Sep 2026 04:49:44 GMT",
+        "parserVersion": "2026-09-26.2"
+      },
+      {
+        "runId": "6dc648078203446cf6e5df3eacdcd048",
+        "sourceId": "jilin-hrss-announcements",
+        "status": "not-modified",
+        "inserted": 0,
+        "notifications": 0,
+        "seen": 0,
+        "startedAt": "2026-09-27T13:39:02.290Z",
+        "completedAt": "2026-09-27T13:39:02.969Z",
+        "etag": "\"e6e614ae-342a-65c30bc00c6a8\"",
+        "lastModified": "Thu, 24 Sep 2026 01:44:02 GMT",
+        "parserVersion": "2026-09-26.2"
+      },
+      {
+        "runId": "715eaff15395f823db75e8a74113db45",
+        "sourceId": "jilin-hrss-headlines",
+        "status": "ok",
+        "inserted": 0,
+        "notifications": 0,
+        "seen": 0,
+        "startedAt": "2026-09-27T13:39:02.969Z",
+        "completedAt": "2026-09-27T13:39:03.587Z",
+        "etag": "\"e69205fe-2a47-65c069903cff8\"",
+        "lastModified": "Mon, 21 Sep 2026 23:27:46 GMT",
+        "parserVersion": "2026-09-26.2"
+      },
+      {
+        "runId": "a63d0e4fc822756f39abb026949ac2d1",
+        "sourceId": "tonghua-education-announcements",
+        "status": "ok",
+        "inserted": 0,
+        "notifications": 0,
+        "seen": 0,
+        "startedAt": "2026-09-27T13:39:03.587Z",
+        "completedAt": "2026-09-27T13:39:03.852Z",
+        "etag": "\"44ea-659fd56048a40-gzip\"",
+        "lastModified": "Thu, 27 Aug 2026 01:34:25 GMT",
+        "parserVersion": "2026-09-26.2"
+      },
+      {
+        "runId": "d5712a3e6217d9ab779ae5aa7cd3d712",
+        "sourceId": "tonghua-hrss-announcements",
+        "status": "ok",
+        "inserted": 0,
+        "notifications": 0,
+        "seen": 0,
+        "startedAt": "2026-09-27T13:39:03.852Z",
+        "completedAt": "2026-09-27T13:39:04.073Z",
+        "etag": "\"57db-65c310936c080-gzip\"",
+        "lastModified": "Thu, 24 Sep 2026 02:05:38 GMT",
+        "parserVersion": "2026-09-26.2"
+      },
+      {
+        "runId": "d1824c964444a63aea54c4d1b99a5d13",
+        "sourceId": "songyuan-government-notices",
+        "status": "ok",
+        "inserted": 0,
+        "notifications": 0,
+        "seen": 0,
+        "startedAt": "2026-09-27T13:39:04.073Z",
+        "completedAt": "2026-09-27T13:39:04.733Z",
+        "etag": "\"b0fb-65b08ceef5bb8\"",
+        "lastModified": "Wed, 09 Sep 2026 08:40:49 GMT",
+        "parserVersion": "2026-09-26.2"
+      }
+    ]
+  },
+  "sourceSyncAt": {},
+  "sourceState": {
+    "jilin-education-announcements": {
+      "lastAttemptAt": "2026-09-27T13:39:02.290Z",
+      "lastSuccessAt": "2026-09-27T13:39:02.290Z",
+      "lastError": null,
+      "lastSeen": 2,
+      "lastInserted": 0,
+      "etag": "\"bee36e1d-6862-65b6a29b70080\"",
+      "lastModified": "Mon, 14 Sep 2026 04:49:44 GMT",
+      "parserVersion": "2026-09-26.2"
+    },
+    "jilin-hrss-announcements": {
+      "lastAttemptAt": "2026-09-27T13:39:02.969Z",
+      "lastSuccessAt": "2026-09-27T13:39:02.969Z",
+      "lastError": null,
+      "lastSeen": 0,
+      "lastInserted": 0,
+      "etag": "\"e6e614ae-342a-65c30bc00c6a8\"",
+      "lastModified": "Thu, 24 Sep 2026 01:44:02 GMT",
+      "parserVersion": "2026-09-26.2"
+    },
+    "jilin-hrss-headlines": {
+      "lastAttemptAt": "2026-09-27T13:39:03.587Z",
+      "lastSuccessAt": "2026-09-27T13:39:03.587Z",
+      "lastError": null,
+      "lastSeen": 0,
+      "lastInserted": 0,
+      "etag": "\"e69205fe-2a47-65c069903cff8\"",
+      "lastModified": "Mon, 21 Sep 2026 23:27:46 GMT",
+      "parserVersion": "2026-09-26.2"
+    },
+    "tonghua-education-announcements": {
+      "lastAttemptAt": "2026-09-27T13:39:03.852Z",
+      "lastSuccessAt": "2026-09-27T13:39:03.852Z",
+      "lastError": null,
+      "lastSeen": 0,
+      "lastInserted": 0,
+      "etag": "\"44ea-659fd56048a40-gzip\"",
+      "lastModified": "Thu, 27 Aug 2026 01:34:25 GMT",
+      "parserVersion": "2026-09-26.2"
+    },
+    "tonghua-hrss-announcements": {
+      "lastAttemptAt": "2026-09-27T13:39:04.073Z",
+      "lastSuccessAt": "2026-09-27T13:39:04.073Z",
+      "lastError": null,
+      "lastSeen": 0,
+      "lastInserted": 0,
+      "etag": "\"57db-65c310936c080-gzip\"",
+      "lastModified": "Thu, 24 Sep 2026 02:05:38 GMT",
+      "parserVersion": "2026-09-26.2"
+    },
+    "songyuan-government-notices": {
+      "lastAttemptAt": "2026-09-27T13:39:04.733Z",
+      "lastSuccessAt": "2026-09-27T13:39:04.733Z",
+      "lastError": null,
+      "lastSeen": 0,
+      "lastInserted": 0,
+      "etag": "\"b0fb-65b08ceef5bb8\"",
+      "lastModified": "Wed, 09 Sep 2026 08:40:49 GMT",
+      "parserVersion": "2026-09-26.2"
+    }
+  }
+}

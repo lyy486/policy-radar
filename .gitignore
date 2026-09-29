@@ -1,0 +1,14 @@
+node_modules/
+.env
+.env.*
+!.env.example
+data/*.json
+data/*.sql
+!data/free-store.json
+!data/free-notified.json
+data/backups/
+coverage/
+miniprogram/project.private.config.json
+*.log
+policy-radar-free/
+policy-radar-free*.zip

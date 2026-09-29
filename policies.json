@@ -1,0 +1,843 @@
+{
+  "generatedAt": "2026-09-27T13:39:04.733Z",
+  "policies": [
+    {
+      "id": "33c085b68a48301296c172aa",
+      "title": "2025年吉林省省直中小学“强师计划”招聘第二批拟聘用人员公示",
+      "summary": "来自官方来源列表页，详情请打开原文核对。",
+      "regionId": "jilin",
+      "policyType": "教师招聘",
+      "category": "拟聘用名单",
+      "publishedAt": "2026-07-03T01:00:00.000Z",
+      "fetchedAt": "2026-09-27T13:39:01.407Z",
+      "sourceName": "吉林省教育厅公示公告（教师考试相关）",
+      "sourceUrl": "https://jyt.jl.gov.cn/zwgk/ggl/202607/t20260703_9659516.html",
+      "contentHash": "fa9742815c823b80faabfa65fc7737913812b8d37effafc31a42fa3eee72ea3c"
+    },
+    {
+      "id": "c99ae150598b7d2d8498258e",
+      "title": "吉林省2026年农村义务教育阶段学校特设岗位教师招聘办法",
+      "summary": "来自官方来源列表页，详情请打开原文核对。",
+      "regionId": "jilin",
+      "policyType": "特岗教师",
+      "category": "招聘公告",
+      "publishedAt": "2026-06-08T01:00:00.000Z",
+      "fetchedAt": "2026-09-27T13:39:01.407Z",
+      "sourceName": "吉林省教育厅公示公告（教师考试相关）",
+      "sourceUrl": "https://jyt.jl.gov.cn/zwgk/ggl/202606/t20260608_9645990.html",
+      "contentHash": "b647684f4e81e06e8f6cb294764f8e889057319deb30a9b8c1a45d3433a371fe"
+    }
+  ],
+  "regions": [
+    {
+      "id": "jilin",
+      "name": "吉林省",
+      "level": "province"
+    },
+    {
+      "id": "changchun",
+      "name": "长春市",
+      "level": "city"
+    },
+    {
+      "id": "chaoyang-cc",
+      "name": "朝阳区",
+      "level": "district"
+    },
+    {
+      "id": "nanguan-cc",
+      "name": "南关区",
+      "level": "district"
+    },
+    {
+      "id": "kuancheng-cc",
+      "name": "宽城区",
+      "level": "district"
+    },
+    {
+      "id": "erdao-cc",
+      "name": "二道区",
+      "level": "district"
+    },
+    {
+      "id": "lvyuan-cc",
+      "name": "绿园区",
+      "level": "district"
+    },
+    {
+      "id": "shuangyang-cc",
+      "name": "双阳区",
+      "level": "district"
+    },
+    {
+      "id": "jiutai-cc",
+      "name": "九台区",
+      "level": "district"
+    },
+    {
+      "id": "jingyue-cc",
+      "name": "净月区",
+      "level": "district"
+    },
+    {
+      "id": "lianhuashan-cc",
+      "name": "莲花山生态旅游度假区",
+      "level": "district"
+    },
+    {
+      "id": "dehui-cc",
+      "name": "德惠市",
+      "level": "county-city"
+    },
+    {
+      "id": "yushu-cc",
+      "name": "榆树市",
+      "level": "county-city"
+    },
+    {
+      "id": "nong-an-cc",
+      "name": "农安县",
+      "level": "county"
+    },
+    {
+      "id": "gongzhuling-cc",
+      "name": "公主岭市",
+      "level": "county-city"
+    },
+    {
+      "id": "jilin-city",
+      "name": "吉林市",
+      "level": "city"
+    },
+    {
+      "id": "changyi-jl",
+      "name": "昌邑区",
+      "level": "district"
+    },
+    {
+      "id": "chuanying-jl",
+      "name": "船营区",
+      "level": "district"
+    },
+    {
+      "id": "longtan-jl",
+      "name": "龙潭区",
+      "level": "district"
+    },
+    {
+      "id": "fengman-jl",
+      "name": "丰满区",
+      "level": "district"
+    },
+    {
+      "id": "yongji-jl",
+      "name": "永吉县",
+      "level": "county"
+    },
+    {
+      "id": "jiaohe-jl",
+      "name": "蛟河市",
+      "level": "county-city"
+    },
+    {
+      "id": "huadian-jl",
+      "name": "桦甸市",
+      "level": "county-city"
+    },
+    {
+      "id": "shulan-jl",
+      "name": "舒兰市",
+      "level": "county-city"
+    },
+    {
+      "id": "panshi-jl",
+      "name": "磐石市",
+      "level": "county-city"
+    },
+    {
+      "id": "siping",
+      "name": "四平市",
+      "level": "city"
+    },
+    {
+      "id": "tiexi-sp",
+      "name": "铁西区",
+      "level": "district"
+    },
+    {
+      "id": "tiedong-sp",
+      "name": "铁东区",
+      "level": "district"
+    },
+    {
+      "id": "lishu-sp",
+      "name": "梨树县",
+      "level": "county"
+    },
+    {
+      "id": "yitong-sp",
+      "name": "伊通满族自治县",
+      "level": "county"
+    },
+    {
+      "id": "shuangliao-sp",
+      "name": "双辽市",
+      "level": "county-city"
+    },
+    {
+      "id": "liaoyuan",
+      "name": "辽源市",
+      "level": "city"
+    },
+    {
+      "id": "longshan-ly",
+      "name": "龙山区",
+      "level": "district"
+    },
+    {
+      "id": "xi-an-ly",
+      "name": "西安区",
+      "level": "district"
+    },
+    {
+      "id": "dongfeng-ly",
+      "name": "东丰县",
+      "level": "county"
+    },
+    {
+      "id": "dongliao-ly",
+      "name": "东辽县",
+      "level": "county"
+    },
+    {
+      "id": "tonghua",
+      "name": "通化市",
+      "level": "city"
+    },
+    {
+      "id": "dongchang-th",
+      "name": "东昌区",
+      "level": "district"
+    },
+    {
+      "id": "erdaojiang-th",
+      "name": "二道江区",
+      "level": "district"
+    },
+    {
+      "id": "tonghua-county-th",
+      "name": "通化县",
+      "level": "county"
+    },
+    {
+      "id": "huinan-th",
+      "name": "辉南县",
+      "level": "county"
+    },
+    {
+      "id": "liuhe-th",
+      "name": "柳河县",
+      "level": "county"
+    },
+    {
+      "id": "meihekou-th",
+      "name": "梅河口市",
+      "level": "county-city"
+    },
+    {
+      "id": "jian-th",
+      "name": "集安市",
+      "level": "county-city"
+    },
+    {
+      "id": "baishan",
+      "name": "白山市",
+      "level": "city"
+    },
+    {
+      "id": "hunjiang-bs",
+      "name": "浑江区",
+      "level": "district"
+    },
+    {
+      "id": "jiangyuan-bs",
+      "name": "江源区",
+      "level": "district"
+    },
+    {
+      "id": "fusong-bs",
+      "name": "抚松县",
+      "level": "county"
+    },
+    {
+      "id": "jingyu-bs",
+      "name": "靖宇县",
+      "level": "county"
+    },
+    {
+      "id": "changbai-bs",
+      "name": "长白朝鲜族自治县",
+      "level": "county"
+    },
+    {
+      "id": "linjiang-bs",
+      "name": "临江市",
+      "level": "county-city"
+    },
+    {
+      "id": "songyuan",
+      "name": "松原市",
+      "level": "city"
+    },
+    {
+      "id": "ningjiang-sy",
+      "name": "宁江区",
+      "level": "district"
+    },
+    {
+      "id": "qianguo-sy",
+      "name": "前郭尔罗斯蒙古族自治县",
+      "level": "county"
+    },
+    {
+      "id": "changling-sy",
+      "name": "长岭县",
+      "level": "county"
+    },
+    {
+      "id": "qianan-sy",
+      "name": "乾安县",
+      "level": "county"
+    },
+    {
+      "id": "fuyu-sy",
+      "name": "扶余市",
+      "level": "county-city"
+    },
+    {
+      "id": "baicheng",
+      "name": "白城市",
+      "level": "city"
+    },
+    {
+      "id": "taobei-bc",
+      "name": "洮北区",
+      "level": "district"
+    },
+    {
+      "id": "taonan-bc",
+      "name": "洮南市",
+      "level": "county-city"
+    },
+    {
+      "id": "daan-bc",
+      "name": "大安市",
+      "level": "county-city"
+    },
+    {
+      "id": "zhenlai-bc",
+      "name": "镇赉县",
+      "level": "county"
+    },
+    {
+      "id": "tongyu-bc",
+      "name": "通榆县",
+      "level": "county"
+    },
+    {
+      "id": "yanbian",
+      "name": "延边州",
+      "level": "prefecture"
+    },
+    {
+      "id": "yanji-yb",
+      "name": "延吉市",
+      "level": "county-city"
+    },
+    {
+      "id": "tumen-yb",
+      "name": "图们市",
+      "level": "county-city"
+    },
+    {
+      "id": "dunhua-yb",
+      "name": "敦化市",
+      "level": "county-city"
+    },
+    {
+      "id": "hunchun-yb",
+      "name": "珲春市",
+      "level": "county-city"
+    },
+    {
+      "id": "longjing-yb",
+      "name": "龙井市",
+      "level": "county-city"
+    },
+    {
+      "id": "helong-yb",
+      "name": "和龙市",
+      "level": "county-city"
+    },
+    {
+      "id": "wangqing-yb",
+      "name": "汪清县",
+      "level": "county"
+    },
+    {
+      "id": "antu-yb",
+      "name": "安图县",
+      "level": "county"
+    },
+    {
+      "id": "changbaishan-jl",
+      "name": "长白山管委会",
+      "level": "management"
+    }
+  ],
+  "policyTypes": [
+    "教师招聘",
+    "特岗教师",
+    "教师资格考试"
+  ],
+  "categories": [
+    "招聘公告",
+    "报名时间",
+    "笔试时间",
+    "面试",
+    "资格审查",
+    "体检",
+    "成绩",
+    "递补",
+    "拟聘用名单"
+  ],
+  "coverage": [
+    {
+      "regionId": "jilin",
+      "status": "active",
+      "note": "省教育厅、人社厅已接入"
+    },
+    {
+      "regionId": "changchun",
+      "status": "pending",
+      "note": "市教育局、人社局 HTTPS 页面待核验"
+    },
+    {
+      "regionId": "jilin-city",
+      "status": "pending",
+      "note": "官方入口已登记，但当前 HTTPS 运行时连接失败，待目标云服务器复测"
+    },
+    {
+      "regionId": "siping",
+      "status": "pending",
+      "note": "待核验教育局、人社局官方 HTTPS 来源"
+    },
+    {
+      "regionId": "liaoyuan",
+      "status": "pending",
+      "note": "官方入口已登记，但当前 HTTPS 运行时连接失败，待目标云服务器复测"
+    },
+    {
+      "regionId": "tonghua",
+      "status": "active",
+      "note": "市政府教育公开信息、人社局 HTTPS 来源已接入"
+    },
+    {
+      "regionId": "baishan",
+      "status": "pending",
+      "note": "官方入口已登记，但当前 HTTPS 运行时连接失败，待目标云服务器复测"
+    },
+    {
+      "regionId": "songyuan",
+      "status": "active",
+      "note": "市政府通知公告 HTTPS 来源已接入，标题过滤教师事项"
+    },
+    {
+      "regionId": "baicheng",
+      "status": "pending",
+      "note": "待核验教育局、人社局官方 HTTPS 来源"
+    },
+    {
+      "regionId": "yanbian",
+      "status": "pending",
+      "note": "待核验教育局、人社局官方 HTTPS 来源"
+    },
+    {
+      "regionId": "chaoyang-cc",
+      "status": "pending",
+      "note": "官方 HTTP 列表已核验，HTTPS/TLS 待核验"
+    },
+    {
+      "regionId": "nanguan-cc",
+      "status": "pending",
+      "note": "官方 HTTP 列表已核验，HTTPS/TLS 待核验"
+    },
+    {
+      "regionId": "kuancheng-cc",
+      "status": "pending",
+      "note": "官方 HTTP 列表已核验，HTTPS/TLS 待核验"
+    },
+    {
+      "regionId": "erdao-cc",
+      "status": "pending",
+      "note": "官方 HTTP 列表已核验，HTTPS/TLS 待核验"
+    },
+    {
+      "regionId": "lvyuan-cc",
+      "status": "pending",
+      "note": "官方 HTTP 列表已核验，HTTPS/TLS 待核验"
+    },
+    {
+      "regionId": "shuangyang-cc",
+      "status": "pending",
+      "note": "官方 HTTP 列表已核验，HTTPS/TLS 待核验"
+    },
+    {
+      "regionId": "jiutai-cc",
+      "status": "pending",
+      "note": "官方 HTTP 列表已核验，HTTPS/TLS 待核验"
+    },
+    {
+      "regionId": "jingyue-cc",
+      "status": "pending",
+      "note": "官方 HTTP 列表已核验，HTTPS/TLS 待核验"
+    },
+    {
+      "regionId": "lianhuashan-cc",
+      "status": "pending",
+      "note": "官方 HTTP 列表已核验，HTTPS/TLS 待核验"
+    },
+    {
+      "regionId": "dehui-cc",
+      "status": "pending",
+      "note": "官方 HTTP 列表已核验，HTTPS/TLS 待核验"
+    },
+    {
+      "regionId": "yushu-cc",
+      "status": "pending",
+      "note": "官方 HTTP 列表已核验，HTTPS/TLS 待核验"
+    },
+    {
+      "regionId": "nong-an-cc",
+      "status": "pending",
+      "note": "官方 HTTP 政务列表已核验，HTTPS/TLS 待核验"
+    },
+    {
+      "regionId": "gongzhuling-cc",
+      "status": "pending",
+      "note": "公主岭市独立核验，不属于长春市及各区县全选"
+    },
+    {
+      "regionId": "changyi-jl",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "chuanying-jl",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "longtan-jl",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "fengman-jl",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "yongji-jl",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "jiaohe-jl",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "huadian-jl",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "shulan-jl",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "panshi-jl",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "tiexi-sp",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "tiedong-sp",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "lishu-sp",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "yitong-sp",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "shuangliao-sp",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "longshan-ly",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "xi-an-ly",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "dongfeng-ly",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "dongliao-ly",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "dongchang-th",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "erdaojiang-th",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "tonghua-county-th",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "huinan-th",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "liuhe-th",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "meihekou-th",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "jian-th",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "hunjiang-bs",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "jiangyuan-bs",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "fusong-bs",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "jingyu-bs",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "changbai-bs",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "linjiang-bs",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "ningjiang-sy",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "qianguo-sy",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "changling-sy",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "qianan-sy",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "fuyu-sy",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "taobei-bc",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "taonan-bc",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "daan-bc",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "zhenlai-bc",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "tongyu-bc",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "yanji-yb",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "tumen-yb",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "dunhua-yb",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "hunchun-yb",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "longjing-yb",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "helong-yb",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "wangqing-yb",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "antu-yb",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    },
+    {
+      "regionId": "changbaishan-jl",
+      "status": "pending",
+      "note": "地区已注册，官方 HTTPS 来源待登记与核验"
+    }
+  ],
+  "sourceState": {
+    "jilin-education-announcements": {
+      "lastAttemptAt": "2026-09-27T13:39:02.290Z",
+      "lastSuccessAt": "2026-09-27T13:39:02.290Z",
+      "lastError": null,
+      "lastSeen": 2,
+      "lastInserted": 0,
+      "etag": "\"bee36e1d-6862-65b6a29b70080\"",
+      "lastModified": "Mon, 14 Sep 2026 04:49:44 GMT",
+      "parserVersion": "2026-09-26.2"
+    },
+    "jilin-hrss-announcements": {
+      "lastAttemptAt": "2026-09-27T13:39:02.969Z",
+      "lastSuccessAt": "2026-09-27T13:39:02.969Z",
+      "lastError": null,
+      "lastSeen": 0,
+      "lastInserted": 0,
+      "etag": "\"e6e614ae-342a-65c30bc00c6a8\"",
+      "lastModified": "Thu, 24 Sep 2026 01:44:02 GMT",
+      "parserVersion": "2026-09-26.2"
+    },
+    "jilin-hrss-headlines": {
+      "lastAttemptAt": "2026-09-27T13:39:03.587Z",
+      "lastSuccessAt": "2026-09-27T13:39:03.587Z",
+      "lastError": null,
+      "lastSeen": 0,
+      "lastInserted": 0,
+      "etag": "\"e69205fe-2a47-65c069903cff8\"",
+      "lastModified": "Mon, 21 Sep 2026 23:27:46 GMT",
+      "parserVersion": "2026-09-26.2"
+    },
+    "tonghua-education-announcements": {
+      "lastAttemptAt": "2026-09-27T13:39:03.852Z",
+      "lastSuccessAt": "2026-09-27T13:39:03.852Z",
+      "lastError": null,
+      "lastSeen": 0,
+      "lastInserted": 0,
+      "etag": "\"44ea-659fd56048a40-gzip\"",
+      "lastModified": "Thu, 27 Aug 2026 01:34:25 GMT",
+      "parserVersion": "2026-09-26.2"
+    },
+    "tonghua-hrss-announcements": {
+      "lastAttemptAt": "2026-09-27T13:39:04.073Z",
+      "lastSuccessAt": "2026-09-27T13:39:04.073Z",
+      "lastError": null,
+      "lastSeen": 0,
+      "lastInserted": 0,
+      "etag": "\"57db-65c310936c080-gzip\"",
+      "lastModified": "Thu, 24 Sep 2026 02:05:38 GMT",
+      "parserVersion": "2026-09-26.2"
+    },
+    "songyuan-government-notices": {
+      "lastAttemptAt": "2026-09-27T13:39:04.733Z",
+      "lastSuccessAt": "2026-09-27T13:39:04.733Z",
+      "lastError": null,
+      "lastSeen": 0,
+      "lastInserted": 0,
+      "etag": "\"b0fb-65b08ceef5bb8\"",
+      "lastModified": "Wed, 09 Sep 2026 08:40:49 GMT",
+      "parserVersion": "2026-09-26.2"
+    }
+  }
+}

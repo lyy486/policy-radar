@@ -1,0 +1,11 @@
+{
+  "name": "吉林教师政策雷达",
+  "short_name": "政策雷达",
+  "description": "吉林教师考试官方政策提醒",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f7fb",
+  "theme_color": "#0b57d0",
+  "icons": [{ "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}

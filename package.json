@@ -1,0 +1,20 @@
+{
+  "name": "policy-radar-mvp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "吉林教师政策雷达免费手机网页版",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test test/free-site.test.js",
+    "check": "node --check scripts/free-site-lib.js && node --check scripts/free-update.js && node --check scripts/free-preview.js && node --check scripts/send-test-email.js && node --check src/policy-service.js && node --check src/source-registry.js && node --check src/store.js && node --check src/sync-service.js",
+    "free:update": "node scripts/free-update.js",
+    "free:preview": "node scripts/free-preview.js"
+  },
+  "dependencies": {
+    "nodemailer": "^10.0.10",
+    "pg": "^8.23.0"
+  }
+}

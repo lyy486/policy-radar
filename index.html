@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b57d0">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action 'none'">
+  <meta name="description" content="吉林教师考试官方政策提醒，支持手机查看和邮件通知。">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css?v=4">
+  <title>吉林教师政策雷达</title>
+</head>
+<body>
+  <header class="hero">
+    <div>
+      <p class="eyebrow">免费手机网页版</p>
+      <h1>吉林教师政策雷达</h1>
+      <p>教师招聘、特岗教师、教师资格考试官方公告集中查看。</p>
+    </div>
+    <button id="install-button" class="secondary" hidden>添加到手机桌面</button>
+  </header>
+
+  <main>
+    <section class="notice" aria-live="polite">
+      <div><strong id="sync-status">正在读取最新数据…</strong><small id="coverage-status">仅展示已核验的官方公开来源</small></div>
+      <button id="notify-button" class="secondary">开启页面内通知</button>
+    </section>
+
+    <section class="filters" aria-label="政策筛选">
+      <label>地区<select id="region-filter"><option value="all">全部地区</option></select></label>
+      <label>政策类型<select id="type-filter"><option value="all">全部类型</option></select></label>
+      <label>事项<select id="category-filter"><option value="all">全部事项</option></select></label>
+      <label>关键词<input id="keyword-filter" type="search" placeholder="例如：报名、面试、农安"></label>
+    </section>
+
+    <section class="summary">
+      <div><strong id="result-count">0</strong><span>条匹配公告</span></div>
+      <div><strong id="new-count">0</strong><span>条本次新公告</span></div>
+      <button id="mark-read-button" class="text-button">全部标为已看</button>
+    </section>
+
+    <section id="policy-list" class="policy-list" aria-live="polite"></section>
+
+    <section class="help">
+      <h2>手机提醒怎么用</h2>
+      <ol>
+        <li>浏览器菜单选择“添加到主屏幕”，以后像 App 一样打开。</li>
+        <li>“页面内通知”只在网页保持打开时检查新公告。</li>
+        <li>网页关闭后仍想收到提醒，请按部署说明配置免费邮箱通知。</li>
+      </ol>
+      <p>信息可能因官网维护或免费平台调度延迟。报考前务必打开官方原文核对。</p>
+    </section>
+  </main>
+
+  <footer><a href="./privacy.html">隐私说明</a><span>·</span><span>不收集身份证、准考证等敏感信息</span></footer>
+  <script type="module" src="./app.js?v=4"></script>
+</body>
+</html>
