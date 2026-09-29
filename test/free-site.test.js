@@ -5,6 +5,9 @@ import { createServer } from 'node:net';
 import { dirname } from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
+import { runInNewContext } from 'node:vm';
+import { listSourceCoverage } from '../src/source-registry.js';
+import { syncSources } from '../src/sync-service.js';
 
 import {
   buildStaticPayload,
@@ -221,6 +224,137 @@ test('free mobile site is static, installable and does not call private APIs', a
   assert.ok(app.includes("element('region-filter').value = 'all'"));
   assert.equal(JSON.parse(manifest).display, 'standalone');
   assert.match(worker, /free-policy-radar/);
+});
+
+async function loadMockMobileSite(payload) {
+  const nodes = new Map();
+  const makeNode = () => ({
+    textContent: '', children: [], options: [{ value: 'all' }], value: 'all', listeners: {},
+    append(...children) { this.children.push(...children); },
+    replaceChildren(...children) { this.children = children; },
+    add(option) { this.options.push(option); },
+    addEventListener(event, listener) { this.listeners[event] = listener; }
+  });
+  const getNode = (id) => {
+    if (!nodes.has(id)) nodes.set(id, makeNode());
+    return nodes.get(id);
+  };
+  getNode('keyword-filter').value = '';
+  const source = await readFile(new URL('../free-site/app.js', import.meta.url), 'utf8');
+  runInNewContext(source, {
+    document: { getElementById: getNode, createElement: makeNode },
+    window: { addEventListener() {} }, navigator: {},
+    localStorage: { getItem: () => null, setItem() {} },
+    Option: function (label, value) { this.label = label; this.value = value; },
+    fetch: async () => ({ ok: true, json: async () => payload }),
+    Notification: { permission: 'denied' }, setInterval() {}, URL, Intl
+  }, { filename: 'free-site/app.js' });
+  await new Promise(setImmediate);
+  const textOf = (node) => node.textContent + node.children.map(textOf).join(' ');
+  return {
+    text: (id) => textOf(getNode(id)),
+    select: (value) => { getNode('region-filter').value = value; getNode('region-filter').listeners.change(); }
+  };
+}
+
+function pendingCoveragePayload(overrides = {}) {
+  return {
+    policies: [], regions: [{ id: 'jilin', name: '吉林省' }, { id: 'changchun', name: '长春市' }],
+    policyTypes: [], categories: [],
+    coverage: listSourceCoverage().map((item) => ({ ...item, status: item.regionId === 'jilin' ? 'active' : 'pending' })),
+    ...overrides
+  };
+}
+
+test('mobile startup explicitly discloses unconnected Changchun official sources', async () => {
+  const app = await loadMockMobileSite(pendingCoveragePayload());
+  assert.match(app.text('coverage-status'), /长春市及各区县官方来源尚未接入/);
+  assert.doesNotMatch(app.text('coverage-status'), /73.*已覆盖|全省已覆盖/);
+});
+
+test('pending region filters warn about missing coverage while retaining provincial notices', async () => {
+  const policies = [
+    { ...validPolicy, title: '省级教师招聘公告', regionId: 'jilin' },
+    { ...validPolicy, title: '长春市教师招聘公告', contentHash: 'cc', regionId: 'changchun' },
+    { ...validPolicy, title: '通化市教师招聘公告', contentHash: 'th', regionId: 'tonghua' }
+  ];
+  const app = await loadMockMobileSite(pendingCoveragePayload({ policies }));
+  for (const region of ['changchun-all', 'changchun', 'chaoyang-cc']) {
+    app.select(region);
+    assert.match(app.text('coverage-status'), /当前无结果不代表没有公告，请同时关注官方渠道/);
+    assert.match(app.text('coverage-status'), /省级.*核对/);
+    assert.match(app.text('policy-list'), /省级教师招聘公告/);
+    assert.doesNotMatch(app.text('policy-list'), /通化市教师招聘公告/);
+  }
+  const emptyApp = await loadMockMobileSite(pendingCoveragePayload());
+  emptyApp.select('changchun');
+  assert.match(emptyApp.text('policy-list'), /当前无结果不代表没有公告，请同时关注官方渠道/);
+});
+
+test('coverage warnings change when Changchun sources become partly or fully connected', async () => {
+  const pending = pendingCoveragePayload();
+  const partial = await loadMockMobileSite({ ...pending, coverage: pending.coverage.map((item) => item.regionId === 'changchun' ? { ...item, status: 'active' } : item) });
+  assert.match(partial.text('coverage-status'), /长春市及各区县仅部分来源已接入/);
+  assert.doesNotMatch(partial.text('coverage-status'), /长春市及各区县官方来源尚未接入/);
+  const complete = await loadMockMobileSite({ ...pending, coverage: pending.coverage.map((item) => ({ ...item, status: 'active' })) });
+  complete.select('changchun-all');
+  assert.doesNotMatch(complete.text('coverage-status'), /尚未接入|仅部分来源已接入/);
+  assert.match(complete.text('coverage-status'), /不代表完整覆盖/);
+});
+
+test('missing coverage metadata remains unknown rather than being advertised as connected', async () => {
+  const app = await loadMockMobileSite(pendingCoveragePayload({ coverage: [] }));
+  assert.match(app.text('coverage-status'), /接入状态尚未.*核验/);
+  app.select('baishan');
+  assert.match(app.text('coverage-status'), /当前无结果不代表没有公告，请同时关注官方渠道/);
+});
+
+test('failed source attempts update status without discarding trusted history or cached policies', async () => {
+  const previous = Object.freeze({ lastAttemptAt: '2026-09-27T00:00:00Z', lastSuccessAt: '2026-09-27T00:00:00Z', etag: 'trusted-etag', lastSeen: 1 });
+  const store = { policies: [validPolicy], sourceState: { mock: previous }, subscriptions: [], notifications: [] };
+  const source = { id: 'mock', enabled: true, url: 'https://example.gov.cn/notices/', userAgent: 'PolicyRadarTest' };
+  const results = await syncSources({ store, sources: [source], fetchImpl: async () => ({ status: 403, ok: false }) });
+  assert.equal(results[0].status, 'failed');
+  assert.equal(store.sourceState.mock.lastAttemptAt, results[0].completedAt);
+  assert.equal(store.sourceState.mock.lastError, '来源响应 403');
+  assert.equal(store.sourceState.mock.lastSuccessAt, previous.lastSuccessAt);
+  assert.equal(store.sourceState.mock.etag, 'trusted-etag');
+  assert.equal(store.sourceState.mock.lastSeen, 1);
+  assert.deepEqual(store.policies, [validPolicy]);
+  assert.equal(previous.lastAttemptAt, '2026-09-27T00:00:00Z');
+  const recovered = await syncSources({ store, sources: [source], fetchImpl: async () => ({ status: 304, ok: false }) });
+  assert.equal(recovered[0].status, 'not-modified');
+  assert.equal(store.sourceState.mock.lastError, null);
+  assert.equal(store.sourceState.mock.lastSuccessAt, recovered[0].completedAt);
+  assert.equal(store.sourceState.mock.etag, 'trusted-etag');
+});
+
+test('a first failed attempt records failure without inventing a successful fetch', async () => {
+  const store = { policies: [], sourceState: {} };
+  const results = await syncSources({ store, sources: [{ id: 'first', enabled: true, url: 'https://example.gov.cn/' }], fetchImpl: async () => ({ status: 404, ok: false }) });
+  assert.equal(store.sourceState.first?.lastError, '来源响应 404');
+  assert.equal(store.sourceState.first?.lastAttemptAt, results[0].completedAt);
+  assert.equal(store.sourceState.first?.lastSuccessAt, undefined);
+});
+
+test('mobile failure notice counts unavailable sources while retaining cached records without leaking errors', async () => {
+  const app = await loadMockMobileSite(pendingCoveragePayload({
+    policies: [validPolicy], sourceState: {
+      first: { lastError: 'sensitive-example-one', lastAttemptAt: '2026-09-30T00:00:00Z' },
+      second: { lastError: 'sensitive-example-two', lastAttemptAt: '2026-09-30T00:00:00Z' },
+      good: { lastError: null }, unknown: {}
+    }
+  }));
+  const notice = app.text('coverage-status');
+  assert.match(notice, /2 个来源最近一次读取失败/);
+  assert.match(notice, /保留.*公告.*核对官网/);
+  assert.doesNotMatch(notice, /sensitive-example|全部正常/);
+  assert.match(app.text('policy-list'), /长春市公开招聘教师报名公告/);
+});
+
+test('cleared source failures remove stale alerts without claiming all sources are healthy', async () => {
+  const app = await loadMockMobileSite(pendingCoveragePayload({ sourceState: { recovered: { lastError: null } } }));
+  assert.doesNotMatch(app.text('coverage-status'), /读取失败|全部正常/);
 });
 
 test('free deployment workflow updates hourly and deploys GitHub Pages', async () => {
