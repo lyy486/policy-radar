@@ -231,6 +231,14 @@ export async function syncSources({ store, sources, fetchImpl = fetch, onEvent =
       results.push(result); onEvent(result);
     } catch (error) {
       const result = { runId: createContentHash(`${source.id}|${startedAt}`).slice(0, 32), sourceId: source.id, status: 'failed', error: error.message, parserVersion: PARSER_VERSION, startedAt, completedAt: new Date().toISOString() };
+      store.sourceState = {
+        ...store.sourceState,
+        [source.id]: {
+          ...(store.sourceState[source.id] ?? {}),
+          lastAttemptAt: result.completedAt,
+          lastError: result.error ?? '来源读取失败'
+        }
+      };
       results.push(result); onEvent(result);
     }
   }
