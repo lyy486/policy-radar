@@ -17,32 +17,56 @@ concurrency:
 jobs:
   update-and-deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v7
-      - name: 重建项目目录
+      - name: 修复首次上传的目录结构
+        shell: bash
         run: |
-          mkdir -p src scripts test free-site/data data
-          cp free-site-lib.js scripts/free-site-lib.js
-          cp free-update.js scripts/free-update.js
-          cp free-preview.js scripts/free-preview.js
-          cp send-test-email.js scripts/send-test-email.js
-          cp policy-service.js src/policy-service.js
-          cp source-registry.js src/source-registry.js
-          cp store.js src/store.js
-          cp sync-service.js src/sync-service.js
-          cp free-site.test.js test/free-site.test.js
-          cp app.js icon.svg index.html manifest.webmanifest privacy.html styles.css sw.js free-site/
-          cp policies.json free-site/data/policies.json
-          cp free-store.json data/free-store.json
-          cp free-notified.json data/free-notified.json
+          set -euo pipefail
+          move_file() {
+            if [ -f "$1" ]; then
+              if [ -e "$2" ]; then
+                cmp -s -- "$1" "$2" || { echo "Conflicting duplicate: $1"; exit 1; }
+              else
+                mkdir -p -- "$(dirname "$2")"
+                git mv -- "$1" "$2"
+              fi
+            fi
+          }
+          move_file "free-notified.json" "data/free-notified.json"
+          move_file "free-store.json" "data/free-store.json"
+          move_file "FREE-MOBILE-DEPLOYMENT.md" "docs/FREE-MOBILE-DEPLOYMENT.md"
+          move_file "app.js" "free-site/app.js"
+          move_file "policies.json" "free-site/data/policies.json"
+          move_file "icon.svg" "free-site/icon.svg"
+          move_file "index.html" "free-site/index.html"
+          move_file "manifest.webmanifest" "free-site/manifest.webmanifest"
+          move_file "privacy.html" "free-site/privacy.html"
+          move_file "styles.css" "free-site/styles.css"
+          move_file "sw.js" "free-site/sw.js"
+          move_file "free-preview.js" "scripts/free-preview.js"
+          move_file "free-release-manifest.js" "scripts/free-release-manifest.js"
+          move_file "free-site-lib.js" "scripts/free-site-lib.js"
+          move_file "free-update.js" "scripts/free-update.js"
+          move_file "send-test-email.js" "scripts/send-test-email.js"
+          move_file "policy-service.js" "src/policy-service.js"
+          move_file "source-registry.js" "src/source-registry.js"
+          move_file "store.js" "src/store.js"
+          move_file "sync-service.js" "src/sync-service.js"
+          move_file "free-site.test.js" "test/free-site.test.js"
+          move_file "free-policy-radar.yml" "docs/initial-upload-workflow.yml.txt"
       - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npm run check
+      - run: npm test
+      - run: npm audit --omit=dev --audit-level=high
       - name: 同步官方来源并生成静态网页数据
         run: npm run free:update
         env:
@@ -53,12 +77,13 @@ jobs:
           SMTP_FROM: ${{ secrets.SMTP_FROM }}
           ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
           PUBLIC_SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
-      - run: npm test
       - name: 保存最新公开数据和提醒去重状态
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f free-store.json free-notified.json policies.json
+          git add -u
+          git add -- src scripts test docs free-site
+          git add -f data/free-store.json data/free-notified.json free-site/data/policies.json
           git diff --cached --quiet || git commit -m "chore: refresh free policy data"
           git push
       - uses: actions/configure-pages@v6
