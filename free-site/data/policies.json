@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-27T13:39:04.733Z",
+  "generatedAt": "2026-09-29T17:13:17.008Z",
   "policies": [
     {
       "id": "33c085b68a48301296c172aa",
@@ -9,7 +9,7 @@
       "policyType": "教师招聘",
       "category": "拟聘用名单",
       "publishedAt": "2026-07-03T01:00:00.000Z",
-      "fetchedAt": "2026-09-27T13:39:01.407Z",
+      "fetchedAt": "2026-09-29T17:12:57.609Z",
       "sourceName": "吉林省教育厅公示公告（教师考试相关）",
       "sourceUrl": "https://jyt.jl.gov.cn/zwgk/ggl/202607/t20260703_9659516.html",
       "contentHash": "fa9742815c823b80faabfa65fc7737913812b8d37effafc31a42fa3eee72ea3c"
@@ -22,7 +22,7 @@
       "policyType": "特岗教师",
       "category": "招聘公告",
       "publishedAt": "2026-06-08T01:00:00.000Z",
-      "fetchedAt": "2026-09-27T13:39:01.407Z",
+      "fetchedAt": "2026-09-29T17:12:57.609Z",
       "sourceName": "吉林省教育厅公示公告（教师考试相关）",
       "sourceUrl": "https://jyt.jl.gov.cn/zwgk/ggl/202606/t20260608_9645990.html",
       "contentHash": "b647684f4e81e06e8f6cb294764f8e889057319deb30a9b8c1a45d3433a371fe"
@@ -780,48 +780,48 @@
   ],
   "sourceState": {
     "jilin-education-announcements": {
-      "lastAttemptAt": "2026-09-27T13:39:02.290Z",
-      "lastSuccessAt": "2026-09-27T13:39:02.290Z",
+      "lastAttemptAt": "2026-09-29T17:13:02.669Z",
+      "lastSuccessAt": "2026-09-29T17:13:02.669Z",
       "lastError": null,
       "lastSeen": 2,
       "lastInserted": 0,
-      "etag": "\"bee36e1d-6862-65b6a29b70080\"",
-      "lastModified": "Mon, 14 Sep 2026 04:49:44 GMT",
+      "etag": "\"e6336adf-6862-65b6a11b6a760\"",
+      "lastModified": "Mon, 14 Sep 2026 04:43:02 GMT",
       "parserVersion": "2026-09-26.2"
     },
     "jilin-hrss-announcements": {
-      "lastAttemptAt": "2026-09-27T13:39:02.969Z",
-      "lastSuccessAt": "2026-09-27T13:39:02.969Z",
+      "lastAttemptAt": "2026-09-29T17:13:08.445Z",
+      "lastSuccessAt": "2026-09-29T17:13:08.445Z",
       "lastError": null,
       "lastSeen": 0,
       "lastInserted": 0,
-      "etag": "\"e6e614ae-342a-65c30bc00c6a8\"",
-      "lastModified": "Thu, 24 Sep 2026 01:44:02 GMT",
+      "etag": "\"bee41aed-342a-65c30d408b148\"",
+      "lastModified": "Thu, 24 Sep 2026 01:50:45 GMT",
       "parserVersion": "2026-09-26.2"
     },
     "jilin-hrss-headlines": {
-      "lastAttemptAt": "2026-09-27T13:39:03.587Z",
-      "lastSuccessAt": "2026-09-27T13:39:03.587Z",
+      "lastAttemptAt": "2026-09-29T17:13:09.883Z",
+      "lastSuccessAt": "2026-09-29T17:13:09.883Z",
       "lastError": null,
       "lastSeen": 0,
       "lastInserted": 0,
-      "etag": "\"e69205fe-2a47-65c069903cff8\"",
-      "lastModified": "Mon, 21 Sep 2026 23:27:46 GMT",
+      "etag": "\"484961ef-2a47-65c0702dd77f8\"",
+      "lastModified": "Mon, 21 Sep 2026 23:57:22 GMT",
       "parserVersion": "2026-09-26.2"
     },
     "tonghua-education-announcements": {
-      "lastAttemptAt": "2026-09-27T13:39:03.852Z",
-      "lastSuccessAt": "2026-09-27T13:39:03.852Z",
+      "lastAttemptAt": "2026-09-29T17:13:14.047Z",
+      "lastSuccessAt": "2026-09-29T17:13:14.047Z",
       "lastError": null,
       "lastSeen": 0,
       "lastInserted": 0,
-      "etag": "\"44ea-659fd56048a40-gzip\"",
-      "lastModified": "Thu, 27 Aug 2026 01:34:25 GMT",
+      "etag": "\"44b4-65c9d7aac5880-gzip\"",
+      "lastModified": "Tue, 29 Sep 2026 11:28:18 GMT",
       "parserVersion": "2026-09-26.2"
     },
     "tonghua-hrss-announcements": {
-      "lastAttemptAt": "2026-09-27T13:39:04.073Z",
-      "lastSuccessAt": "2026-09-27T13:39:04.073Z",
+      "lastAttemptAt": "2026-09-29T17:13:15.821Z",
+      "lastSuccessAt": "2026-09-29T17:13:15.821Z",
       "lastError": null,
       "lastSeen": 0,
       "lastInserted": 0,
