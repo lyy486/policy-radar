@@ -12,6 +12,7 @@ import {
   findUnnotifiedPolicies
 } from '../scripts/free-site-lib.js';
 import { FREE_RELEASE_FILES } from '../scripts/free-release-manifest.js';
+import * as freeSiteLib from '../scripts/free-site-lib.js';
 
 const validPolicy = {
   id: 'policy-1',
@@ -92,6 +93,108 @@ test('buildStaticPayload only publishes current non-demo official records', () =
 test('findUnnotifiedPolicies returns each policy once', () => {
   const result = findUnnotifiedPolicies([validPolicy, { ...validPolicy, id: 'policy-2', contentHash: 'hash-2' }], ['hash-1']);
   assert.deepEqual(result.map((item) => item.contentHash), ['hash-2']);
+});
+
+test('alert batches persist only successful sends and retain older history', async () => {
+  const policies = Array.from({ length: 25 }, (_, index) => ({ ...validPolicy, contentHash: 'new-' + index }));
+  const original = { hashes: ['older-than-current-page'], initializedAt: 'original-baseline' };
+  let state = original;
+  const batches = [];
+  const options = {
+    policies, readState: async () => state, writeState: async (next) => { state = next; },
+    sendAlert: async (batch) => { batches.push(batch); return true; },
+    logger: { log() {}, warn() {} }, now: () => 'test-timestamp'
+  };
+  await freeSiteLib.deliverPolicyAlerts(options);
+  assert.equal(batches[0].length, 20);
+  assert.deepEqual(state.hashes, ['older-than-current-page', ...policies.slice(0, 20).map((policy) => policy.contentHash)]);
+  assert.deepEqual(original.hashes, ['older-than-current-page']);
+  assert.equal(state.initializedAt, 'original-baseline');
+  await freeSiteLib.deliverPolicyAlerts(options);
+  assert.deepEqual(batches[1].map((policy) => policy.contentHash), policies.slice(20).map((policy) => policy.contentHash));
+  assert.equal(state.hashes.length, 26);
+  await freeSiteLib.deliverPolicyAlerts(options);
+  assert.equal(batches.length, 2);
+});
+
+test('notified state parser rejects corrupt JSON and invalid hash structures', () => {
+  for (const raw of ['{broken', 'null', '[]', '{}', '{"hashes":null}', '{"hashes":"hash-1"}', '{"hashes":[42]}', '{"hashes":[""]}']) {
+    assert.throws(() => freeSiteLib.parseNotifiedState(raw), /提醒去重状态无效/);
+  }
+  assert.deepEqual(freeSiteLib.parseNotifiedState('{"hashes":["hash-1"],"initializedAt":"kept"}'), { hashes: ['hash-1'], initializedAt: 'kept' });
+  assert.deepEqual(freeSiteLib.parseNotifiedState('{"hashes":[]}'), { hashes: [] });
+});
+
+test('corrupt or unreadable dedup state skips all sending and preserves original state', async () => {
+  const warnings = [];
+  for (const readState of [
+    async () => freeSiteLib.parseNotifiedState('{broken'),
+    async () => freeSiteLib.parseNotifiedState('{"hashes":null}'),
+    async () => { throw Object.assign(new Error('private file contents'), { code: 'EACCES' }); }
+  ]) {
+    let writes = 0;
+    let sends = 0;
+    await freeSiteLib.deliverPolicyAlerts({
+      policies: [validPolicy], readState, writeState: async () => { writes += 1; },
+      sendAlert: async () => { sends += 1; return true; },
+      logger: { log() {}, warn(message) { warnings.push(message); } }
+    });
+    assert.equal(writes, 0);
+    assert.equal(sends, 0);
+  }
+  assert.equal(warnings.length, 3);
+  assert.ok(warnings.every((message) => message.includes('::warning::') && message.includes('保留原状态') && message.includes('网页数据已更新')));
+  assert.ok(warnings.every((message) => !message.includes('private file contents')));
+});
+
+test('only a missing dedup state initializes a baseline without sending history', async () => {
+  let saved;
+  await freeSiteLib.deliverPolicyAlerts({
+    policies: [validPolicy], readState: async () => null, writeState: async (state) => { saved = state; },
+    sendAlert: async () => assert.fail('initial history must not be sent'),
+    logger: { log() {}, warn() {} }, now: () => 'first-run'
+  });
+  assert.deepEqual(saved, { hashes: ['hash-1'], initializedAt: 'first-run' });
+});
+
+test('failed or unconfigured sending never marks pending policies as sent', async () => {
+  for (const sendAlert of [async () => false, async () => { throw Object.assign(new Error('private SMTP details'), { code: 'EAUTH' }); }]) {
+    const warnings = [];
+    await freeSiteLib.deliverPolicyAlerts({
+      policies: [validPolicy], readState: async () => ({ hashes: [] }),
+      writeState: async () => assert.fail('unsent policies must remain pending'), sendAlert,
+      logger: { log() {}, warn(message) { warnings.push(message); } }
+    });
+    assert.ok(warnings.every((message) => !message.includes('private SMTP details')));
+  }
+});
+
+test('alert helpers handle missing fields, invalid URLs and escaped text safely', () => {
+  const payload = buildStaticPayload({ policies: [
+    { ...validPolicy, id: 'recent', publishedAt: null, fetchedAt: '2026-09-28T00:00:00Z' },
+    { id: 'defaults', title: `<>&"'`, regionId: 'jilin', sourceUrl: validPolicy.sourceUrl, contentHash: 'defaults' },
+    { ...validPolicy, id: 'invalid-date', publishedAt: 'not-a-date' },
+    { ...validPolicy, sourceUrl: 'not a URL' }
+  ] }, { generatedAt: 'explicit-time' });
+  assert.equal(payload.policies.length, 3);
+  assert.equal(payload.policies[0].id, 'recent');
+  assert.equal(payload.generatedAt, 'explicit-time');
+  assert.deepEqual(buildStaticPayload({}).policies, []);
+  const message = createAlertEmail([{ title: `<>&"'`, sourceUrl: validPolicy.sourceUrl }]);
+  assert.ok(message.html.includes('&lt;&gt;&amp;&quot;&#39;'));
+  assert.ok(message.text.includes('官方来源'));
+  assert.ok(!message.text.includes('手机网页'));
+  assert.deepEqual(findUnnotifiedPolicies(), []);
+  assert.deepEqual(findUnnotifiedPolicies([{ contentHash: null }]), []);
+});
+
+test('baseline uses a real timestamp when a test clock is not injected', async () => {
+  let saved;
+  await freeSiteLib.deliverPolicyAlerts({
+    policies: [], readState: async () => null, writeState: async (state) => { saved = state; },
+    sendAlert: async () => assert.fail('empty baseline must not send')
+  });
+  assert.ok(Number.isFinite(Date.parse(saved.initializedAt)));
 });
 
 test('createAlertEmail contains official links and no credentials', () => {
