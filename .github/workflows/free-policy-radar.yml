@@ -22,6 +22,22 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v7
+      - name: 重建项目目录
+        run: |
+          mkdir -p src scripts test free-site/data data
+          cp free-site-lib.js scripts/free-site-lib.js
+          cp free-update.js scripts/free-update.js
+          cp free-preview.js scripts/free-preview.js
+          cp send-test-email.js scripts/send-test-email.js
+          cp policy-service.js src/policy-service.js
+          cp source-registry.js src/source-registry.js
+          cp store.js src/store.js
+          cp sync-service.js src/sync-service.js
+          cp free-site.test.js test/free-site.test.js
+          cp app.js icon.svg index.html manifest.webmanifest privacy.html styles.css sw.js free-site/
+          cp policies.json free-site/data/policies.json
+          cp free-store.json data/free-store.json
+          cp free-notified.json data/free-notified.json
       - uses: actions/setup-node@v7
         with:
           node-version: 22
@@ -42,7 +58,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f data/free-store.json data/free-notified.json free-site/data/policies.json
+          git add -f free-store.json free-notified.json policies.json
           git diff --cached --quiet || git commit -m "chore: refresh free policy data"
           git push
       - uses: actions/configure-pages@v6
