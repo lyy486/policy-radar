@@ -31,6 +31,8 @@ export const FREE_RELEASE_FILES = Object.freeze([
   'start-free-lan.cmd',
   'start-free-lan.ps1',
   'test/free-site.test.js',
+  'test/policy-service.test.js',
+  'test/sync-service.test.js',
   'uninstall-local-schedule.cmd',
   'uninstall-local-schedule.ps1'
 ]);
