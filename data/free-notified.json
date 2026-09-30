@@ -31,7 +31,11 @@
     "259581e47977f765d37992fa9868aedfc4b102435c6ca27cb0b4833fa7c92054",
     "5cbb29d17580834398ff309ccd93d83bb73a4ff2dbbc60a46f2ba9fa1e3783e2",
     "069e5bdea6c3d1650ab66f18bc6fe2501c23e44426047e70222881f04d5ab407",
-    "8d302e1858994d0089a8c66e7b23398856620689888f1b1a40fc27b22b5ac1f7"
+    "8d302e1858994d0089a8c66e7b23398856620689888f1b1a40fc27b22b5ac1f7",
+    "79c3258b1457ec21f2152c6aba93e19c8c1f68046a698686930e2cb7bfb0152e",
+    "c8a208ef8e7678d94c299105bf83534f2f18520f5e10aa0f5424d40378059f8b",
+    "29897f670d3b7a2ca50d4288f898ee6cd408049180a36e0e39c7004a869f1b0e",
+    "4515b5c66d20f6cd47b48740645a32146f03febbd0cb136e57408815850b2221"
   ],
   "initializedAt": "2026-09-26T18:18:30.072Z",
   "initializedSourceIds": [
@@ -39,6 +43,8 @@
     "jilin-exam-teacher",
     "changchun-hrss-notices",
     "changchun-talent-notices",
-    "changchun-talent-recruitment"
+    "changchun-talent-recruitment",
+    "changchun-education-notices",
+    "changchun-jingkai-notices"
   ]
 }
