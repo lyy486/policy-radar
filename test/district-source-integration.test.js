@@ -24,12 +24,7 @@ test('only the verified district batch is enabled with exact HTTP consent and hi
     assert.equal(isApprovedFreeSource({ ...source, url: source.url + '?unverified=1' }), false);
     assert.equal(listSourceCoverage().find(item => item.regionId === source.regionIds[0]).status, 'active');
   }
-  for (const key of ['nanguan', 'kuancheng', 'erdao', 'lvyuan', 'shuangyang', 'jingyue', 'yushu', 'nong-an']) {
-    const source = configured(key);
-    assert.equal(source.enabled, false, key);
-    assert.equal(source.userApprovedPublicHttp, true, 'consent is recorded without enabling unready sources');
-    assert.equal(isApprovedFreeSource({ ...source, enabled: true }), false, key);
-  }
+
 });
 
 test('district routing excludes sidebar notices and labels general recruitment as unverified', async () => {
@@ -50,7 +45,7 @@ test('new district parsing does not change legacy government titles or hashes', 
   const policy = parseOfficialList(html, source)[0];
   assert.equal(policy.title, visible);
   assert.equal(policy.contentHash, createContentHash(`${new URL(href, source.url).href}|${visible}`));
-  assert.equal(listSources().filter(item => item.enabled && !batch.some(key => item.id === `${key}-education-notices`)).length, 13);
+  assert.equal(listSources().filter(item => item.enabled && ![...batch, 'nong-an', 'nanguan', 'kuancheng', 'erdao', 'lvyuan', 'shuangyang', 'jingyue', 'yushu'].some(key => item.id === `${key}-education-notices`)).length, 13);
 });
 
 test('new district baseline suppresses history while preserving old pending alerts and later new items', async () => {

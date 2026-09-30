@@ -72,15 +72,14 @@ test('Dehui cross-column recruitment remains an unverified lead rather than a ve
   assert.match(policies[0].summary, /需核对/);
 });
 
-test('Nongan candidate records the actual education platform without claiming dynamic records are available', () => {
+test('Nongan approved dynamic source is distinct from the old HTML shell', () => {
   const source = listSources().find(item => item.id === 'nong-an-education-notices');
   const coverage = listSourceCoverage().find(item => item.regionId === 'nong-an-cc');
-  assert.equal(source.url, 'http://zwgk.changchun.gov.cn/na/xzfzcbm/naxjyj/zdlyjczwgk/');
-  assert.equal(source.reviewStatus, 'dynamic-list-pending');
-  assert.match(source.verificationNote, /动态/);
+  assert.equal(source.parser, 'nongan-education');
+  assert.equal(source.reviewStatus, 'verified-public-jsonp');
   assert.match(coverage.note, /动态/);
-  assert.equal(source.enabled, false);
-  assert.equal(coverage.status, 'pending');
-  assert.equal(isApprovedFreeSource(source), false);
-  assert.equal(isApprovedFreeSource({ ...source, enabled: true, userApprovedPublicHttp: true }), false);
+  assert.equal(source.enabled, true);
+  assert.equal(coverage.status, 'active');
+  assert.equal(isApprovedFreeSource(source), true);
+  assert.equal(isApprovedFreeSource({ ...source, url: 'http://zwgk.changchun.gov.cn/na/xzfzcbm/naxjyj/zdlyjczwgk/' }), false);
 });

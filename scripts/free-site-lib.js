@@ -54,7 +54,10 @@ export function buildStaticPayload(store, metadata = {}) {
     alertScope: structuredClone(FREE_ALERT_SCOPE),
     regionGroups: structuredClone(REGION_GROUPS),
     coverage: metadata.coverage ?? [],
-    sourceState: store.sourceState ?? {}
+    sourceState: Object.fromEntries(Object.entries(store.sourceState ?? {}).map(([id, state]) => {
+      const { detailTitleCache: _internalCache, ...publicState } = state;
+      return [id, publicState];
+    }))
   };
 }
 

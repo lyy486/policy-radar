@@ -28,7 +28,7 @@ test('verified Xinqu lists use HTTPS and per-source historical baselines', () =>
     assert.deepEqual(configured.regionIds, ['changchun']);
   }
   assert.match(listSourceCoverage().find(item => item.regionId === 'changchun').note, /新区/);
-  assert.equal(listSources().find(item => item.id === 'nanguan-education-notices').enabled, false);
+  assert.equal(listSources().find(item => item.id === 'nanguan-education-notices').enabled, true);
 });
 
 test('only the opted-in source admits 招募 without changing existing-source alert scope', () => {
