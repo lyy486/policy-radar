@@ -32,12 +32,16 @@
       <label>地区<select id="region-filter"><option value="all">全部地区</option></select></label>
       <label>政策类型<select id="type-filter"><option value="all">全部类型</option></select></label>
       <label>事项<select id="category-filter"><option value="all">全部事项</option></select></label>
-      <label>关键词<input id="keyword-filter" type="search" placeholder="例如：报名、面试、农安"></label>
+      <label>关键词<input id="keyword-filter" type="search" maxlength="80" placeholder="例如：报名、面试、农安"></label>
+    </section>
+
+    <section class="notice" aria-label="提醒范围说明">
+      <div><strong>页面筛选只影响本页，不修改邮件提醒范围。</strong><small id="alert-scope">正在读取邮件提醒范围；网页关闭后的提醒由云端邮箱任务负责。</small></div>
     </section>
 
     <section class="summary">
       <div><strong id="result-count">0</strong><span>条匹配公告</span></div>
-      <div><strong id="new-count">0</strong><span>条本次新公告</span></div>
+      <div><strong id="new-count">0</strong><span>条未读公告（可能包含历史）</span></div>
       <button id="mark-read-button" class="text-button">全部标为已看</button>
     </section>
 
@@ -55,6 +59,6 @@
   </main>
 
   <footer><a href="./privacy.html">隐私说明</a><span>·</span><span>不收集身份证、准考证等敏感信息</span></footer>
-  <script type="module" src="./app.js?v=5"></script>
+  <script type="module" src="./app.js?v=8"></script>
 </body>
 </html>
