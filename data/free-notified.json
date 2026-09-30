@@ -35,7 +35,13 @@
     "79c3258b1457ec21f2152c6aba93e19c8c1f68046a698686930e2cb7bfb0152e",
     "c8a208ef8e7678d94c299105bf83534f2f18520f5e10aa0f5424d40378059f8b",
     "29897f670d3b7a2ca50d4288f898ee6cd408049180a36e0e39c7004a869f1b0e",
-    "4515b5c66d20f6cd47b48740645a32146f03febbd0cb136e57408815850b2221"
+    "4515b5c66d20f6cd47b48740645a32146f03febbd0cb136e57408815850b2221",
+    "e646d016cc23734e3643069389ad80c855f3f6a683c32ed4edb1687acca0d8de",
+    "a2ddd24c579d2ac9aba5993e6f26acd1dd6ec08f386f644b6034966f71c3de93",
+    "c5e72e3afb2de212d4aa4b849021a63385eebf622c941bf778b770a0777c6db9",
+    "67207b075a26218d547a337c775f1d0f9154a8c813446a064a80cde791cd6426",
+    "4b67691c57a235b9b60bc341ae19e78448b046394f097bc1601051fd8f9a2e54",
+    "516e0afcffffca5a694dc9904c9016fcf61d38172910599616168f9223cf5fa3"
   ],
   "initializedAt": "2026-09-26T18:18:30.072Z",
   "initializedSourceIds": [
@@ -45,6 +51,10 @@
     "changchun-talent-notices",
     "changchun-talent-recruitment",
     "changchun-education-notices",
-    "changchun-jingkai-notices"
+    "changchun-jingkai-notices",
+    "chaoyang-education-notices",
+    "jiutai-education-notices",
+    "lianhuashan-education-notices",
+    "dehui-education-notices"
   ]
 }
