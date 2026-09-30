@@ -36,6 +36,8 @@ const CHANGCHUN_HTTPS_CANDIDATES = [
 }));
 
 export const SOURCE_REGISTRY = [
+  { ...COMMON, id: 'jilin-hrss-recruitment', name: '吉林省人社厅事业单位公开招聘公告', regionIds: ['jilin'], category: '招聘公告', includeGeneralRecruitment: true, alertBaselineOnFirstSync: true, detailPathPrefix: '/rsrc/sydwrsgl/gkzp/', url: 'https://hrss.jl.gov.cn/rsrc/sydwrsgl/gkzp/', transport: 'https', reviewStatus: 'verified-list-and-sample-attachments', verificationNote: '2026-09-30：官网导航与12、13号详情、岗位表人工核验；robots404。综合公告仅为待核对教师岗位线索，不承诺编制或统一考试时间。' },
+  { ...COMMON, id: 'jilin-exam-teacher', name: '吉林省教育考试院中小学教师资格考试', regionIds: ['jilin'], category: '招聘公告', policyType: '教师资格考试', parser: 'jilin-exam', alertBaselineOnFirstSync: true, url: 'https://www.jleea.com.cn/server-front/front/content/page?isStatic=false&pageSize=15&channelIdStr=10649&isPageQuery=true&pageNum=1', transport: 'https', reviewStatus: 'verified-public-api', verificationNote: '2026-09-30：ntce.neea.edu.cn 省级考试机构官方外链确认域名；教资栏目10649公开API与前三条原文人工比对，robots返回404；按小时检查首页15条，不代表全部历史公告或长春教师编制招聘' },
   { ...COMMON, id: 'jilin-education-announcements', name: '吉林省教育厅公示公告（教师考试相关）', regionIds: ['jilin'], category: '教师招聘', titlePattern: '招聘|特岗|特设岗位|教师资格|教资|报名|笔试|面试|资格审查|资格复审|体检|成绩|递补|拟聘|拟录用|中小学教师', url: 'https://jyt.jl.gov.cn/zwgk/ggl/', transport: 'https', reviewStatus: 'verified-reachable-title-filtered' },
   { ...COMMON, enabled: false, id: 'jilin-education-notices', name: '吉林省教育厅文件通知', regionIds: ['jilin'], category: '教育政策', url: 'https://jyt.jl.gov.cn/zwgk/wjtz/', transport: 'https', reviewStatus: 'unreachable-404' },
   { ...COMMON, id: 'jilin-hrss-announcements', name: '吉林省人力资源和社会保障厅公告（教师相关）', regionIds: ['jilin'], category: '教师招聘', titlePattern: '教师|教育|学校|中小学|幼儿园|特岗|师范', url: 'https://hrss.jl.gov.cn/gg/', transport: 'https', reviewStatus: 'verified-reachable-title-filtered' },
@@ -56,11 +58,11 @@ export const SOURCE_REGISTRY = [
   { ...COMMON, enabled: false, id: 'yanbian-government-candidate', name: '延边州政府通知公告候选入口（教师相关）', regionIds: ['yanbian'], category: '教师招聘', titlePattern: '招聘|特岗|教师资格|教资|教师|中小学|幼儿园|报名|笔试|面试|资格审查|资格复审|体检|成绩|递补|拟聘|拟录用', url: 'https://www.yanbian.gov.cn/zw/tzgg/', transport: 'https', allowHttp: true, reviewStatus: 'https-pending', verificationNote: '官方页面 HTTP 可访问但 HTTPS/TLS 尚未核验；仅允许本机显式试验，不得用于生产' },
   { ...COMMON, enabled: false, id: 'yanbian-education-candidate', name: '延边州教育局候选入口（教师考试相关）', regionIds: ['yanbian'], category: '教师招聘', titlePattern: '招聘|特岗|特设岗位|教师资格|教资|报名|笔试|面试|资格审查|资格复审|体检|成绩|递补|拟聘|拟录用|中小学教师', url: 'https://edu.yanbian.gov.cn/', transport: 'https', allowHttp: true, reviewStatus: 'https-pending', verificationNote: '百度官方结果与州政府部门目录均指向延边州教育局；当前 HTTP 可访问，HTTPS 请求超时，生产禁用' },
   { ...COMMON, enabled: false, id: 'yanbian-hrss-candidate', name: '延边州人力资源和社会保障局候选入口（教师相关）', regionIds: ['yanbian'], category: '教师招聘', titlePattern: '教师|教育|学校|中小学|幼儿园|特岗|师范|招聘|招录|选聘', url: 'https://hrss.yanbian.gov.cn/', transport: 'https', allowHttp: true, reviewStatus: 'https-pending', verificationNote: '官方结果指向延边州人社局网站；当前 HTTPS 请求超时，生产禁用' },
-  { ...COMMON, enabled: false, id: 'gongzhuling-government-candidate', name: '公主岭市政府政务信息候选入口（教师相关）', regionIds: ['gongzhuling-cc'], category: '教师招聘', titlePattern: '招聘|特岗|教师资格|教资|教师|中小学|幼儿园|报名|笔试|面试|资格审查|资格复审|体检|成绩|递补|拟聘|拟录用', url: 'https://www.gongzhuling.gov.cn/zw/dzxx/bmdt/', transport: 'https', allowHttp: true, reviewStatus: 'https-pending', verificationNote: '公主岭市政府官方政务信息入口 HTTP 可访问但 HTTPS/TLS 尚未核验；仅允许本机显式试验，不计入长春全选' },
+  { ...COMMON, enabled: false, id: 'gongzhuling-government-candidate', name: '公主岭市政府政务信息候选入口（教师相关）', regionIds: ['gongzhuling-cc'], category: '教师招聘', titlePattern: '招聘|特岗|教师资格|教资|教师|中小学|幼儿园|报名|笔试|面试|资格审查|资格复审|体检|成绩|递补|拟聘|拟录用', url: 'https://www.gongzhuling.gov.cn/zw/dzxx/bmdt/', transport: 'https', allowHttp: true, reviewStatus: 'https-pending', verificationNote: '公主岭市政府官方政务信息入口 HTTP 可访问但 HTTPS/TLS 尚未核验；仅允许本机显式试验；省政府目录确认公主岭属于长春分组，已纳入长春全选，来源仍待云端核验' },
   { ...COMMON, enabled: false, id: 'jiangyuan-government-announcements-candidate', name: '江源区人民政府公告栏候选入口（教师考试相关）', regionIds: ['jiangyuan-bs'], category: '教师招聘', titlePattern: '招聘|特岗|特设岗位|教师资格|教资|教师|中小学|幼儿园|学校|教育系统|报名|笔试|面试|资格审查|资格复审|体检|成绩|递补|拟聘|拟录用', excludeTitlePattern: '专业技术资格|职称|评审|劳务派遣|农民工', url: 'https://jy.cbs.gov.cn/zwgk/ggl/', transport: 'https', reviewStatus: 'official-list-runtime-pending', verificationNote: '官方站点和公告列表已人工核验；当前 Node 运行时连接仍被对端中断，保持禁用，待目标云服务器复测' },
   { ...COMMON, enabled: false, id: 'jingyu-government-announcements-candidate', name: '靖宇县人民政府公示公告候选入口（教师考试相关）', regionIds: ['jingyu-bs'], category: '教师招聘', titlePattern: '招聘|特岗|特设岗位|教师资格|教资|教师|中小学|幼儿园|学校|教育系统|报名|笔试|面试|资格审查|资格复审|体检|成绩|递补|拟聘|拟录用', excludeTitlePattern: '专业技术资格|职称|评审|劳务派遣|农民工', url: 'https://jyx.cbs.gov.cn/wzsy/gsgg/', transport: 'https', reviewStatus: 'official-list-runtime-pending', verificationNote: '候选审计曾返回 HTTP 200，但 robots.txt 和完整页面抓取不稳定，尚未完成列表解析与人工抽样，保持禁用，待目标云服务器复测' },
   { ...COMMON, enabled: false, id: 'changchun-education-notices', name: '长春市教育局通知公告', regionIds: ['changchun'], category: '教师招聘', titlePattern: '招聘|特岗|特设岗位|教师资格|教资|报名|笔试|面试|资格审查|资格复审|体检|成绩|递补|拟聘|拟录用|中小学教师', url: 'http://jyj.changchun.gov.cn/xxgk/tzgg/', transport: 'http', allowHttp: true, reviewStatus: 'https-pending', verificationNote: '官方页面可访问但当前 HTTPS TLS 不兼容；仅允许本机显式试验，不得用于生产' },
-  { ...COMMON, enabled: false, id: 'changchun-hrss-notices', name: '长春市人力资源和社会保障局通知公告', regionIds: ['changchun'], category: '教师招聘', titlePattern: '招聘|特岗|特设岗位|教师资格|教资|报名|笔试|面试|资格审查|资格复审|体检|成绩|递补|拟聘|拟录用|中小学教师', url: 'http://ccrs.changchun.gov.cn/ywdt/tzgg/', transport: 'http', allowHttp: true, reviewStatus: 'https-pending', verificationNote: '官方页面可访问但当前 HTTPS TLS 不兼容；仅允许本机显式试验，不得用于生产' },
+  { ...COMMON, id: 'changchun-hrss-notices', name: '长春市人力资源和社会保障局通知公告', regionIds: ['changchun'], category: '教师招聘', titlePattern: CHANGCHUN_TITLE_PATTERN, includeGeneralRecruitment: true, alertBaselineOnFirstSync: true, detailPathPrefix: '/ywdt/tzgg/', url: 'http://ccrs.changchun.gov.cn/ywdt/tzgg/', transport: 'http', allowHttp: true, userApprovedPublicHttp: true, reviewStatus: 'user-approved-public-http', verificationNote: '2026-09-30：用户明确同意个人使用此官方HTTP栏目。官方身份、公开列表及原文已核验，robots200未见Disallow；只读、无凭据、无自动重定向、限频。传输未加密，请核对官网原文；其他HTTP来源不因此获准。' },
   { ...COMMON, enabled: false, id: 'nanguan-education-notices', name: '南关区政府通知公告（教师考试相关）', regionIds: ['nanguan-cc'], category: '教师招聘', titlePattern: '招聘|特岗|特设岗位|教师资格|教资|报名|笔试|面试|资格审查|资格复审|体检|成绩|递补|拟聘|拟录用|中小学教师', url: 'http://nanguan.changchun.gov.cn/ywdt/tzgg/', transport: 'http', allowHttp: true, reviewStatus: 'local-http-verified', verificationNote: '官方区政府入口 HTTP 列表页已核验；HTTPS/TLS 未通过，生产禁用' },
   { ...COMMON, enabled: false, id: 'chaoyang-education-notices', name: '朝阳区政府通知公告（教师考试相关）', regionIds: ['chaoyang-cc'], category: '教师招聘', titlePattern: '招聘|特岗|特设岗位|教师资格|教资|报名|笔试|面试|资格审查|资格复审|体检|成绩|递补|拟聘|拟录用|中小学教师', url: 'http://chaoyang.changchun.gov.cn/zwdt/tzgg/', transport: 'http', allowHttp: true, reviewStatus: 'local-http-verified', verificationNote: '官方区政府入口 HTTP 列表页已核验；HTTPS/TLS 未通过，生产禁用' },
   { ...COMMON, enabled: false, id: 'kuancheng-education-notices', name: '宽城区政府通知公告（教师考试相关）', regionIds: ['kuancheng-cc'], category: '教师招聘', titlePattern: '招聘|特岗|特设岗位|教师资格|教资|报名|笔试|面试|资格审查|资格复审|体检|成绩|递补|拟聘|拟录用|中小学教师', url: 'http://kuancheng.changchun.gov.cn/sy/gsgg/tzgg/', transport: 'http', allowHttp: true, reviewStatus: 'local-http-verified', verificationNote: '官方区政府入口 HTTP 列表页已核验；HTTPS/TLS 未通过，生产禁用' },
@@ -77,8 +79,8 @@ export const SOURCE_REGISTRY = [
 ];
 
 export const SOURCE_COVERAGE = [
-  { regionId: 'jilin', status: 'active', note: '省教育厅、人社厅已接入' },
-  { regionId: 'changchun', status: 'pending', note: '市教育局、人社局 HTTPS 页面待核验' },
+  { regionId: 'jilin', status: 'active', note: '省教育厅、人社厅及省考试院教资公开接口已接入（不代表完整覆盖）' },
+  { regionId: 'changchun', status: 'active', transport: 'http', note: '市人社局公开栏目已获个人自用HTTP读取授权；传输未加密，教育局与区县未完整接入' },
   { regionId: 'jilin-city', status: 'pending', note: '官方入口已登记，但当前 HTTPS 运行时连接失败，待目标云服务器复测' },
   { regionId: 'siping', status: 'pending', note: '待核验教育局、人社局官方 HTTPS 来源' },
   { regionId: 'liaoyuan', status: 'pending', note: '官方入口已登记，但当前 HTTPS 运行时连接失败，待目标云服务器复测' },
@@ -99,10 +101,19 @@ export const SOURCE_COVERAGE = [
   { regionId: 'dehui-cc', status: 'pending', note: '官方 HTTP 列表已核验，HTTPS/TLS 待核验' },
   { regionId: 'yushu-cc', status: 'pending', note: '官方 HTTP 列表已核验，HTTPS/TLS 待核验' },
   { regionId: 'nong-an-cc', status: 'pending', note: '官方 HTTP 政务列表已核验，HTTPS/TLS 待核验' },
-  { regionId: 'gongzhuling-cc', status: 'pending', note: '公主岭市独立核验，不属于长春市及各区县全选' }
+  { regionId: 'gongzhuling-cc', status: 'pending', note: '公主岭已纳入长春全选；官方来源仍待核验' }
 ];
 
-export const SOURCE_REGISTRY_VERSION = '2026-09-26.4';
+export const SOURCE_REGISTRY_VERSION = '2026-09-30.2';
+export function isApprovedFreeSource(source) {
+  if (!source.enabled) return false;
+  let url;
+  try { url = new URL(source.url); } catch { return false; }
+  if (url.username || url.password) return false;
+  if (url.protocol === 'https:') return true;
+  return source.id === 'changchun-hrss-notices' && source.userApprovedPublicHttp === true && source.allowHttp === true
+    && url.href === 'http://ccrs.changchun.gov.cn/ywdt/tzgg/';
+}
 export function listSources() { return SOURCE_REGISTRY.map((source) => ({ ...source })); }
 export function listSourceCoverage() {
   const registered = new Set(SOURCE_COVERAGE.map((item) => item.regionId));

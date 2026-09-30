@@ -16,16 +16,29 @@ const JILIN_REGIONS = [
   ['yanbian', '延边州', 'prefecture'], ['yanji-yb', '延吉市', 'county-city'], ['tumen-yb', '图们市', 'county-city'], ['dunhua-yb', '敦化市', 'county-city'], ['hunchun-yb', '珲春市', 'county-city'], ['longjing-yb', '龙井市', 'county-city'], ['helong-yb', '和龙市', 'county-city'], ['wangqing-yb', '汪清县', 'county'], ['antu-yb', '安图县', 'county'], ['changbaishan-jl', '长白山管委会', 'management']
 ].map(([id, name, level]) => ({ id, name, level }));
 
-// 公主岭市保留历史 ID `gongzhuling-cc`，但行政上不属于长春市全域。
+// 吉林省政府现行市县目录将公主岭列于长春市分组，保留稳定 ID。
+// 核验来源：https://www.jl.gov.cn/xglj/szfbmszxszf/（2026-09-30）。
 const CHANGCHUN_REGION_IDS = new Set([
   'changchun', 'chaoyang-cc', 'nanguan-cc', 'kuancheng-cc', 'erdao-cc', 'lvyuan-cc',
-  'shuangyang-cc', 'jiutai-cc', 'jingyue-cc', 'lianhuashan-cc', 'dehui-cc', 'yushu-cc', 'nong-an-cc'
+  'shuangyang-cc', 'jiutai-cc', 'jingyue-cc', 'lianhuashan-cc', 'dehui-cc', 'yushu-cc', 'nong-an-cc', 'gongzhuling-cc'
 ]);
 const JILIN_REGION_IDS = new Set(JILIN_REGIONS.map((region) => region.id));
 
 const POLICY_TYPES = ['教师招聘', '特岗教师', '教师资格考试'];
 const REQUEST_CATEGORIES = ['招聘公告', '报名时间', '笔试时间', '面试', '资格审查', '体检', '成绩', '递补', '拟聘用名单'];
 const CATEGORIES = [...REQUEST_CATEGORIES, '教育政策'];
+
+// Free cloud alerts are deliberately independent of browser-only filters.
+const FREE_ALERT_SCOPE = Object.freeze({
+  id: 'changchun-teacher-default',
+  label: '长春市及各区县 + 吉林省级相关公告',
+  regionIds: Object.freeze(['jilin', ...CHANGCHUN_REGION_IDS]),
+  policyTypes: Object.freeze([...POLICY_TYPES]),
+  categories: Object.freeze([...CATEGORIES])
+});
+const REGION_GROUPS = Object.freeze([Object.freeze({
+  id: 'changchun-all', name: '长春市及各区县', regionIds: Object.freeze([...CHANGCHUN_REGION_IDS])
+})]);
 
 const DEFAULT_SUBSCRIPTION = {
   id: 'local-default-subscription',
@@ -162,4 +175,4 @@ export function createPolicyService({ store, userId = null }) {
   };
 }
 
-export { DEFAULT_POLICIES, DEFAULT_SUBSCRIPTION, JILIN_REGIONS, JILIN_REGION_IDS, CHANGCHUN_REGION_IDS, POLICY_TYPES, CATEGORIES, REQUEST_CATEGORIES };
+export { DEFAULT_POLICIES, DEFAULT_SUBSCRIPTION, JILIN_REGIONS, JILIN_REGION_IDS, CHANGCHUN_REGION_IDS, POLICY_TYPES, CATEGORIES, REQUEST_CATEGORIES, FREE_ALERT_SCOPE, REGION_GROUPS };
