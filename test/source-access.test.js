@@ -15,7 +15,7 @@ test('pre-release cloud verification cannot use mail credentials or deploy publi
   assert.doesNotMatch(workflow, /secrets\.|free:update|send-test-email|deploy-pages|contents: write/);
 });
 
-test('additional consent enables only education and Jingkai lists with first-sync baselines', () => {
+test('approved city lists retain exact access scope after the verified district expansion', () => {
   for (const [id, url, prefix] of [
     ['changchun-education-notices', 'http://jyj.changchun.gov.cn/xxgk/tzgg/', '/xxgk/tzgg/'],
     ['changchun-jingkai-notices', 'http://www.cetdz.gov.cn/zw/ggxx/tzgg/', '/zw/ggxx/tzgg/']
@@ -34,7 +34,7 @@ test('additional consent enables only education and Jingkai lists with first-syn
     assert.equal(registry.isApprovedFreeSource({ ...source, id: 'nanguan-education-notices' }), false);
   }
   const approvedHttp = registry.listSources().filter(item => item.url.startsWith('http:') && registry.isApprovedFreeSource(item));
-  assert.equal(approvedHttp.length, 3);
+  assert.equal(approvedHttp.length, 7);
   assert.equal(registry.listSources().find(item => item.id === 'nanguan-education-notices').enabled, false);
 });
 
