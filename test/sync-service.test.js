@@ -285,3 +285,215 @@ test('相关性规则拒绝历史中高考标题', () => {
   assert.equal(isRelevantTeacherTitle('教师职称评审拟通过人员公示'), false);
   assert.equal(isRelevantTeacherTitle('中小学教师资格认定公告'), true);
 });
+
+test('HTTP 200 维护和验证页面仅含首页链接时失败且不覆盖历史成功时间', async () => {
+  const cases = [
+    ['<h1>网站维护中</h1><a href="/index.html">返回网站首页</a>', /维护/],
+    ['<h1>请完成验证码验证</h1><a href="/index.html">返回网站首页</a>', /验证|拦截/],
+    ['<a href="/index.html">网站首页导航</a>', /公开列表链接/]
+  ];
+  for (const [body, expected] of cases) {
+    const previous = { lastSuccessAt: '2026-09-20T01:00:00.000Z', lastSeen: 3, etag: '"known-good"' };
+    const store = { policies: [], subscriptions: [], notifications: [], sourceState: { [source.id]: previous } };
+    const result = await syncSources({ store, sources: [source], fetchImpl: async () => ({ ok: true, status: 200, text: async () => body }) });
+    assert.equal(result[0].status, 'failed');
+    assert.match(result[0].error, expected);
+    assert.equal(store.sourceState[source.id].lastSuccessAt, previous.lastSuccessAt);
+    assert.equal(store.sourceState[source.id].lastSeen, 3);
+    assert.equal(store.sourceState[source.id].etag, '"known-good"');
+  }
+});
+
+test('可识别的公开列表没有教师公告仍是有效零匹配结果', async () => {
+  const result = await fetchOfficialSource(source, async () => ({ ok: true, status: 200, text: async () => '<li><a href="/2026/09/29/notice.html">普通会议通知</a><span>2026-09-29</span></li>' }));
+  assert.deepEqual(result.policies, []);
+});
+
+test('日期不从上一条目或下一条目的日期跨越赋给缺日期公告', () => {
+  const body = '<li><a href="/notice/first.html">教师招聘第一公告</a><span>2026-09-28</span></li>'
+    + '<li><a href="/notice/middle.html">教师招聘缺少日期公告</a></li>'
+    + '<li><span>2026-09-30</span><a href="/notice/last.html">教师招聘最后公告</a></li>';
+  const policies = parseOfficialList(body, source);
+  assert.deepEqual(policies.map((policy) => policy.publishedAt), ['2026-09-28T01:00:00.000Z', null, '2026-09-30T01:00:00.000Z']);
+});
+
+test('列表重复链接只生成一次政策且拒绝同域不同端口和用户信息链接', () => {
+  const body = '<a href="/notice/same.html">教师招聘公告</a><a href="/notice/same.html">教师招聘公告</a>'
+    + '<a href="https://example.gov.cn:444/notice/port.html">教师招聘端口公告</a>'
+    + '<a href="https://name@example.gov.cn/notice/user.html">教师招聘用户公告</a>';
+  const policies = parseOfficialList(body, source);
+  assert.equal(policies.length, 1);
+  assert.equal(policies[0].sourceUrl, 'https://example.gov.cn/notice/same.html');
+});
+
+test('维护或拦截页中的帮助详情链接不构成公告列表且保留可信状态', async () => {
+  for (const [body, expected] of [
+    ['<h1>Under maintenance</h1><a href="/help.html">Help center</a>', /维护/],
+    ['<p>Under maintenance</p><a href="/help.html">Help center</a>', /维护/],
+    ['<h1>请完成安全验证</h1><a href="/help.html">查看帮助说明</a>', /验证|拦截/],
+    ['<title>Under maintenance</title><a href="/help.html">网站维护通知</a>', /维护/],
+    ['<a href="/help.html">Help center</a>', /公开列表链接/]
+  ]) {
+    const previous = { lastSuccessAt: '2026-09-20T01:00:00.000Z', lastSeen: 3, etag: '"known-good"' };
+    const store = { policies: [], subscriptions: [], notifications: [], sourceState: { [source.id]: previous } };
+    const result = await syncSources({ store, sources: [source], fetchImpl: async () => ({ ok: true, status: 200, text: async () => body }) });
+    assert.equal(result[0].status, 'failed');
+    assert.match(result[0].error, expected);
+    assert.equal(store.sourceState[source.id].lastSuccessAt, previous.lastSuccessAt);
+    assert.equal(store.sourceState[source.id].lastSeen, 3);
+    assert.equal(store.sourceState[source.id].etag, '"known-good"');
+  }
+});
+
+test('真正公告列表中出现维护或验证码字样不会误判来源故障', async () => {
+  for (const title of ['教师招聘报名系统维护通知', '教师资格报名验证码获取方式通知']) {
+    const body = `<title>官方公告列表</title><h1>通知公告</h1><li><a href="/notice/20260930.html">${title}</a><span>2026-09-30</span></li>`;
+    const result = await fetchOfficialSource(source, async () => ({ ok: true, status: 200, text: async () => body }));
+    assert.equal(result.policies.length, 1);
+    assert.equal(result.policies[0].title, title);
+  }
+  const body = '<h1>通知公告</h1><li><a href="/notice/20260930.html">普通网站维护通知</a><span>2026-09-30</span></li>';
+  const result = await fetchOfficialSource(source, async () => ({ ok: true, status: 200, text: async () => body }));
+  assert.deepEqual(result.policies, []);
+});
+
+test('笔试和面试成绩公告按成绩事件分类而不是考试形式', () => {
+  for (const title of [
+    '2026年上半年中小学教师资格考试笔试成绩发布公告',
+    '2025年下半年中小学教师资格考试（笔试）成绩复核公告',
+    '2026年上半年中小学教师资格考试面试成绩发布公告',
+    '关于2026年教师招聘笔试分数查询的通知'
+  ]) {
+    const [policy] = parseOfficialList(`<a href="/notice/20260930.html">${title}</a>`, source);
+    assert.equal(policy.category, '成绩', title);
+  }
+});
+
+test('成绩分类修复保留报名和纯笔试面试及资格审查的原有正例', () => {
+  for (const [title, expected] of [
+    ['2026年教师资格考试（笔试）报名公告', '报名时间'],
+    ['2026年教师资格考试（笔试）公告', '笔试时间'],
+    ['2026年教师资格考试笔试时间及准考证打印公告', '笔试时间'],
+    ['2026年教师资格考试面试安排及准考证打印通知', '面试'],
+    ['2026年教师资格考试（笔试）报名与准考证打印须知', '报名时间'],
+    ['2026年教师招聘面试安排通知', '面试'],
+    ['2026年教师招聘面试资格复审公告', '资格审查']
+  ]) {
+    const [policy] = parseOfficialList(`<a href="/notice/20260930.html">${title}</a>`, source);
+    assert.equal(policy.category, expected, title);
+  }
+});
+
+test('准考证专门通知使用一般公告而不是将打印日误当考试时间', () => {
+  for (const title of [
+    '2026年中小学教师资格考试（笔试）准考证打印公告',
+    '2026年教师招聘笔试准考证下载通知',
+    '2026年中小学教师资格考试面试准考证有关事项通知'
+  ]) {
+    const [policy] = parseOfficialList(`<a href="/notice/20260930.html">${title}</a>`, source);
+    assert.equal(policy.category, '招聘公告', title);
+  }
+});
+
+test('新解析版本刷新已有成绩公告分类而不改变哈希或重复插入', async () => {
+  const body = '<a href="/notice/20260930.html">2026年教师资格考试笔试成绩发布公告</a>';
+  const cached = { ...parseOfficialList(body, source)[0], category: '笔试时间' };
+  const store = { policies: [cached], subscriptions: [], notifications: [], sourceState: {
+    [source.id]: { parserVersion: '2026-09-30.2', etag: '"previous-classification"' }
+  } };
+  const results = await syncSources({ store, sources: [source], fetchImpl: async (_url, options) => {
+    assert.equal(options.headers['if-none-match'], undefined);
+    return { ok: true, status: 200, text: async () => body };
+  } });
+  assert.equal(results[0].status, 'ok');
+  assert.equal(results[0].inserted, 0);
+  assert.equal(store.policies[0].category, '成绩');
+  assert.equal(store.policies[0].contentHash, cached.contentHash);
+});
+
+test('显式详情目录只接收同源目录内链接并拒绝越栏目和协议变更', () => {
+  const scoped = { ...source, url: 'http://example.gov.cn/sydw/', allowHttp: true, detailPathPrefix: '/ywdt/tzgg/' };
+  const links = [
+    '/ywdt/tzgg/20260930.html', '/ywdt/tzgg/sub/20260930.html',
+    '/ywdt/tzgg-extra/20260930.html', '/ywdt/other/20260930.html',
+    '/ywdt/tzgg/../other/20260930.html', '/ywdt/tzgg/%2e%2e/other/20260930.html',
+    '/ywdt/tzgg/%2e%2e%2fother/20260930.html', '/ywdt/tzgg/%252e%252e%252fother/20260930.html',
+    '/ywdt/tzgg/%ZZ/20260930.html',
+    'https://example.gov.cn/ywdt/tzgg/20260930.html',
+    'http://external.gov.cn/ywdt/tzgg/20260930.html',
+    'http://user@example.gov.cn/ywdt/tzgg/20260930.html'
+  ];
+  const body = links.map((url, index) => `<a href="${url}">教师招聘公告${index}</a>`).join('');
+  const policies = parseOfficialList(body, scoped);
+  assert.deepEqual(policies.map((policy) => policy.sourceUrl), ['http://example.gov.cn/ywdt/tzgg/20260930.html', 'http://example.gov.cn/ywdt/tzgg/sub/20260930.html']);
+  assert.equal(parseOfficialList(body, { ...scoped, detailPathPrefix: '/ywdt/tzgg' }).length, 2);
+  for (const detailPathPrefix of ['not-absolute', '//external.example/', '/ywdt/../', '/ywdt/?column=1', true]) {
+    assert.deepEqual(parseOfficialList(body, { ...scoped, detailPathPrefix }), []);
+  }
+});
+
+test('限定栏目只有其他栏目链接时不能作为有效公开列表，未限定来源保持兼容', async () => {
+  const body = '<a href="/other/20260930.html">教师招聘公告</a>';
+  assert.equal(parseOfficialList(body, source).length, 1);
+  await assert.rejects(() => fetchOfficialSource({ ...source, detailPathPrefix: '/ywdt/tzgg/' }, async () => ({ ok: true, status: 200, text: async () => body })), /公开列表链接/);
+});
+
+test('综合事业单位线索仅显式开启来源收录且明确教师岗位待核验', () => {
+  const body = [
+    '长春市事业单位公开招聘公告', '吉林省事业单位招录公告',
+    '长春市事业单位选聘公告', '吉林省事业单位公开考试公告',
+    '吉林省企业公开招聘公告', '吉林省事业单位年度会议通知'
+  ].map((title, index) => `<a href="/notice/20260930_${index}.html">${title}</a>`).join('');
+  for (const includeGeneralRecruitment of [undefined, false, 'true']) {
+    assert.deepEqual(parseOfficialList(body, { ...source, includeGeneralRecruitment }), []);
+  }
+  const policies = parseOfficialList(body, { ...source, includeGeneralRecruitment: true });
+  assert.equal(policies.length, 4);
+  for (const policy of policies) {
+    assert.equal(policy.requiresTeacherVerification, true);
+    assert.equal(policy.summary, '综合事业单位招聘线索，是否包含教师岗位、编制性质和考试安排，需核对官方正文及岗位表。');
+    assert.doesNotMatch(policy.summary, /已确认|教师编制岗位已/);
+  }
+});
+
+test('综合线索开关不改变明确教师公告也不绕过排除规则', () => {
+  const body = '<a href="/notice/20260930.html">长春市事业单位中小学教师招聘公告</a>';
+  const now = new Date('2026-09-30T00:00:00Z');
+  const ordinary = parseOfficialList(body, source, now);
+  const enabled = parseOfficialList(body, { ...source, includeGeneralRecruitment: true }, now);
+  assert.deepEqual(enabled, ordinary);
+  assert.equal(enabled[0].requiresTeacherVerification, undefined);
+  const excluded = '<a href="/notice/20260930.html">事业单位职业技能岗位公开招聘公告</a>';
+  assert.deepEqual(parseOfficialList(excluded, { ...source, includeGeneralRecruitment: true }), []);
+  const customExcluded = '<a href="/notice/20260930.html">事业单位驾驶员公开招聘公告</a>';
+  assert.deepEqual(parseOfficialList(customExcluded, { ...source, includeGeneralRecruitment: true, excludeTitlePattern: '驾驶员' }), []);
+});
+
+test('综合线索重复链接及重复同步只产生一份政策并保留待核验标记', async () => {
+  const scoped = { ...source, includeGeneralRecruitment: true };
+  const link = '<a href="/notice/20260930.html">长春市事业单位公开招聘公告</a>';
+  const store = { policies: [], subscriptions: [], notifications: [] };
+  const fetchImpl = async () => ({ ok: true, status: 200, text: async () => link + link });
+  const first = await syncSources({ store, sources: [scoped], fetchImpl });
+  assert.equal(first[0].inserted, 1);
+  const hash = store.policies[0].contentHash;
+  const second = await syncSources({ store, sources: [scoped], fetchImpl });
+  assert.equal(second[0].inserted, 0);
+  assert.equal(store.policies.length, 1);
+  assert.equal(store.policies[0].contentHash, hash);
+  assert.equal(store.policies[0].requiresTeacherVerification, true);
+});
+
+test('已有同哈希综合公告同步时补上待核验信息而不重复插入', async () => {
+  const scoped = { ...source, includeGeneralRecruitment: true };
+  const body = '<a href="/notice/20260930.html">长春市事业单位公开招聘公告</a>';
+  const parsed = parseOfficialList(body, scoped)[0];
+  const { requiresTeacherVerification, ...cached } = parsed;
+  const store = { policies: [{ ...cached, summary: '旧版公告摘要' }], subscriptions: [], notifications: [] };
+  const results = await syncSources({ store, sources: [scoped], fetchImpl: async () => ({ ok: true, status: 200, text: async () => body }) });
+  assert.equal(results[0].inserted, 0);
+  assert.equal(store.policies.length, 1);
+  assert.equal(store.policies[0].contentHash, parsed.contentHash);
+  assert.equal(store.policies[0].requiresTeacherVerification, true);
+  assert.equal(store.policies[0].summary, parsed.summary);
+});

@@ -1,0 +1,31 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { planSourceBaselineSync, captureSourceBaselines, deliverPolicyAlerts } from '../scripts/free-site-lib.js';
+
+test('an automatic new source stays pending through 304 then baselines its first 200 only once', async () => {
+  const sources = [{ id: 'future-source' }];
+  const original = {};
+  const first = planSourceBaselineSync(sources, original);
+  const after304 = { ...first.sourceState, 'future-source': { ...first.sourceState['future-source'], lastSuccessAt: '2026-09-30T01:00:00Z' } };
+  const cached = captureSourceBaselines({ initialSourceIds: first.initialSourceIds, sourceState: after304, results: [{ sourceId: 'future-source', status: 'not-modified' }], policies: [] });
+  assert.deepEqual(cached.sourceBaselines, []);
+  const retry = planSourceBaselineSync(sources, cached.sourceState);
+  assert.deepEqual(retry.initialSourceIds, ['future-source']);
+  const historical = { sourceId: 'future-source', sourceUrl: 'https://example.gov.cn/notice/old.html', regionId: 'jilin', policyType: '教师资格考试', category: '招聘公告', contentHash: 'old-history' };
+  const results = [{ sourceId: 'future-source', status: 'ok', completedAt: '2026-09-30T02:00:00Z' }];
+  const snapshot = captureSourceBaselines({ ...retry, results, policies: [historical] });
+  let state = { hashes: ['previous-source-hash'] };
+  const sends = [];
+  const options = { initialSourceIds: retry.initialSourceIds, readState: async () => state, writeState: async next => { state = next; }, sendAlert: async batch => { sends.push(batch.map(p => p.contentHash)); return true; }, logger: { log() {}, warn() {} } };
+  await deliverPolicyAlerts({ ...options, sourceBaselines: snapshot.sourceBaselines, policies: [historical] });
+  assert.deepEqual(sends, []);
+  assert.deepEqual(state.hashes, ['previous-source-hash', 'old-history']);
+  assert.deepEqual(state.initializedSourceIds, ['future-source']);
+  const fresh = { ...historical, contentHash: 'genuinely-new' };
+  const later = captureSourceBaselines({ ...planSourceBaselineSync(sources, snapshot.sourceState), results, policies: [historical, fresh] });
+  const subsequent = { ...options, sourceBaselines: later.sourceBaselines, policies: [historical, fresh] };
+  await deliverPolicyAlerts(subsequent);
+  await deliverPolicyAlerts(subsequent);
+  assert.deepEqual(sends, [['genuinely-new']]);
+  assert.deepEqual(original, {});
+});
