@@ -1,8 +1,9 @@
 import { createContentHash, JILIN_REGIONS, REQUEST_CATEGORIES, POLICY_TYPES } from './policy-service.js';
 import { parseJilinExamResponse } from './adapters/jilin-exam.js';
+import { parseChangchunTalentList } from './adapters/changchun-talent.js';
 
 const MAX_BYTES = 1_500_000;
-export const PARSER_VERSION = '2026-09-30.4';
+export const PARSER_VERSION = '2026-10-01.1';
 const LINK_RE = /<a\b[^>]*href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
 const DETAIL_RE = /\.(?:s?html?|aspx|pdf)(?:$|[?#])/i;
 const NAVIGATION_PATH_RE = /\/(?:index|default|home|list|channel)(?:[_-]\d+)?\.(?:s?html?|aspx)$/i;
@@ -17,11 +18,11 @@ const GENERIC_RECRUITMENT_RE = /招聘|招录|选聘|公开考试/;
 const TEACHER_SIGNAL_RE = /教师|老师|中小学|幼儿园|特岗|特设岗位|教师资格|教资|师范|教育系统|学校/;
 const EXAM_EVENT_RE = /招聘|招录|选聘|特岗|特设岗位|教师资格|教资|报名|笔试|面试|资格审查|资格复审|资格审核|体检|成绩|分数|递补|拟聘|拟录用|录用|公费师范|师范生/;
 
-export function isRelevantTeacherTitle(title) {
+export function isRelevantTeacherTitle(title, includeSolicitation = false) {
   const normalizedTitle = String(title ?? '');
   if (IRRELEVANT_TITLE_RE.test(normalizedTitle)) return false;
   if (!TEACHER_SIGNAL_RE.test(normalizedTitle)) return false;
-  return EXAM_EVENT_RE.test(normalizedTitle);
+  return EXAM_EVENT_RE.test(normalizedTitle) || includeSolicitation && /招募/.test(normalizedTitle);
 }
 
 function stripHtml(value) { return String(value).replace(/<script[\s\S]*?<\/script>/gi, '').replace(/<style[\s\S]*?<\/style>/gi, '').replace(/<[^>]+>/g, ' ').replace(/&nbsp;|&#160;/gi, ' ').replace(/&amp;/gi, '&').replace(/&lt;/gi, '<').replace(/&gt;/gi, '>').replace(/\s+/g, ' ').trim(); }
@@ -166,7 +167,7 @@ function policiesFromEntries(entries, source, now) {
     if (!matchesDetailPath(source, sourceUrl)) continue;
     const titlePattern = source.titlePattern ? new RegExp(source.titlePattern) : /教师|招聘|特岗|资格|报名|笔试|面试|体检|成绩|递补|拟聘|教育/;
     const excludedTitlePattern = source.excludeTitlePattern ? new RegExp(source.excludeTitlePattern) : null;
-    const teacherRelevant = isRelevantTeacherTitle(title);
+    const teacherRelevant = isRelevantTeacherTitle(title, source.parser === 'changchun-talent');
     const requiresTeacherVerification = !teacherRelevant && source.includeGeneralRecruitment === true
       && /事业单位/.test(title) && GENERIC_RECRUITMENT_RE.test(title) && !IRRELEVANT_TITLE_RE.test(title);
     if (excludedTitlePattern?.test(title) || (!requiresTeacherVerification && (!titlePattern.test(title) || !teacherRelevant))) continue;
@@ -183,7 +184,13 @@ function policiesFromEntries(entries, source, now) {
 }
 
 export function parseOfficialList(html, source, now = new Date()) {
-  return policiesFromEntries(officialListEntries(html, source), source, now);
+  return policiesFromEntries(entriesForSource(html, source), source, now);
+}
+
+function entriesForSource(html, source) {
+  if (source.parser === 'jilin-exam') return parseJilinExamResponse(html, source);
+  if (source.parser === 'changchun-talent') return parseChangchunTalentList(html, source);
+  return officialListEntries(html, source);
 }
 
 function assertRecognizedList(html, entries) {
@@ -248,7 +255,7 @@ export async function fetchOfficialSource(source, fetchImpl = fetch, now = new D
     if (length > MAX_BYTES) throw new Error('来源响应过大');
     const html = await response.text();
     if (Buffer.byteLength(html, 'utf8') > MAX_BYTES) throw new Error('来源响应过大');
-    const entries = source.parser === 'jilin-exam' ? parseJilinExamResponse(html, source) : officialListEntries(html, source);
+    const entries = entriesForSource(html, source);
     if (source.parser !== 'jilin-exam') assertRecognizedList(html, entries);
     return { notModified: false, policies: policiesFromEntries(entries, source, now), etag, lastModified, parserVersion: PARSER_VERSION };
   } finally { clearTimeout(timeout); }
