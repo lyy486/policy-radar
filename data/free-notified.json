@@ -28,12 +28,17 @@
     "8b02e904a4fa4f8f29061a34680480df6c4d175e6c020900794cc2a2d181ffd0",
     "e78285c4fb6144fbed921cf663158b0a1e7a4bf090716202088072421da14c99",
     "9523c0a6cb30340c5f15ffde9a10a74339b15fe76fad7fd46671e6260c799132",
-    "259581e47977f765d37992fa9868aedfc4b102435c6ca27cb0b4833fa7c92054"
+    "259581e47977f765d37992fa9868aedfc4b102435c6ca27cb0b4833fa7c92054",
+    "5cbb29d17580834398ff309ccd93d83bb73a4ff2dbbc60a46f2ba9fa1e3783e2",
+    "069e5bdea6c3d1650ab66f18bc6fe2501c23e44426047e70222881f04d5ab407",
+    "8d302e1858994d0089a8c66e7b23398856620689888f1b1a40fc27b22b5ac1f7"
   ],
   "initializedAt": "2026-09-26T18:18:30.072Z",
   "initializedSourceIds": [
     "jilin-hrss-recruitment",
     "jilin-exam-teacher",
-    "changchun-hrss-notices"
+    "changchun-hrss-notices",
+    "changchun-talent-notices",
+    "changchun-talent-recruitment"
   ]
 }
