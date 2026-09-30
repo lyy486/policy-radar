@@ -63,7 +63,8 @@ export const SOURCE_REGISTRY = [
   { ...COMMON, enabled: false, id: 'gongzhuling-government-candidate', name: '公主岭市政府政务信息候选入口（教师相关）', regionIds: ['gongzhuling-cc'], category: '教师招聘', titlePattern: '招聘|特岗|教师资格|教资|教师|中小学|幼儿园|报名|笔试|面试|资格审查|资格复审|体检|成绩|递补|拟聘|拟录用', url: 'https://www.gongzhuling.gov.cn/zw/dzxx/bmdt/', transport: 'https', allowHttp: true, reviewStatus: 'https-pending', verificationNote: '公主岭市政府官方政务信息入口 HTTP 可访问但 HTTPS/TLS 尚未核验；仅允许本机显式试验；省政府目录确认公主岭属于长春分组，已纳入长春全选，来源仍待云端核验' },
   { ...COMMON, enabled: false, id: 'jiangyuan-government-announcements-candidate', name: '江源区人民政府公告栏候选入口（教师考试相关）', regionIds: ['jiangyuan-bs'], category: '教师招聘', titlePattern: '招聘|特岗|特设岗位|教师资格|教资|教师|中小学|幼儿园|学校|教育系统|报名|笔试|面试|资格审查|资格复审|体检|成绩|递补|拟聘|拟录用', excludeTitlePattern: '专业技术资格|职称|评审|劳务派遣|农民工', url: 'https://jy.cbs.gov.cn/zwgk/ggl/', transport: 'https', reviewStatus: 'official-list-runtime-pending', verificationNote: '官方站点和公告列表已人工核验；当前 Node 运行时连接仍被对端中断，保持禁用，待目标云服务器复测' },
   { ...COMMON, enabled: false, id: 'jingyu-government-announcements-candidate', name: '靖宇县人民政府公示公告候选入口（教师考试相关）', regionIds: ['jingyu-bs'], category: '教师招聘', titlePattern: '招聘|特岗|特设岗位|教师资格|教资|教师|中小学|幼儿园|学校|教育系统|报名|笔试|面试|资格审查|资格复审|体检|成绩|递补|拟聘|拟录用', excludeTitlePattern: '专业技术资格|职称|评审|劳务派遣|农民工', url: 'https://jyx.cbs.gov.cn/wzsy/gsgg/', transport: 'https', reviewStatus: 'official-list-runtime-pending', verificationNote: '候选审计曾返回 HTTP 200，但 robots.txt 和完整页面抓取不稳定，尚未完成列表解析与人工抽样，保持禁用，待目标云服务器复测' },
-  { ...COMMON, enabled: false, id: 'changchun-education-notices', name: '长春市教育局通知公告', regionIds: ['changchun'], category: '教师招聘', titlePattern: '招聘|特岗|特设岗位|教师资格|教资|报名|笔试|面试|资格审查|资格复审|体检|成绩|递补|拟聘|拟录用|中小学教师', url: 'http://jyj.changchun.gov.cn/xxgk/tzgg/', transport: 'http', allowHttp: true, reviewStatus: 'https-pending', verificationNote: '官方页面可访问但当前 HTTPS TLS 不兼容；仅允许本机显式试验，不得用于生产' },
+  { ...COMMON, id: 'changchun-education-notices', name: '长春市教育局通知公告', regionIds: ['changchun'], category: '教师招聘', titlePattern: CHANGCHUN_TITLE_PATTERN, alertBaselineOnFirstSync: true, detailPathPrefix: '/xxgk/tzgg/', url: 'http://jyj.changchun.gov.cn/xxgk/tzgg/', transport: 'http', allowHttp: true, userApprovedPublicHttp: true, reviewStatus: 'user-approved-public-http', verificationNote: '用户追加明确同意本栏目HTTP读取；市政府导航确认官方身份，列表与教师资格认定原文已抽样，HTTPS握手失败，robots为软404未提供规则。只读公开内容，不携带凭据、不自动重定向，首轮建立历史基线；传输未加密。' },
+  { ...COMMON, id: 'changchun-jingkai-notices', name: '长春经开区官方通知公告（教师相关）', regionIds: ['changchun'], category: '招聘公告', titlePattern: CHANGCHUN_TITLE_PATTERN, includeGeneralRecruitment: true, alertBaselineOnFirstSync: true, detailPathPrefix: '/zw/ggxx/tzgg/', url: 'http://www.cetdz.gov.cn/zw/ggxx/tzgg/', transport: 'http', allowHttp: true, userApprovedPublicHttp: true, reviewStatus: 'user-approved-public-http', verificationNote: '用户追加明确同意本栏目HTTP读取；长春市政府导航确认管委会官网，列表与招聘面试、资格复审原文已抽样，robots404；只读、无凭据、不自动重定向。首轮仅历史基线，综合招聘保留教师岗位和编制待核实提示；经开暂归长春市筛选。' },
   { ...COMMON, id: 'changchun-hrss-notices', name: '长春市人力资源和社会保障局通知公告', regionIds: ['changchun'], category: '教师招聘', titlePattern: CHANGCHUN_TITLE_PATTERN, includeGeneralRecruitment: true, alertBaselineOnFirstSync: true, detailPathPrefix: '/ywdt/tzgg/', url: 'http://ccrs.changchun.gov.cn/ywdt/tzgg/', transport: 'http', allowHttp: true, userApprovedPublicHttp: true, reviewStatus: 'user-approved-public-http', verificationNote: '2026-09-30：用户明确同意个人使用此官方HTTP栏目。官方身份、公开列表及原文已核验，robots200未见Disallow；只读、无凭据、无自动重定向、限频。传输未加密，请核对官网原文；其他HTTP来源不因此获准。' },
   { ...COMMON, enabled: false, id: 'nanguan-education-notices', name: '南关区政府通知公告（教师考试相关）', regionIds: ['nanguan-cc'], category: '教师招聘', titlePattern: '招聘|特岗|特设岗位|教师资格|教资|报名|笔试|面试|资格审查|资格复审|体检|成绩|递补|拟聘|拟录用|中小学教师', url: 'http://nanguan.changchun.gov.cn/ywdt/tzgg/', transport: 'http', allowHttp: true, reviewStatus: 'local-http-verified', verificationNote: '官方区政府入口 HTTP 列表页已核验；HTTPS/TLS 未通过，生产禁用' },
   { ...COMMON, enabled: false, id: 'chaoyang-education-notices', name: '朝阳区政府通知公告（教师考试相关）', regionIds: ['chaoyang-cc'], category: '教师招聘', titlePattern: '招聘|特岗|特设岗位|教师资格|教资|报名|笔试|面试|资格审查|资格复审|体检|成绩|递补|拟聘|拟录用|中小学教师', url: 'http://chaoyang.changchun.gov.cn/zwdt/tzgg/', transport: 'http', allowHttp: true, reviewStatus: 'local-http-verified', verificationNote: '官方区政府入口 HTTP 列表页已核验；HTTPS/TLS 未通过，生产禁用' },
@@ -82,7 +83,7 @@ export const SOURCE_REGISTRY = [
 
 export const SOURCE_COVERAGE = [
   { regionId: 'jilin', status: 'active', note: '省教育厅、人社厅及省考试院教资公开接口已接入（不代表完整覆盖）' },
-  { regionId: 'changchun', status: 'active', transport: 'http', note: '已接入市人社局获准HTTP栏目与长春新区人才就业网两个HTTPS栏目；市人社传输未加密，教育局及其余区县未完整覆盖，银龄/编外不等于编制' },
+  { regionId: 'changchun', status: 'active', transport: 'http', note: '已登记市人社局、市教育局、经开区三个获准HTTP栏目及新区人才就业网两个HTTPS栏目；实际可用性请看来源运行状态，HTTP传输未加密，其余区县未完整覆盖，银龄/编外不等于编制' },
   { regionId: 'jilin-city', status: 'pending', note: '官方入口已登记，但当前 HTTPS 运行时连接失败，待目标云服务器复测' },
   { regionId: 'siping', status: 'pending', note: '待核验教育局、人社局官方 HTTPS 来源' },
   { regionId: 'liaoyuan', status: 'pending', note: '官方入口已登记，但当前 HTTPS 运行时连接失败，待目标云服务器复测' },
@@ -106,15 +107,20 @@ export const SOURCE_COVERAGE = [
   { regionId: 'gongzhuling-cc', status: 'pending', note: '公主岭已纳入长春全选；官方来源仍待核验' }
 ];
 
-export const SOURCE_REGISTRY_VERSION = '2026-10-01.1';
+export const SOURCE_REGISTRY_VERSION = 'personal-http-3';
+const APPROVED_PUBLIC_HTTP_LISTS = new Map([
+  ['changchun-hrss-notices', 'http://ccrs.changchun.gov.cn/ywdt/tzgg/'],
+  ['changchun-education-notices', 'http://jyj.changchun.gov.cn/xxgk/tzgg/'],
+  ['changchun-jingkai-notices', 'http://www.cetdz.gov.cn/zw/ggxx/tzgg/']
+]);
 export function isApprovedFreeSource(source) {
   if (!source.enabled) return false;
   let url;
   try { url = new URL(source.url); } catch { return false; }
   if (url.username || url.password) return false;
   if (url.protocol === 'https:') return true;
-  return source.id === 'changchun-hrss-notices' && source.userApprovedPublicHttp === true && source.allowHttp === true
-    && url.href === 'http://ccrs.changchun.gov.cn/ywdt/tzgg/';
+  return url.protocol === 'http:' && source.userApprovedPublicHttp === true && source.allowHttp === true
+    && APPROVED_PUBLIC_HTTP_LISTS.get(source.id) === url.href;
 }
 export function listSources() { return SOURCE_REGISTRY.map((source) => ({ ...source })); }
 export function listSourceCoverage() {

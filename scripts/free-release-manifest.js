@@ -1,6 +1,7 @@
 export const FREE_RELEASE_FILES = Object.freeze([
   '.github/workflows/free-policy-radar.yml',
   '.github/workflows/source-audit.yml',
+  '.github/workflows/verify.yml',
   '.gitignore',
   'README.md',
   'configure-local-email.cmd',
