@@ -1,0 +1,55 @@
+name: 官方来源连通性核验（不发送邮件）
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+      - name: 核验公开 HTTPS 栏目与访问规则
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          import { listSources } from './src/source-registry.js';
+          const configured = listSources().filter(s => /-education-notices$/.test(s.id) || s.id === 'changchun-hrss-notices' || s.id === 'gongzhuling-government-candidate');
+          const sources = [...configured.map(s => ({id:s.id,url:s.url.replace(/^http:/,'https:')})),
+            {id:'changchun-hrss-institutions',url:'https://ccrs.changchun.gov.cn/sydw/'},
+            {id:'jilin-exam-teacher',url:'https://www.jleea.com.cn/front/channel/10649'}];
+          const origins = new Map();
+          async function read(url) {
+            const response = await fetch(url, {signal:AbortSignal.timeout(12000),redirect:'manual',headers:{'user-agent':'PolicyRadarSourceAudit/1.0 (personal-use; public-source-verification)','accept':'text/html,text/plain,application/json'}});
+            const reader = response.body?.getReader(); let size=0; const chunks=[];
+            if(reader) for (;;) {const chunk=await reader.read();if(chunk.done)break;size+=chunk.value.length;if(size>1500000){await reader.cancel();throw new Error('RESPONSE_TOO_LARGE');}chunks.push(chunk.value);}
+            const body=Buffer.concat(chunks);
+            const encoding=/charset\s*=\s*["']?(gb2312|gbk|gb18030)/i.test(response.headers.get('content-type')??'')?'gb18030':'utf-8';
+            return {status:response.status,body:new TextDecoder(encoding).decode(body)};
+          }
+          for (const source of sources) {
+            const origin = new URL(source.url).origin;
+            try {
+              if(!origins.has(origin)){
+                const robots=await read(origin+'/robots.txt');
+                const allowed=robots.status===404 || (robots.status===200 && !/<(?:html|body|script)\b/i.test(robots.body) && !/^\s*disallow\s*:\s*\S+/im.test(robots.body));
+                origins.set(origin,{allowed,status:robots.status});
+                console.log(JSON.stringify({origin,robotsStatus:robots.status,access:allowed?'no-disallow-found':'manual-review-required'}));
+                await new Promise(r=>setTimeout(r,1000));
+              }
+              if(!origins.get(origin).allowed){console.log(JSON.stringify({...source,status:'SKIPPED_ROBOTS_REVIEW'}));continue;}
+              const page=await read(source.url);
+              const title=(page.body.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1]??'').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim().slice(0,150);
+              const links=[...page.body.matchAll(/<a\b[^>]*href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi)].map(m=>({href:m[1],title:m[2].replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim()}));
+              const samples=links.filter(l=>/招聘|教师|笔试|考试|报名|事业单位/.test(l.title)).slice(0,8);
+              console.log(JSON.stringify({...source,status:page.status,title,linkCount:links.length,samples}));
+            }catch(error){console.log(JSON.stringify({...source,status:'FAILED',code:String(error.cause?.code??error.code??error.name)}));}
+            await new Promise(r=>setTimeout(r,1000));
+          }
+          NODE
