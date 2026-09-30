@@ -41,7 +41,15 @@
     "c5e72e3afb2de212d4aa4b849021a63385eebf622c941bf778b770a0777c6db9",
     "67207b075a26218d547a337c775f1d0f9154a8c813446a064a80cde791cd6426",
     "4b67691c57a235b9b60bc341ae19e78448b046394f097bc1601051fd8f9a2e54",
-    "516e0afcffffca5a694dc9904c9016fcf61d38172910599616168f9223cf5fa3"
+    "516e0afcffffca5a694dc9904c9016fcf61d38172910599616168f9223cf5fa3",
+    "86ffcf448feb8c135480f94039a402d8b24c58d5591fc587e3232c04e9008f41",
+    "934bcce4a29b517b62ddd92132bdd9b8647500dccc8fe4d48c593ce410e9750d",
+    "225c2315ab64bdb3c3ab6ad6443dbb41cf9522046fd29d3fd6870a21df36ef51",
+    "a6fe1cecd3f278d5cf3437bcfc92c45a5e6a954ee4c9b929c5d56b754ff37f49",
+    "47a018c4f112320044a84c5ee7c068a29581b8345389ded6a34e7fdec55f3186",
+    "4d01dc30ac21d165b0ed716bbb80cb599c3621cd626df62b675eb8a3178d5c66",
+    "a2ff2b1dab733202442f160f6cb20ecac898d4eea255bcf58530137a436cdde1",
+    "1e67b5156a9452d1e8b42c59a13bed341a9088bb39dfea1ad11e67a04824c274"
   ],
   "initializedAt": "2026-09-26T18:18:30.072Z",
   "initializedSourceIds": [
@@ -55,6 +63,14 @@
     "chaoyang-education-notices",
     "jiutai-education-notices",
     "lianhuashan-education-notices",
-    "dehui-education-notices"
+    "dehui-education-notices",
+    "nanguan-education-notices",
+    "kuancheng-education-notices",
+    "erdao-education-notices",
+    "lvyuan-education-notices",
+    "shuangyang-education-notices",
+    "jingyue-education-notices",
+    "yushu-education-notices",
+    "nong-an-education-notices"
   ]
 }

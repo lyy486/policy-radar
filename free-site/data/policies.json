@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-30T20:58:07.848Z",
+  "generatedAt": "2026-09-30T21:37:09.434Z",
   "policies": [
     {
       "id": "da00a20c45bea5b120704f80",
@@ -10,11 +10,26 @@
       "category": "招聘公告",
       "requiresTeacherVerification": true,
       "publishedAt": "2026-09-24T01:00:00.000Z",
-      "fetchedAt": "2026-09-30T20:49:21.337Z",
+      "fetchedAt": "2026-09-30T21:36:35.536Z",
       "sourceName": "长春市人力资源和社会保障局通知公告",
       "sourceId": "changchun-hrss-notices",
       "sourceUrl": "http://ccrs.changchun.gov.cn/ywdt/tzgg/202609/t20260924_3514947.html",
       "contentHash": "e78285c4fb6144fbed921cf663158b0a1e7a4bf090716202088072421da14c99"
+    },
+    {
+      "id": "d472fd8cf07d0d678124b722",
+      "title": "长春市双阳区教育局关于2026年下半年中小学教师资格认定工作公告",
+      "summary": "来自官方来源列表页，详情请打开原文核对。",
+      "regionId": "shuangyang-cc",
+      "policyType": "教师资格考试",
+      "category": "资格审查",
+      "requiresTeacherVerification": false,
+      "publishedAt": "2026-09-24",
+      "fetchedAt": "2026-09-30T21:36:56.043Z",
+      "sourceName": "双阳区政府通知公告（教师考试相关）",
+      "sourceId": "shuangyang-education-notices",
+      "sourceUrl": "http://shuangyang.changchun.gov.cn/dzxx/tzgg/202609/t20260924_3514887.html",
+      "contentHash": "47a018c4f112320044a84c5ee7c068a29581b8345389ded6a34e7fdec55f3186"
     },
     {
       "id": "c8808b15d18ded652cad786c",
@@ -25,7 +40,7 @@
       "category": "拟聘用名单",
       "requiresTeacherVerification": true,
       "publishedAt": "2026-09-23T01:00:00.000Z",
-      "fetchedAt": "2026-09-30T20:49:21.337Z",
+      "fetchedAt": "2026-09-30T21:36:35.536Z",
       "sourceName": "长春市人力资源和社会保障局通知公告",
       "sourceId": "changchun-hrss-notices",
       "sourceUrl": "http://ccrs.changchun.gov.cn/ywdt/tzgg/202609/t20260923_3514643.html",
@@ -40,7 +55,7 @@
       "category": "资格审查",
       "requiresTeacherVerification": false,
       "publishedAt": "2026-09-23T01:00:00.000Z",
-      "fetchedAt": "2026-09-30T20:57:55.418Z",
+      "fetchedAt": "2026-09-30T21:36:31.975Z",
       "sourceName": "长春市教育局通知公告",
       "sourceId": "changchun-education-notices",
       "sourceUrl": "http://jyj.changchun.gov.cn/xxgk/tzgg/202609/t20260923_3514652.html",
@@ -55,7 +70,7 @@
       "category": "招聘公告",
       "requiresTeacherVerification": true,
       "publishedAt": "2026-09-21T01:00:00.000Z",
-      "fetchedAt": "2026-09-30T20:57:40.013Z",
+      "fetchedAt": "2026-09-30T21:36:14.275Z",
       "sourceName": "吉林省人社厅事业单位公开招聘公告",
       "sourceId": "jilin-hrss-recruitment",
       "sourceUrl": "https://hrss.jl.gov.cn/rsrc/sydwrsgl/gkzp/202609/t20260922_9720056.html",
@@ -70,7 +85,7 @@
       "category": "拟聘用名单",
       "requiresTeacherVerification": true,
       "publishedAt": "2026-09-18T01:00:00.000Z",
-      "fetchedAt": "2026-09-30T20:49:21.337Z",
+      "fetchedAt": "2026-09-30T21:36:35.536Z",
       "sourceName": "长春市人力资源和社会保障局通知公告",
       "sourceId": "changchun-hrss-notices",
       "sourceUrl": "http://ccrs.changchun.gov.cn/ywdt/tzgg/202609/t20260918_3512991.html",
@@ -85,7 +100,7 @@
       "category": "笔试时间",
       "requiresTeacherVerification": false,
       "publishedAt": "2026-09-07T01:05:25.000Z",
-      "fetchedAt": "2026-09-30T20:57:43.223Z",
+      "fetchedAt": "2026-09-30T21:36:17.957Z",
       "sourceName": "吉林省教育考试院中小学教师资格考试",
       "sourceId": "jilin-exam-teacher",
       "sourceUrl": "https://www.jleea.com.cn/front/content/202828",
@@ -100,7 +115,7 @@
       "category": "招聘公告",
       "requiresTeacherVerification": true,
       "publishedAt": "2026-09-07T01:00:00.000Z",
-      "fetchedAt": "2026-09-30T20:57:40.013Z",
+      "fetchedAt": "2026-09-30T21:36:14.275Z",
       "sourceName": "吉林省人社厅事业单位公开招聘公告",
       "sourceId": "jilin-hrss-recruitment",
       "sourceUrl": "https://hrss.jl.gov.cn/rsrc/sydwrsgl/gkzp/202609/t20260908_9703119.html",
@@ -115,7 +130,7 @@
       "category": "拟聘用名单",
       "requiresTeacherVerification": false,
       "publishedAt": "2026-08-26",
-      "fetchedAt": "2026-09-30T20:57:36.902Z",
+      "fetchedAt": "2026-09-30T21:36:11.761Z",
       "sourceName": "长春新区人才就业网公告通知",
       "sourceId": "changchun-talent-notices",
       "sourceUrl": "https://rcjy.ccxq.gov.cn/content/news/show/1154.html",
@@ -130,11 +145,56 @@
       "category": "面试",
       "requiresTeacherVerification": true,
       "publishedAt": "2026-08-20",
-      "fetchedAt": "2026-09-30T20:58:06.365Z",
+      "fetchedAt": "2026-09-30T21:37:05.410Z",
       "sourceName": "德惠市政府人事信息（招聘线索）",
       "sourceId": "dehui-education-notices",
       "sourceUrl": "http://dehui.changchun.gov.cn/ywdt/tzgg/gggs/202608/t20260820_3507076.html",
       "contentHash": "e646d016cc23734e3643069389ad80c855f3f6a683c32ed4edb1687acca0d8de"
+    },
+    {
+      "id": "86022de909dde4df5ee2f127",
+      "title": "关于2026年长春市各县（市）区事业单位公开招聘下半年入伍高校毕业生6号公告 绿园区岗位自主就业退役大学生士兵 享受政策性加分公示",
+      "summary": "综合事业单位招聘线索，是否包含教师岗位、编制性质和考试安排，需核对官方正文及岗位表。",
+      "regionId": "lvyuan-cc",
+      "policyType": "教师招聘",
+      "category": "招聘公告",
+      "requiresTeacherVerification": true,
+      "publishedAt": "2026-08-19",
+      "fetchedAt": "2026-09-30T21:36:52.303Z",
+      "sourceName": "绿园区政府通知公告（教师考试相关）",
+      "sourceId": "lvyuan-education-notices",
+      "sourceUrl": "http://www.luyuan.gov.cn/zwdt/lyq/202608/t20260819_3506951.html",
+      "contentHash": "225c2315ab64bdb3c3ab6ad6443dbb41cf9522046fd29d3fd6870a21df36ef51"
+    },
+    {
+      "id": "37c763d445dd8b56667c748e",
+      "title": "2026年长春市各县（市）区事业单位公开招聘下半年入伍高校毕业生公告（6号）宽城区岗位自主就业退役大学生士兵享受政策性加分公示",
+      "summary": "综合事业单位招聘线索，是否包含教师岗位、编制性质和考试安排，需核对官方正文及岗位表。",
+      "regionId": "kuancheng-cc",
+      "policyType": "教师招聘",
+      "category": "招聘公告",
+      "requiresTeacherVerification": true,
+      "publishedAt": "2026-08-18",
+      "fetchedAt": "2026-09-30T21:36:41.683Z",
+      "sourceName": "宽城区政府通知公告（教师考试相关）",
+      "sourceId": "kuancheng-education-notices",
+      "sourceUrl": "http://kuancheng.changchun.gov.cn/sy/gsgg/tzgg/202608/t20260818_3506733.html",
+      "contentHash": "86ffcf448feb8c135480f94039a402d8b24c58d5591fc587e3232c04e9008f41"
+    },
+    {
+      "id": "2162630167b8471507264aa6",
+      "title": "关于2026年长春市各县（市）区事业单位公开招聘下半年入伍高校毕业生6号公告二道区岗位自主就业退役大学生享受政策性加分公示",
+      "summary": "综合事业单位招聘线索，是否包含教师岗位、编制性质和考试安排，需核对官方正文及岗位表。",
+      "regionId": "erdao-cc",
+      "policyType": "教师招聘",
+      "category": "招聘公告",
+      "requiresTeacherVerification": true,
+      "publishedAt": "2026-08-18",
+      "fetchedAt": "2026-09-30T21:36:46.704Z",
+      "sourceName": "二道区政府通知公告（教师考试相关）",
+      "sourceId": "erdao-education-notices",
+      "sourceUrl": "http://erdao.changchun.gov.cn/zwgk/zdly/gsgg/202608/t20260818_3506729.html",
+      "contentHash": "934bcce4a29b517b62ddd92132bdd9b8647500dccc8fe4d48c593ce410e9750d"
     },
     {
       "id": "a18c3a3ca132868900d42e8d",
@@ -145,7 +205,7 @@
       "category": "招聘公告",
       "requiresTeacherVerification": true,
       "publishedAt": "2026-08-06T01:00:00.000Z",
-      "fetchedAt": "2026-09-30T20:57:40.013Z",
+      "fetchedAt": "2026-09-30T21:36:14.275Z",
       "sourceName": "吉林省人社厅事业单位公开招聘公告",
       "sourceId": "jilin-hrss-recruitment",
       "sourceUrl": "https://hrss.jl.gov.cn/rsrc/sydwrsgl/gkzp/202608/t20260806_9677624.html",
@@ -160,7 +220,7 @@
       "category": "招聘公告",
       "requiresTeacherVerification": true,
       "publishedAt": "2026-07-29T01:00:00.000Z",
-      "fetchedAt": "2026-09-30T20:57:40.013Z",
+      "fetchedAt": "2026-09-30T21:36:14.275Z",
       "sourceName": "吉林省人社厅事业单位公开招聘公告",
       "sourceId": "jilin-hrss-recruitment",
       "sourceUrl": "https://hrss.jl.gov.cn/rsrc/sydwrsgl/gkzp/202607/t20260729_9672161.html",
@@ -175,7 +235,7 @@
       "category": "招聘公告",
       "requiresTeacherVerification": false,
       "publishedAt": "2026-07-29",
-      "fetchedAt": "2026-09-30T20:57:39.112Z",
+      "fetchedAt": "2026-09-30T21:36:13.823Z",
       "sourceName": "长春新区人才就业网招考招聘",
       "sourceId": "changchun-talent-recruitment",
       "sourceUrl": "https://rcjy.ccxq.gov.cn/content/news/show/1136.html",
@@ -190,11 +250,26 @@
       "category": "资格审查",
       "requiresTeacherVerification": false,
       "publishedAt": "2026-07-24T01:00:00.000Z",
-      "fetchedAt": "2026-09-30T20:57:55.418Z",
+      "fetchedAt": "2026-09-30T21:36:31.975Z",
       "sourceName": "长春市教育局通知公告",
       "sourceId": "changchun-education-notices",
       "sourceUrl": "http://jyj.changchun.gov.cn/xxgk/tzgg/202607/t20260724_3502437.html",
       "contentHash": "c8a208ef8e7678d94c299105bf83534f2f18520f5e10aa0f5424d40378059f8b"
+    },
+    {
+      "id": "ec0181cc9be5a0959d883dcc",
+      "title": "2026年长春市双阳区事业单位公开招聘工作人员（含专项招聘高校毕业生）第二批拟聘用人员公示",
+      "summary": "综合事业单位招聘线索，是否包含教师岗位、编制性质和考试安排，需核对官方正文及岗位表。",
+      "regionId": "shuangyang-cc",
+      "policyType": "教师招聘",
+      "category": "拟聘用名单",
+      "requiresTeacherVerification": true,
+      "publishedAt": "2026-07-20",
+      "fetchedAt": "2026-09-30T21:36:56.043Z",
+      "sourceName": "双阳区政府通知公告（教师考试相关）",
+      "sourceId": "shuangyang-education-notices",
+      "sourceUrl": "http://shuangyang.changchun.gov.cn/dzxx/tzgg/202607/t20260720_3501518.html",
+      "contentHash": "4d01dc30ac21d165b0ed716bbb80cb599c3621cd626df62b675eb8a3178d5c66"
     },
     {
       "id": "3d6d741e53ae0922be9faa7f",
@@ -205,7 +280,7 @@
       "category": "招聘公告",
       "requiresTeacherVerification": true,
       "publishedAt": "2026-07-08T01:00:00.000Z",
-      "fetchedAt": "2026-09-30T20:57:40.013Z",
+      "fetchedAt": "2026-09-30T21:36:14.275Z",
       "sourceName": "吉林省人社厅事业单位公开招聘公告",
       "sourceId": "jilin-hrss-recruitment",
       "sourceUrl": "https://hrss.jl.gov.cn/rsrc/sydwrsgl/gkzp/202607/t20260708_9661977.html",
@@ -220,11 +295,26 @@
       "category": "拟聘用名单",
       "requiresTeacherVerification": false,
       "publishedAt": "2026-07-03T01:00:00.000Z",
-      "fetchedAt": "2026-09-30T20:57:44.870Z",
+      "fetchedAt": "2026-09-30T21:36:19.629Z",
       "sourceName": "吉林省教育厅公示公告（教师考试相关）",
       "sourceId": "jilin-education-announcements",
       "sourceUrl": "https://jyt.jl.gov.cn/zwgk/ggl/202607/t20260703_9659516.html",
       "contentHash": "fa9742815c823b80faabfa65fc7737913812b8d37effafc31a42fa3eee72ea3c"
+    },
+    {
+      "id": "e59b8fa1670a3bb7a2d6dfc2",
+      "title": "2026年长春市双阳区事业单位公开招聘工作人员（含专项招聘高校毕业生）第一批拟聘用人员公示",
+      "summary": "综合事业单位招聘线索，是否包含教师岗位、编制性质和考试安排，需核对官方正文及岗位表。",
+      "regionId": "shuangyang-cc",
+      "policyType": "教师招聘",
+      "category": "拟聘用名单",
+      "requiresTeacherVerification": true,
+      "publishedAt": "2026-07-02",
+      "fetchedAt": "2026-09-30T21:36:56.043Z",
+      "sourceName": "双阳区政府通知公告（教师考试相关）",
+      "sourceId": "shuangyang-education-notices",
+      "sourceUrl": "http://shuangyang.changchun.gov.cn/dzxx/tzgg/202607/t20260702_3497982.html",
+      "contentHash": "a2ff2b1dab733202442f160f6cb20ecac898d4eea255bcf58530137a436cdde1"
     },
     {
       "id": "6c0af8f5c6965652a377caf2",
@@ -235,7 +325,7 @@
       "category": "招聘公告",
       "requiresTeacherVerification": true,
       "publishedAt": "2026-07-01T01:00:00.000Z",
-      "fetchedAt": "2026-09-30T20:57:40.013Z",
+      "fetchedAt": "2026-09-30T21:36:14.275Z",
       "sourceName": "吉林省人社厅事业单位公开招聘公告",
       "sourceId": "jilin-hrss-recruitment",
       "sourceUrl": "https://hrss.jl.gov.cn/rsrc/sydwrsgl/gkzp/202607/t20260701_9657902.html",
@@ -250,11 +340,26 @@
       "category": "笔试时间",
       "requiresTeacherVerification": false,
       "publishedAt": "2026-06-22T02:13:34.000Z",
-      "fetchedAt": "2026-09-30T20:57:43.223Z",
+      "fetchedAt": "2026-09-30T21:36:17.957Z",
       "sourceName": "吉林省教育考试院中小学教师资格考试",
       "sourceId": "jilin-exam-teacher",
       "sourceUrl": "https://www.jleea.com.cn/front/content/202722",
       "contentHash": "4183aff348590d3fc887f870704baf62ab5621322f035016c44a990e7a4ced28"
+    },
+    {
+      "id": "9c06074c507b67ba6283958b",
+      "title": "长春市双阳区教育局关于2026年上半年第二批次中小学教师资格认定工作公告",
+      "summary": "来自官方来源列表页，详情请打开原文核对。",
+      "regionId": "shuangyang-cc",
+      "policyType": "教师资格考试",
+      "category": "资格审查",
+      "requiresTeacherVerification": false,
+      "publishedAt": "2026-06-11",
+      "fetchedAt": "2026-09-30T21:36:56.043Z",
+      "sourceName": "双阳区政府通知公告（教师考试相关）",
+      "sourceId": "shuangyang-education-notices",
+      "sourceUrl": "http://shuangyang.changchun.gov.cn/dzxx/tzgg/202606/t20260611_3493142.html",
+      "contentHash": "1e67b5156a9452d1e8b42c59a13bed341a9088bb39dfea1ad11e67a04824c274"
     },
     {
       "id": "aeaa01b9b8d3e785bc579011",
@@ -265,7 +370,7 @@
       "category": "资格审查",
       "requiresTeacherVerification": false,
       "publishedAt": "2026-06-09T01:00:00.000Z",
-      "fetchedAt": "2026-09-30T20:57:55.418Z",
+      "fetchedAt": "2026-09-30T21:36:31.975Z",
       "sourceName": "长春市教育局通知公告",
       "sourceId": "changchun-education-notices",
       "sourceUrl": "http://jyj.changchun.gov.cn/xxgk/tzgg/202606/t20260609_3492472.html",
@@ -280,7 +385,7 @@
       "category": "招聘公告",
       "requiresTeacherVerification": false,
       "publishedAt": "2026-06-08T01:00:00.000Z",
-      "fetchedAt": "2026-09-30T20:57:44.870Z",
+      "fetchedAt": "2026-09-30T21:36:19.629Z",
       "sourceName": "吉林省教育厅公示公告（教师考试相关）",
       "sourceId": "jilin-education-announcements",
       "sourceUrl": "https://jyt.jl.gov.cn/zwgk/ggl/202606/t20260608_9645990.html",
@@ -295,7 +400,7 @@
       "category": "资格审查",
       "requiresTeacherVerification": false,
       "publishedAt": "2026-06-05T01:00:00.000Z",
-      "fetchedAt": "2026-09-30T20:57:55.418Z",
+      "fetchedAt": "2026-09-30T21:36:31.975Z",
       "sourceName": "长春市教育局通知公告",
       "sourceId": "changchun-education-notices",
       "sourceUrl": "http://jyj.changchun.gov.cn/xxgk/tzgg/202606/t20260605_3491997.html",
@@ -310,7 +415,7 @@
       "category": "招聘公告",
       "requiresTeacherVerification": true,
       "publishedAt": "2026-05-20T01:00:00.000Z",
-      "fetchedAt": "2026-09-30T20:57:40.013Z",
+      "fetchedAt": "2026-09-30T21:36:14.275Z",
       "sourceName": "吉林省人社厅事业单位公开招聘公告",
       "sourceId": "jilin-hrss-recruitment",
       "sourceUrl": "https://hrss.jl.gov.cn/rsrc/sydwrsgl/gkzp/202605/t20260520_9621238.html",
@@ -325,7 +430,7 @@
       "category": "面试",
       "requiresTeacherVerification": false,
       "publishedAt": "2026-05-11T01:29:42.000Z",
-      "fetchedAt": "2026-09-30T20:57:43.223Z",
+      "fetchedAt": "2026-09-30T21:36:17.957Z",
       "sourceName": "吉林省教育考试院中小学教师资格考试",
       "sourceId": "jilin-exam-teacher",
       "sourceUrl": "https://www.jleea.com.cn/front/content/202667",
@@ -340,11 +445,26 @@
       "category": "面试",
       "requiresTeacherVerification": true,
       "publishedAt": "2026-05-09",
-      "fetchedAt": "2026-09-30T20:58:06.365Z",
+      "fetchedAt": "2026-09-30T21:37:05.410Z",
       "sourceName": "德惠市政府人事信息（招聘线索）",
       "sourceId": "dehui-education-notices",
       "sourceUrl": "http://dehui.changchun.gov.cn/ywdt/tzgg/gggs/202605/t20260509_3486051.html",
       "contentHash": "a2ddd24c579d2ac9aba5993e6f26acd1dd6ec08f386f644b6034966f71c3de93"
+    },
+    {
+      "id": "4e9de18acd62ea9a7787e7fb",
+      "title": "2026年长春市绿园区事业单位公开招聘工作人员（含专项招聘高校毕业生）面试公告",
+      "summary": "综合事业单位招聘线索，是否包含教师岗位、编制性质和考试安排，需核对官方正文及岗位表。",
+      "regionId": "lvyuan-cc",
+      "policyType": "教师招聘",
+      "category": "面试",
+      "requiresTeacherVerification": true,
+      "publishedAt": "2026-05-09",
+      "fetchedAt": "2026-09-30T21:36:52.303Z",
+      "sourceName": "绿园区政府通知公告（教师考试相关）",
+      "sourceId": "lvyuan-education-notices",
+      "sourceUrl": "http://www.luyuan.gov.cn/zwdt/lyq/202605/t20260509_3486026.html",
+      "contentHash": "a6fe1cecd3f278d5cf3437bcfc92c45a5e6a954ee4c9b929c5d56b754ff37f49"
     },
     {
       "id": "25321a9ee1734ad6a8cf9472",
@@ -355,7 +475,7 @@
       "category": "招聘公告",
       "requiresTeacherVerification": true,
       "publishedAt": "2026-05-08T01:00:00.000Z",
-      "fetchedAt": "2026-09-30T20:57:40.013Z",
+      "fetchedAt": "2026-09-30T21:36:14.275Z",
       "sourceName": "吉林省人社厅事业单位公开招聘公告",
       "sourceId": "jilin-hrss-recruitment",
       "sourceUrl": "https://hrss.jl.gov.cn/rsrc/sydwrsgl/gkzp/202605/t20260508_9587419.html",
@@ -370,7 +490,7 @@
       "category": "资格审查",
       "requiresTeacherVerification": true,
       "publishedAt": "2026-04-30",
-      "fetchedAt": "2026-09-30T20:58:06.365Z",
+      "fetchedAt": "2026-09-30T21:37:05.410Z",
       "sourceName": "德惠市政府人事信息（招聘线索）",
       "sourceId": "dehui-education-notices",
       "sourceUrl": "http://dehui.changchun.gov.cn/ywdt/tzgg/gggs/202604/t20260430_3484621.html",
@@ -385,7 +505,7 @@
       "category": "成绩",
       "requiresTeacherVerification": false,
       "publishedAt": "2026-04-14T01:25:29.000Z",
-      "fetchedAt": "2026-09-30T20:57:43.223Z",
+      "fetchedAt": "2026-09-30T21:36:17.957Z",
       "sourceName": "吉林省教育考试院中小学教师资格考试",
       "sourceId": "jilin-exam-teacher",
       "sourceUrl": "https://www.jleea.com.cn/front/content/202647",
@@ -400,7 +520,7 @@
       "category": "招聘公告",
       "requiresTeacherVerification": true,
       "publishedAt": "2026-04-14T01:00:00.000Z",
-      "fetchedAt": "2026-09-30T20:57:40.013Z",
+      "fetchedAt": "2026-09-30T21:36:14.275Z",
       "sourceName": "吉林省人社厅事业单位公开招聘公告",
       "sourceId": "jilin-hrss-recruitment",
       "sourceUrl": "https://hrss.jl.gov.cn/rsrc/sydwrsgl/gkzp/202604/t20260414_9508977.html",
@@ -415,7 +535,7 @@
       "category": "面试",
       "requiresTeacherVerification": false,
       "publishedAt": "2026-03-30T06:07:27.000Z",
-      "fetchedAt": "2026-09-30T20:57:43.223Z",
+      "fetchedAt": "2026-09-30T21:36:17.957Z",
       "sourceName": "吉林省教育考试院中小学教师资格考试",
       "sourceId": "jilin-exam-teacher",
       "sourceUrl": "https://www.jleea.com.cn/front/content/202616",
@@ -430,7 +550,7 @@
       "category": "笔试时间",
       "requiresTeacherVerification": false,
       "publishedAt": "2026-03-02T00:54:35.000Z",
-      "fetchedAt": "2026-09-30T20:57:43.223Z",
+      "fetchedAt": "2026-09-30T21:36:17.957Z",
       "sourceName": "吉林省教育考试院中小学教师资格考试",
       "sourceId": "jilin-exam-teacher",
       "sourceUrl": "https://www.jleea.com.cn/front/content/202585",
@@ -445,7 +565,7 @@
       "category": "笔试时间",
       "requiresTeacherVerification": false,
       "publishedAt": "2025-12-29T01:57:14.000Z",
-      "fetchedAt": "2026-09-30T20:57:43.223Z",
+      "fetchedAt": "2026-09-30T21:36:17.957Z",
       "sourceName": "吉林省教育考试院中小学教师资格考试",
       "sourceId": "jilin-exam-teacher",
       "sourceUrl": "https://www.jleea.com.cn/front/content/202529",
@@ -460,7 +580,7 @@
       "category": "成绩",
       "requiresTeacherVerification": false,
       "publishedAt": "2025-11-03T05:56:34.000Z",
-      "fetchedAt": "2026-09-30T20:57:43.223Z",
+      "fetchedAt": "2026-09-30T21:36:17.957Z",
       "sourceName": "吉林省教育考试院中小学教师资格考试",
       "sourceId": "jilin-exam-teacher",
       "sourceUrl": "https://www.jleea.com.cn/front/content/202098",
@@ -475,7 +595,7 @@
       "category": "面试",
       "requiresTeacherVerification": false,
       "publishedAt": "2025-10-27T06:07:54.000Z",
-      "fetchedAt": "2026-09-30T20:57:43.223Z",
+      "fetchedAt": "2026-09-30T21:36:17.957Z",
       "sourceName": "吉林省教育考试院中小学教师资格考试",
       "sourceId": "jilin-exam-teacher",
       "sourceUrl": "https://www.jleea.com.cn/front/content/202076",
@@ -490,7 +610,7 @@
       "category": "笔试时间",
       "requiresTeacherVerification": false,
       "publishedAt": "2025-09-08T01:06:26.000Z",
-      "fetchedAt": "2026-09-30T20:57:43.223Z",
+      "fetchedAt": "2026-09-30T21:36:17.957Z",
       "sourceName": "吉林省教育考试院中小学教师资格考试",
       "sourceId": "jilin-exam-teacher",
       "sourceUrl": "https://www.jleea.com.cn/front/content/202045",
@@ -505,7 +625,7 @@
       "category": "笔试时间",
       "requiresTeacherVerification": false,
       "publishedAt": "2025-06-23T02:30:04.000Z",
-      "fetchedAt": "2026-09-30T20:57:43.223Z",
+      "fetchedAt": "2026-09-30T21:36:17.957Z",
       "sourceName": "吉林省教育考试院中小学教师资格考试",
       "sourceId": "jilin-exam-teacher",
       "sourceUrl": "https://www.jleea.com.cn/front/content/201604",
@@ -520,7 +640,7 @@
       "category": "成绩",
       "requiresTeacherVerification": true,
       "publishedAt": "2025-05-30",
-      "fetchedAt": "2026-09-30T20:58:06.365Z",
+      "fetchedAt": "2026-09-30T21:37:05.410Z",
       "sourceName": "德惠市政府人事信息（招聘线索）",
       "sourceId": "dehui-education-notices",
       "sourceUrl": "http://dehui.changchun.gov.cn/ywdt/tzgg/gggs/202505/t20250530_3404931.html",
@@ -535,7 +655,7 @@
       "category": "资格审查",
       "requiresTeacherVerification": true,
       "publishedAt": "2025-05-06",
-      "fetchedAt": "2026-09-30T20:58:06.365Z",
+      "fetchedAt": "2026-09-30T21:37:05.410Z",
       "sourceName": "德惠市政府人事信息（招聘线索）",
       "sourceId": "dehui-education-notices",
       "sourceUrl": "http://dehui.changchun.gov.cn/ywdt/tzgg/gggs/202505/t20250506_3397942.html",
@@ -550,7 +670,7 @@
       "category": "成绩",
       "requiresTeacherVerification": false,
       "publishedAt": "2025-04-17T02:30:34.000Z",
-      "fetchedAt": "2026-09-30T20:57:43.223Z",
+      "fetchedAt": "2026-09-30T21:36:17.957Z",
       "sourceName": "吉林省教育考试院中小学教师资格考试",
       "sourceId": "jilin-exam-teacher",
       "sourceUrl": "https://www.jleea.com.cn/front/content/200418",
@@ -565,7 +685,7 @@
       "category": "面试",
       "requiresTeacherVerification": false,
       "publishedAt": "2025-04-10T00:57:28.000Z",
-      "fetchedAt": "2026-09-30T20:57:43.223Z",
+      "fetchedAt": "2026-09-30T21:36:17.957Z",
       "sourceName": "吉林省教育考试院中小学教师资格考试",
       "sourceId": "jilin-exam-teacher",
       "sourceUrl": "https://www.jleea.com.cn/front/content/5093",
@@ -580,7 +700,7 @@
       "category": "笔试时间",
       "requiresTeacherVerification": false,
       "publishedAt": "2025-03-06T03:06:57.000Z",
-      "fetchedAt": "2026-09-30T20:57:43.223Z",
+      "fetchedAt": "2026-09-30T21:36:17.957Z",
       "sourceName": "吉林省教育考试院中小学教师资格考试",
       "sourceId": "jilin-exam-teacher",
       "sourceUrl": "https://www.jleea.com.cn/front/content/5056",
@@ -595,7 +715,7 @@
       "category": "笔试时间",
       "requiresTeacherVerification": false,
       "publishedAt": "2024-12-27T01:23:51.000Z",
-      "fetchedAt": "2026-09-30T20:57:43.223Z",
+      "fetchedAt": "2026-09-30T21:36:17.957Z",
       "sourceName": "吉林省教育考试院中小学教师资格考试",
       "sourceId": "jilin-exam-teacher",
       "sourceUrl": "https://www.jleea.com.cn/front/content/5026",
@@ -610,7 +730,7 @@
       "category": "招聘公告",
       "requiresTeacherVerification": false,
       "publishedAt": "2023-11-22",
-      "fetchedAt": "2026-09-30T20:57:39.112Z",
+      "fetchedAt": "2026-09-30T21:36:13.823Z",
       "sourceName": "长春新区人才就业网招考招聘",
       "sourceId": "changchun-talent-recruitment",
       "sourceUrl": "https://rcjy.ccxq.gov.cn/content/news/show/716.html",
@@ -625,7 +745,7 @@
       "category": "拟聘用名单",
       "requiresTeacherVerification": true,
       "publishedAt": "2023-01-09",
-      "fetchedAt": "2026-09-30T20:58:06.365Z",
+      "fetchedAt": "2026-09-30T21:37:05.410Z",
       "sourceName": "德惠市政府人事信息（招聘线索）",
       "sourceId": "dehui-education-notices",
       "sourceUrl": "http://dehui.changchun.gov.cn/ywdt/tzgg/rsxx/202301/t20230109_3102976.html",
@@ -1135,28 +1255,33 @@
     },
     {
       "regionId": "nanguan-cc",
-      "status": "pending",
-      "note": "已获区县公开HTTP授权；主列表已核验，但无完整属性的截断标题及适配仍待解决，保持禁用"
+      "status": "active",
+      "transport": "http",
+      "note": "已接入获准HTTP公开栏目及专用解析；传输未加密，来源运行状态以最近检查为准，不代表完整覆盖"
     },
     {
       "regionId": "kuancheng-cc",
-      "status": "pending",
-      "note": "已获区县公开HTTP授权；主列表已核验，但无完整属性的截断标题及适配仍待解决，保持禁用"
+      "status": "active",
+      "transport": "http",
+      "note": "已接入获准HTTP公开栏目及专用解析；传输未加密，来源运行状态以最近检查为准，不代表完整覆盖"
     },
     {
       "regionId": "erdao-cc",
-      "status": "pending",
-      "note": "已获区县公开HTTP授权；主列表已核验，但无完整属性的截断标题及适配仍待解决，保持禁用"
+      "status": "active",
+      "transport": "http",
+      "note": "已接入获准HTTP公开栏目及专用解析；传输未加密，来源运行状态以最近检查为准，不代表完整覆盖"
     },
     {
       "regionId": "lvyuan-cc",
-      "status": "pending",
-      "note": "已获区县公开HTTP授权；主列表已核验，但无完整属性的截断标题及适配仍待解决，保持禁用"
+      "status": "active",
+      "transport": "http",
+      "note": "已接入获准HTTP公开栏目及专用解析；传输未加密，来源运行状态以最近检查为准，不代表完整覆盖"
     },
     {
       "regionId": "shuangyang-cc",
-      "status": "pending",
-      "note": "已获区县公开HTTP授权；主列表已核验，但无完整属性的截断标题及适配仍待解决，保持禁用"
+      "status": "active",
+      "transport": "http",
+      "note": "已接入获准HTTP公开栏目及专用解析；传输未加密，来源运行状态以最近检查为准，不代表完整覆盖"
     },
     {
       "regionId": "jiutai-cc",
@@ -1166,8 +1291,9 @@
     },
     {
       "regionId": "jingyue-cc",
-      "status": "pending",
-      "note": "已获区县公开HTTP授权；主列表正文跨官方信息公开平台，须专用适配和精确详情范围核验，保持禁用"
+      "status": "active",
+      "transport": "http",
+      "note": "已接入获准HTTP公开栏目及专用解析；传输未加密，来源运行状态以最近检查为准，不代表完整覆盖"
     },
     {
       "regionId": "lianhuashan-cc",
@@ -1183,13 +1309,15 @@
     },
     {
       "regionId": "yushu-cc",
-      "status": "pending",
-      "note": "已获区县公开HTTP授权；主列表已核验，但无完整属性的截断标题及适配仍待解决，保持禁用"
+      "status": "active",
+      "transport": "http",
+      "note": "已接入获准HTTP公开栏目及专用解析；传输未加密，来源运行状态以最近检查为准，不代表完整覆盖"
     },
     {
       "regionId": "nong-an-cc",
-      "status": "pending",
-      "note": "已获区县公开HTTP授权；动态公开JSONP目录已核验，但适配、正文抽样及云端运行待完成，保持禁用"
+      "status": "active",
+      "transport": "http",
+      "note": "已接入获准公开动态目录首页；传输未加密，非全量历史或全县招聘覆盖，考试安排须核对原文"
     },
     {
       "regionId": "gongzhuling-cc",
@@ -1449,38 +1577,38 @@
   ],
   "sourceState": {
     "jilin-education-announcements": {
-      "lastAttemptAt": "2026-09-30T20:57:48.158Z",
-      "lastSuccessAt": "2026-09-30T20:57:48.158Z",
+      "lastAttemptAt": "2026-09-30T21:36:22.540Z",
+      "lastSuccessAt": "2026-09-30T21:36:22.540Z",
       "lastError": null,
       "lastSeen": 2,
       "lastInserted": 0,
-      "etag": "\"482aa491-6862-65b6a7b5405c8\"",
-      "lastModified": "Mon, 14 Sep 2026 05:12:34 GMT",
+      "etag": "\"4a32eccb-6862-65b6a11bfc750\"",
+      "lastModified": "Mon, 14 Sep 2026 04:43:02 GMT",
       "parserVersion": "2026-10-01.1"
     },
     "jilin-hrss-announcements": {
-      "lastAttemptAt": "2026-09-30T20:57:49.452Z",
-      "lastSuccessAt": "2026-09-30T20:57:49.452Z",
+      "lastAttemptAt": "2026-09-30T21:36:23.764Z",
+      "lastSuccessAt": "2026-09-30T21:36:23.764Z",
       "lastError": null,
       "lastSeen": 0,
       "lastInserted": 0,
-      "etag": "\"e6e614ae-342a-65c30bc00c6a8\"",
-      "lastModified": "Thu, 24 Sep 2026 01:44:02 GMT",
+      "etag": "\"4a42bbbd-342a-65c3125eaca28\"",
+      "lastModified": "Thu, 24 Sep 2026 02:13:39 GMT",
       "parserVersion": "2026-10-01.1"
     },
     "jilin-hrss-headlines": {
-      "lastAttemptAt": "2026-09-30T20:57:51.311Z",
-      "lastSuccessAt": "2026-09-30T20:57:51.311Z",
+      "lastAttemptAt": "2026-09-30T21:36:25.288Z",
+      "lastSuccessAt": "2026-09-30T21:36:25.288Z",
       "lastError": null,
       "lastSeen": 0,
       "lastInserted": 0,
-      "etag": "\"4a6baab9-2a47-65c06990cc8d8\"",
-      "lastModified": "Mon, 21 Sep 2026 23:27:47 GMT",
+      "etag": "\"be96a506-2a47-65c06b109fd48\"",
+      "lastModified": "Mon, 21 Sep 2026 23:34:30 GMT",
       "parserVersion": "2026-10-01.1"
     },
     "tonghua-education-announcements": {
-      "lastAttemptAt": "2026-09-30T20:57:52.849Z",
-      "lastSuccessAt": "2026-09-30T20:57:52.849Z",
+      "lastAttemptAt": "2026-09-30T21:36:28.477Z",
+      "lastSuccessAt": "2026-09-30T21:36:28.477Z",
       "lastError": null,
       "lastSeen": 0,
       "lastInserted": 0,
@@ -1489,8 +1617,8 @@
       "parserVersion": "2026-10-01.1"
     },
     "tonghua-hrss-announcements": {
-      "lastAttemptAt": "2026-09-30T20:57:54.552Z",
-      "lastSuccessAt": "2026-09-30T20:57:54.552Z",
+      "lastAttemptAt": "2026-09-30T21:36:29.889Z",
+      "lastSuccessAt": "2026-09-30T21:36:29.889Z",
       "lastError": null,
       "lastSeen": 0,
       "lastInserted": 0,
@@ -1499,7 +1627,7 @@
       "parserVersion": "2026-10-01.1"
     },
     "songyuan-government-notices": {
-      "lastAttemptAt": "2026-09-30T20:57:55.418Z",
+      "lastAttemptAt": "2026-09-30T21:36:31.975Z",
       "lastSuccessAt": "2026-09-27T13:39:04.733Z",
       "lastError": "来源响应 403",
       "lastSeen": 0,
@@ -1510,13 +1638,13 @@
     },
     "jilin-hrss-recruitment": {
       "freeAlertBaselinePending": false,
-      "lastAttemptAt": "2026-09-30T20:57:43.223Z",
-      "lastSuccessAt": "2026-09-30T20:57:43.223Z",
+      "lastAttemptAt": "2026-09-30T21:36:17.957Z",
+      "lastSuccessAt": "2026-09-30T21:36:17.957Z",
       "lastError": null,
       "lastSeen": 9,
       "lastInserted": 0,
-      "etag": "\"1220321a8-3bf8-65c06a8ea75e8\"",
-      "lastModified": "Mon, 21 Sep 2026 23:32:13 GMT",
+      "etag": "\"4a46868f-3bf8-65c06935e7ff8\"",
+      "lastModified": "Mon, 21 Sep 2026 23:26:12 GMT",
       "parserVersion": "2026-10-01.1",
       "freeAlertBaseline": {
         "hashes": [
@@ -1535,8 +1663,8 @@
     },
     "jilin-exam-teacher": {
       "freeAlertBaselinePending": false,
-      "lastAttemptAt": "2026-09-30T20:57:44.870Z",
-      "lastSuccessAt": "2026-09-30T20:57:44.870Z",
+      "lastAttemptAt": "2026-09-30T21:36:19.629Z",
+      "lastSuccessAt": "2026-09-30T21:36:19.629Z",
       "lastError": null,
       "lastSeen": 15,
       "lastInserted": 0,
@@ -1564,13 +1692,13 @@
     },
     "changchun-hrss-notices": {
       "freeAlertBaselinePending": false,
-      "lastAttemptAt": "2026-09-30T20:58:00.236Z",
-      "lastSuccessAt": "2026-09-30T20:58:00.236Z",
+      "lastAttemptAt": "2026-09-30T21:36:37.593Z",
+      "lastSuccessAt": "2026-09-30T21:36:37.593Z",
       "lastError": null,
       "lastSeen": 3,
       "lastInserted": 0,
-      "etag": "\"47b2-65cb10a368580\"",
-      "lastModified": "Wed, 30 Sep 2026 10:48:30 GMT",
+      "etag": "W/\"47b2-65cb106981970\"",
+      "lastModified": "Wed, 30 Sep 2026 10:47:29 GMT",
       "parserVersion": "2026-10-01.1",
       "freeAlertBaseline": {
         "hashes": [
@@ -1583,8 +1711,8 @@
     },
     "changchun-talent-notices": {
       "freeAlertBaselinePending": false,
-      "lastAttemptAt": "2026-09-30T20:57:39.112Z",
-      "lastSuccessAt": "2026-09-30T20:57:39.112Z",
+      "lastAttemptAt": "2026-09-30T21:36:13.823Z",
+      "lastSuccessAt": "2026-09-30T21:36:13.823Z",
       "lastError": null,
       "lastSeen": 1,
       "lastInserted": 0,
@@ -1598,8 +1726,8 @@
     },
     "changchun-talent-recruitment": {
       "freeAlertBaselinePending": false,
-      "lastAttemptAt": "2026-09-30T20:57:40.012Z",
-      "lastSuccessAt": "2026-09-30T20:57:40.012Z",
+      "lastAttemptAt": "2026-09-30T21:36:14.275Z",
+      "lastSuccessAt": "2026-09-30T21:36:14.275Z",
       "lastError": null,
       "lastSeen": 2,
       "lastInserted": 0,
@@ -1614,13 +1742,13 @@
     },
     "changchun-education-notices": {
       "freeAlertBaselinePending": false,
-      "lastAttemptAt": "2026-09-30T20:57:57.270Z",
-      "lastSuccessAt": "2026-09-30T20:57:57.270Z",
+      "lastAttemptAt": "2026-09-30T21:36:34.279Z",
+      "lastSuccessAt": "2026-09-30T21:36:34.279Z",
       "lastError": null,
       "lastSeen": 4,
       "lastInserted": 0,
-      "etag": "W/\"4340-65c22299808e8\"",
-      "lastModified": "Wed, 23 Sep 2026 08:20:56 GMT",
+      "etag": "W/\"4340-65c222d27a400\"",
+      "lastModified": "Wed, 23 Sep 2026 08:21:56 GMT",
       "parserVersion": "2026-10-01.1",
       "freeAlertBaseline": {
         "hashes": [
@@ -1634,12 +1762,12 @@
     },
     "changchun-jingkai-notices": {
       "freeAlertBaselinePending": false,
-      "lastAttemptAt": "2026-09-30T20:57:58.477Z",
-      "lastSuccessAt": "2026-09-30T20:57:58.477Z",
+      "lastAttemptAt": "2026-09-30T21:36:35.536Z",
+      "lastSuccessAt": "2026-09-30T21:36:35.536Z",
       "lastError": null,
       "lastSeen": 0,
       "lastInserted": 0,
-      "etag": "W/\"3fd1-65cadb71e70b8\"",
+      "etag": "\"3fd1-65cadb71e70b8\"",
       "lastModified": "Wed, 30 Sep 2026 06:50:31 GMT",
       "parserVersion": "2026-10-01.1",
       "freeAlertBaseline": {
@@ -1649,13 +1777,13 @@
     },
     "chaoyang-education-notices": {
       "freeAlertBaselinePending": false,
-      "lastAttemptAt": "2026-09-30T20:58:02.194Z",
-      "lastSuccessAt": "2026-09-30T20:58:02.194Z",
+      "lastAttemptAt": "2026-09-30T21:36:41.683Z",
+      "lastSuccessAt": "2026-09-30T21:36:41.683Z",
       "lastError": null,
       "lastSeen": 0,
       "lastInserted": 0,
-      "etag": "W/\"560c-65c9e1493b2e0\"",
-      "lastModified": "Tue, 29 Sep 2026 12:11:20 GMT",
+      "etag": "W/\"560c-65c9e182fe888\"",
+      "lastModified": "Tue, 29 Sep 2026 12:12:20 GMT",
       "parserVersion": "2026-10-01.1",
       "freeAlertBaseline": {
         "hashes": [],
@@ -1664,12 +1792,12 @@
     },
     "jiutai-education-notices": {
       "freeAlertBaselinePending": false,
-      "lastAttemptAt": "2026-09-30T20:58:04.715Z",
-      "lastSuccessAt": "2026-09-30T20:58:04.715Z",
+      "lastAttemptAt": "2026-09-30T21:37:02.318Z",
+      "lastSuccessAt": "2026-09-30T21:37:02.318Z",
       "lastError": null,
       "lastSeen": 0,
       "lastInserted": 0,
-      "etag": "W/\"ee99-65cb1883290f0\"",
+      "etag": "\"ee99-65cb1883290f0\"",
       "lastModified": "Wed, 30 Sep 2026 11:23:44 GMT",
       "parserVersion": "2026-10-01.1",
       "freeAlertBaseline": {
@@ -1679,13 +1807,13 @@
     },
     "lianhuashan-education-notices": {
       "freeAlertBaselinePending": false,
-      "lastAttemptAt": "2026-09-30T20:58:06.365Z",
-      "lastSuccessAt": "2026-09-30T20:58:06.365Z",
+      "lastAttemptAt": "2026-09-30T21:37:05.410Z",
+      "lastSuccessAt": "2026-09-30T21:37:05.410Z",
       "lastError": null,
       "lastSeen": 0,
       "lastInserted": 0,
-      "etag": "W/\"35be-65c821095bb00\"",
-      "lastModified": "Mon, 28 Sep 2026 02:45:54 GMT",
+      "etag": "W/\"35be-65c820cfcf828\"",
+      "lastModified": "Mon, 28 Sep 2026 02:44:53 GMT",
       "parserVersion": "2026-10-01.1",
       "freeAlertBaseline": {
         "hashes": [],
@@ -1694,13 +1822,13 @@
     },
     "dehui-education-notices": {
       "freeAlertBaselinePending": false,
-      "lastAttemptAt": "2026-09-30T20:58:07.848Z",
-      "lastSuccessAt": "2026-09-30T20:58:07.848Z",
+      "lastAttemptAt": "2026-09-30T21:37:06.403Z",
+      "lastSuccessAt": "2026-09-30T21:37:06.403Z",
       "lastError": null,
       "lastSeen": 6,
-      "lastInserted": 6,
-      "etag": "W/\"5f1c-65b6b56379358\"",
-      "lastModified": "Mon, 14 Sep 2026 06:13:46 GMT",
+      "lastInserted": 0,
+      "etag": "W/\"5f1c-65b6b52bfd988\"",
+      "lastModified": "Mon, 14 Sep 2026 06:12:48 GMT",
       "parserVersion": "2026-10-01.1",
       "freeAlertBaseline": {
         "hashes": [
@@ -1712,6 +1840,142 @@
           "516e0afcffffca5a694dc9904c9016fcf61d38172910599616168f9223cf5fa3"
         ],
         "capturedAt": "2026-09-30T20:58:07.848Z"
+      }
+    },
+    "nanguan-education-notices": {
+      "freeAlertBaselinePending": false,
+      "lastAttemptAt": "2026-09-30T21:36:39.411Z",
+      "lastSuccessAt": "2026-09-30T21:36:39.411Z",
+      "lastError": null,
+      "lastSeen": 0,
+      "lastInserted": 0,
+      "etag": "W/\"3b88-65c998f8b36a8\"",
+      "lastModified": "Tue, 29 Sep 2026 06:47:48 GMT",
+      "parserVersion": "2026-10-01.1",
+      "detailTitleIncomplete": false,
+      "freeAlertBaseline": {
+        "hashes": [],
+        "capturedAt": "2026-09-30T21:36:39.411Z"
+      }
+    },
+    "kuancheng-education-notices": {
+      "freeAlertBaselinePending": false,
+      "lastAttemptAt": "2026-09-30T21:36:46.704Z",
+      "lastSuccessAt": "2026-09-30T21:36:46.704Z",
+      "lastError": null,
+      "lastSeen": 1,
+      "lastInserted": 1,
+      "etag": "W/\"4ce5-65c9b5a16ec90\"",
+      "lastModified": "Tue, 29 Sep 2026 08:56:01 GMT",
+      "parserVersion": "2026-10-01.1",
+      "detailTitleIncomplete": false,
+      "freeAlertBaseline": {
+        "hashes": [
+          "86ffcf448feb8c135480f94039a402d8b24c58d5591fc587e3232c04e9008f41"
+        ],
+        "capturedAt": "2026-09-30T21:36:46.704Z"
+      }
+    },
+    "erdao-education-notices": {
+      "freeAlertBaselinePending": false,
+      "lastAttemptAt": "2026-09-30T21:36:52.303Z",
+      "lastSuccessAt": "2026-09-30T21:36:52.303Z",
+      "lastError": null,
+      "lastSeen": 1,
+      "lastInserted": 1,
+      "etag": "W/\"8aa6-65c987f4a0248\"",
+      "lastModified": "Tue, 29 Sep 2026 05:31:40 GMT",
+      "parserVersion": "2026-10-01.1",
+      "detailTitleIncomplete": false,
+      "freeAlertBaseline": {
+        "hashes": [
+          "934bcce4a29b517b62ddd92132bdd9b8647500dccc8fe4d48c593ce410e9750d"
+        ],
+        "capturedAt": "2026-09-30T21:36:52.303Z"
+      }
+    },
+    "lvyuan-education-notices": {
+      "freeAlertBaselinePending": false,
+      "lastAttemptAt": "2026-09-30T21:36:56.043Z",
+      "lastSuccessAt": "2026-09-30T21:36:56.043Z",
+      "lastError": null,
+      "lastSeen": 2,
+      "lastInserted": 2,
+      "etag": "W/\"474b-65bf5c95fa660\"",
+      "lastModified": "Mon, 21 Sep 2026 03:24:23 GMT",
+      "parserVersion": "2026-10-01.1",
+      "detailTitleIncomplete": false,
+      "freeAlertBaseline": {
+        "hashes": [
+          "225c2315ab64bdb3c3ab6ad6443dbb41cf9522046fd29d3fd6870a21df36ef51",
+          "a6fe1cecd3f278d5cf3437bcfc92c45a5e6a954ee4c9b929c5d56b754ff37f49"
+        ],
+        "capturedAt": "2026-09-30T21:36:56.043Z"
+      }
+    },
+    "shuangyang-education-notices": {
+      "freeAlertBaselinePending": false,
+      "lastAttemptAt": "2026-09-30T21:37:01.399Z",
+      "lastSuccessAt": "2026-09-30T21:37:01.399Z",
+      "lastError": null,
+      "lastSeen": 4,
+      "lastInserted": 4,
+      "etag": "W/\"5784-65c349b7a7ab0\"",
+      "lastModified": "Thu, 24 Sep 2026 06:21:16 GMT",
+      "parserVersion": "2026-10-01.1",
+      "detailTitleIncomplete": false,
+      "freeAlertBaseline": {
+        "hashes": [
+          "47a018c4f112320044a84c5ee7c068a29581b8345389ded6a34e7fdec55f3186",
+          "4d01dc30ac21d165b0ed716bbb80cb599c3621cd626df62b675eb8a3178d5c66",
+          "a2ff2b1dab733202442f160f6cb20ecac898d4eea255bcf58530137a436cdde1",
+          "1e67b5156a9452d1e8b42c59a13bed341a9088bb39dfea1ad11e67a04824c274"
+        ],
+        "capturedAt": "2026-09-30T21:37:01.399Z"
+      }
+    },
+    "jingyue-education-notices": {
+      "freeAlertBaselinePending": false,
+      "lastAttemptAt": "2026-09-30T21:37:04.088Z",
+      "lastSuccessAt": "2026-09-30T21:37:04.088Z",
+      "lastError": null,
+      "lastSeen": 0,
+      "lastInserted": 0,
+      "etag": "W/\"d1c8-65c842ca986d0\"",
+      "lastModified": "Mon, 28 Sep 2026 05:16:55 GMT",
+      "parserVersion": "2026-10-01.1",
+      "freeAlertBaseline": {
+        "hashes": [],
+        "capturedAt": "2026-09-30T21:37:04.088Z"
+      }
+    },
+    "yushu-education-notices": {
+      "freeAlertBaselinePending": false,
+      "lastAttemptAt": "2026-09-30T21:37:08.051Z",
+      "lastSuccessAt": "2026-09-30T21:37:08.051Z",
+      "lastError": null,
+      "lastSeen": 0,
+      "lastInserted": 0,
+      "etag": "W/\"4d6f-65cae2175c498\"",
+      "lastModified": "Wed, 30 Sep 2026 07:20:15 GMT",
+      "parserVersion": "2026-10-01.1",
+      "detailTitleIncomplete": false,
+      "freeAlertBaseline": {
+        "hashes": [],
+        "capturedAt": "2026-09-30T21:37:08.051Z"
+      }
+    },
+    "nong-an-education-notices": {
+      "freeAlertBaselinePending": false,
+      "lastAttemptAt": "2026-09-30T21:37:09.434Z",
+      "lastSuccessAt": "2026-09-30T21:37:09.434Z",
+      "lastError": null,
+      "lastSeen": 0,
+      "lastInserted": 0,
+      "parserVersion": "2026-10-01.1",
+      "freeAlertBaseline": {
+        "hashes": [],
+        "capturedAt": "2026-09-30T21:37:09.434Z"
       }
     }
   }
