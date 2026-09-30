@@ -2,6 +2,9 @@ import { createContentHash, JILIN_REGIONS, REQUEST_CATEGORIES, POLICY_TYPES } fr
 import { parseJilinExamResponse } from './adapters/jilin-exam.js';
 import { parseChangchunTalentList } from './adapters/changchun-talent.js';
 import { parseChangchunDistrictList } from './adapters/changchun-district.js';
+import { parseNonganEducationResponse } from './adapters/nongan-education.js';
+import { parseJingyueEducationList } from './adapters/jingyue-education.js';
+import { resolveChangchunDistrictTitles, DISTRICT_FULLTITLE_CACHE_VERSION } from './adapters/changchun-district-fulltitle.js';
 
 const MAX_BYTES = 1_500_000;
 export const PARSER_VERSION = '2026-10-01.1';
@@ -189,9 +192,12 @@ export function parseOfficialList(html, source, now = new Date()) {
 }
 
 function entriesForSource(html, source) {
+  if (source.parser === 'changchun-district-fulltitle') throw new Error('此来源须通过异步标题补全读取');
   if (source.parser === 'jilin-exam') return parseJilinExamResponse(html, source);
   if (source.parser === 'changchun-talent') return parseChangchunTalentList(html, source);
   if (source.parser === 'changchun-district') return parseChangchunDistrictList(html, source);
+  if (source.parser === 'nongan-education') return parseNonganEducationResponse(html, source);
+  if (source.parser === 'jingyue-education') return parseJingyueEducationList(html, source);
   return officialListEntries(html, source);
 }
 
@@ -239,26 +245,47 @@ async function fetchWithRetry(fetchImpl, url, options) {
   throw lastError ?? new Error('来源请求失败');
 }
 
+class IncompleteDetailTitlesError extends Error {
+  constructor(result) {
+    super('官方列表标题尚未全部补全，已保留成功缓存，稍后自动重试');
+    this.detailTitleCache = result.detailTitleCache;
+  }
+}
+
 export async function fetchOfficialSource(source, fetchImpl = fetch, now = new Date(), sourceState = {}) {
   const sourceProtocol = new URL(source.url).protocol;
   if (sourceProtocol === 'http:' && source.allowHttp !== true) throw new Error('HTTP 来源未明确获准，仅允许本地试验配置');
   const controller = new AbortController(); const timeout = setTimeout(() => controller.abort(), 20_000);
   try {
-    const headers = { accept: source.parser === 'jilin-exam' ? 'application/json' : 'text/html,application/xhtml+xml', 'user-agent': source.userAgent };
-    const cacheCompatible = sourceState.parserVersion === PARSER_VERSION;
+    const headers = { accept: source.parser === 'jilin-exam' ? 'application/json' : source.parser === 'nongan-education' ? 'application/javascript,application/json' : 'text/html,application/xhtml+xml', 'user-agent': source.userAgent };
+    const usesDetailTitles = source.parser === 'changchun-district-fulltitle';
+    const detailCacheComplete = !usesDetailTitles || (sourceState.detailTitleIncomplete === false
+      && sourceState.detailTitleCache?.version === DISTRICT_FULLTITLE_CACHE_VERSION && Boolean(sourceState.lastSuccessAt));
+    const cacheCompatible = sourceState.parserVersion === PARSER_VERSION && detailCacheComplete;
     if (cacheCompatible && sourceState.etag) headers['if-none-match'] = String(sourceState.etag);
     if (cacheCompatible && sourceState.lastModified) headers['if-modified-since'] = String(sourceState.lastModified);
     const response = await fetchWithRetry(fetchImpl, source.url, { signal: controller.signal, redirect: 'manual', headers });
     const etag = responseHeader(response, 'etag') ?? sourceState.etag ?? null;
     const lastModified = responseHeader(response, 'last-modified') ?? sourceState.lastModified ?? null;
-    if (response.status === 304) return { notModified: true, policies: [], etag, lastModified, parserVersion: PARSER_VERSION };
+    if (response.status === 304) {
+      if (usesDetailTitles && !cacheCompatible) throw new Error('标题补全尚未完成，不能将304响应认定为成功');
+      return { notModified: true, policies: [], etag, lastModified, parserVersion: PARSER_VERSION };
+    }
     if (!response.ok || response.status >= 300 && response.status < 400) throw new Error(`来源响应 ${response.status}`);
     const length = Number(responseHeader(response, 'content-length') ?? 0);
     if (length > MAX_BYTES) throw new Error('来源响应过大');
     const html = await response.text();
     if (Buffer.byteLength(html, 'utf8') > MAX_BYTES) throw new Error('来源响应过大');
+    if (usesDetailTitles) {
+      clearTimeout(timeout); // Detail requests enforce their own per-request and total budgets.
+      const resolved = await resolveChangchunDistrictTitles(html, source, { cache: sourceState.detailTitleCache, fetchImpl, now });
+      if (resolved.incomplete) throw new IncompleteDetailTitlesError(resolved);
+      assertRecognizedList(html, resolved.entries);
+      return { notModified: false, policies: policiesFromEntries(resolved.entries, source, now), etag, lastModified,
+        parserVersion: PARSER_VERSION, detailTitleCache: resolved.detailTitleCache, detailTitleIncomplete: false };
+    }
     const entries = entriesForSource(html, source);
-    if (source.parser !== 'jilin-exam') assertRecognizedList(html, entries);
+    if (!['jilin-exam', 'nongan-education'].includes(source.parser)) assertRecognizedList(html, entries);
     return { notModified: false, policies: policiesFromEntries(entries, source, now), etag, lastModified, parserVersion: PARSER_VERSION };
   } finally { clearTimeout(timeout); }
 }
@@ -301,7 +328,8 @@ export async function syncSources({ store, sources, fetchImpl = fetch, onEvent =
         lastSuccessAt: result.completedAt, lastError: null, lastSeen: result.seen, lastInserted: result.inserted,
         ...(result.etag ? { etag: result.etag } : {}),
         ...(result.lastModified ? { lastModified: result.lastModified } : {}),
-        parserVersion: fetched.parserVersion
+        parserVersion: fetched.parserVersion,
+        ...(fetched.detailTitleCache ? { detailTitleCache: fetched.detailTitleCache, detailTitleIncomplete: false } : {})
       };
       results.push(result); onEvent(result);
     } catch (error) {
@@ -311,7 +339,9 @@ export async function syncSources({ store, sources, fetchImpl = fetch, onEvent =
         [source.id]: {
           ...(store.sourceState[source.id] ?? {}),
           lastAttemptAt: result.completedAt,
-          lastError: result.error ?? '来源读取失败'
+          lastError: result.error ?? '来源读取失败',
+          ...(source.parser === 'changchun-district-fulltitle' ? { detailTitleIncomplete: true } : {}),
+          ...(error instanceof IncompleteDetailTitlesError ? { detailTitleCache: error.detailTitleCache } : {})
         }
       };
       results.push(result); onEvent(result);
