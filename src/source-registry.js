@@ -36,6 +36,8 @@ const CHANGCHUN_HTTPS_CANDIDATES = [
 }));
 
 export const SOURCE_REGISTRY = [
+  { ...COMMON, id: 'changchun-talent-notices', name: '长春新区人才就业网公告通知', regionIds: ['changchun'], category: '招聘公告', titlePattern: '教师|学校|招聘|招募|面试', parser: 'changchun-talent', includeGeneralRecruitment: true, alertBaselineOnFirstSync: true, detailPathPrefix: '/content/news/show/', url: 'https://rcjy.ccxq.gov.cn/content/news/list/3/1.html', transport: 'https', reviewStatus: 'verified-list-and-samples', verificationNote: '2026-10-01：长春市官网→新区管委会官网→人才就业网身份链及官方招聘原文指定渠道已核验；HTTPS标准证书200、robots404。仅收录本栏目首页主列表，排除侧栏推荐；按长春市筛选，日期取同卡片。银龄/编外不代表事业编制。' },
+  { ...COMMON, id: 'changchun-talent-recruitment', name: '长春新区人才就业网招考招聘', regionIds: ['changchun'], category: '招聘公告', titlePattern: '教师|学校|招聘|招募|面试', parser: 'changchun-talent', includeGeneralRecruitment: true, alertBaselineOnFirstSync: true, detailPathPrefix: '/content/news/show/', url: 'https://rcjy.ccxq.gov.cn/content/news/list/4/1.html', transport: 'https', reviewStatus: 'verified-list-and-samples', verificationNote: '2026-10-01：新区官网导航与正式招募原文明确指定本站；HTTPS200、robots404。仅本栏目首页同源主列表，外部微信公众号链接不自动抓取。首轮建立历史基线不群发。银龄招募适用于退休教师，编外合同岗位不作为编制认定。' },
   { ...COMMON, id: 'jilin-hrss-recruitment', name: '吉林省人社厅事业单位公开招聘公告', regionIds: ['jilin'], category: '招聘公告', includeGeneralRecruitment: true, alertBaselineOnFirstSync: true, detailPathPrefix: '/rsrc/sydwrsgl/gkzp/', url: 'https://hrss.jl.gov.cn/rsrc/sydwrsgl/gkzp/', transport: 'https', reviewStatus: 'verified-list-and-sample-attachments', verificationNote: '2026-09-30：官网导航与12、13号详情、岗位表人工核验；robots404。综合公告仅为待核对教师岗位线索，不承诺编制或统一考试时间。' },
   { ...COMMON, id: 'jilin-exam-teacher', name: '吉林省教育考试院中小学教师资格考试', regionIds: ['jilin'], category: '招聘公告', policyType: '教师资格考试', parser: 'jilin-exam', alertBaselineOnFirstSync: true, url: 'https://www.jleea.com.cn/server-front/front/content/page?isStatic=false&pageSize=15&channelIdStr=10649&isPageQuery=true&pageNum=1', transport: 'https', reviewStatus: 'verified-public-api', verificationNote: '2026-09-30：ntce.neea.edu.cn 省级考试机构官方外链确认域名；教资栏目10649公开API与前三条原文人工比对，robots返回404；按小时检查首页15条，不代表全部历史公告或长春教师编制招聘' },
   { ...COMMON, id: 'jilin-education-announcements', name: '吉林省教育厅公示公告（教师考试相关）', regionIds: ['jilin'], category: '教师招聘', titlePattern: '招聘|特岗|特设岗位|教师资格|教资|报名|笔试|面试|资格审查|资格复审|体检|成绩|递补|拟聘|拟录用|中小学教师', url: 'https://jyt.jl.gov.cn/zwgk/ggl/', transport: 'https', reviewStatus: 'verified-reachable-title-filtered' },
@@ -80,7 +82,7 @@ export const SOURCE_REGISTRY = [
 
 export const SOURCE_COVERAGE = [
   { regionId: 'jilin', status: 'active', note: '省教育厅、人社厅及省考试院教资公开接口已接入（不代表完整覆盖）' },
-  { regionId: 'changchun', status: 'active', transport: 'http', note: '市人社局公开栏目已获个人自用HTTP读取授权；传输未加密，教育局与区县未完整接入' },
+  { regionId: 'changchun', status: 'active', transport: 'http', note: '已接入市人社局获准HTTP栏目与长春新区人才就业网两个HTTPS栏目；市人社传输未加密，教育局及其余区县未完整覆盖，银龄/编外不等于编制' },
   { regionId: 'jilin-city', status: 'pending', note: '官方入口已登记，但当前 HTTPS 运行时连接失败，待目标云服务器复测' },
   { regionId: 'siping', status: 'pending', note: '待核验教育局、人社局官方 HTTPS 来源' },
   { regionId: 'liaoyuan', status: 'pending', note: '官方入口已登记，但当前 HTTPS 运行时连接失败，待目标云服务器复测' },
@@ -104,7 +106,7 @@ export const SOURCE_COVERAGE = [
   { regionId: 'gongzhuling-cc', status: 'pending', note: '公主岭已纳入长春全选；官方来源仍待核验' }
 ];
 
-export const SOURCE_REGISTRY_VERSION = '2026-09-30.2';
+export const SOURCE_REGISTRY_VERSION = '2026-10-01.1';
 export function isApprovedFreeSource(source) {
   if (!source.enabled) return false;
   let url;
