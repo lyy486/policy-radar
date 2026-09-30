@@ -3,11 +3,11 @@ import { dirname, resolve } from 'node:path';
 
 import nodemailer from 'nodemailer';
 
-import { JILIN_REGIONS, POLICY_TYPES, REQUEST_CATEGORIES } from '../src/policy-service.js';
-import { listSourceCoverage, listSources } from '../src/source-registry.js';
+import { FREE_ALERT_SCOPE, JILIN_REGIONS, POLICY_TYPES, REQUEST_CATEGORIES } from '../src/policy-service.js';
+import { isApprovedFreeSource, listSourceCoverage, listSources } from '../src/source-registry.js';
 import { loadStore, persistStore } from '../src/store.js';
 import { syncSources } from '../src/sync-service.js';
-import { buildStaticPayload, createAlertEmail, deliverPolicyAlerts, parseNotifiedState } from './free-site-lib.js';
+import { buildStaticPayload, captureSourceBaselines, createAlertEmail, deliverPolicyAlerts, parseNotifiedState, planSourceBaselineSync } from './free-site-lib.js';
 
 const storePath = resolve(process.env.FREE_STORE_PATH ?? 'data/free-store.json');
 const notifiedPath = resolve(process.env.FREE_NOTIFIED_PATH ?? 'data/free-notified.json');
@@ -69,8 +69,12 @@ store.notifications = [];
 store.users = [];
 store.wechatDeliveries = [];
 
-const sources = listSources().filter((source) => source.enabled && new URL(source.url).protocol === 'https:');
+const sources = listSources().filter(isApprovedFreeSource);
+const baselinePlan = planSourceBaselineSync(sources, store.sourceState);
+store.sourceState = baselinePlan.sourceState;
 const results = await syncSources({ store, sources });
+const sourceBaselineResult = captureSourceBaselines({ initialSourceIds: baselinePlan.initialSourceIds, sourceState: store.sourceState, results, policies: store.policies });
+store.sourceState = sourceBaselineResult.sourceState;
 await persistStore(store);
 
 const payload = buildStaticPayload(store, {
@@ -83,6 +87,9 @@ await writeJson(outputPath, payload);
 
 await deliverPolicyAlerts({
   policies: payload.policies,
+  scope: FREE_ALERT_SCOPE,
+  initialSourceIds: baselinePlan.initialSourceIds,
+  sourceBaselines: sourceBaselineResult.sourceBaselines,
   readState: readNotifiedState,
   writeState: (state) => writeJson(notifiedPath, state),
   sendAlert

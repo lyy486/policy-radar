@@ -1,6 +1,8 @@
 export const FREE_RELEASE_FILES = Object.freeze([
   '.github/workflows/free-policy-radar.yml',
+  '.github/workflows/source-audit.yml',
   '.gitignore',
+  'README.md',
   'configure-local-email.cmd',
   'configure-local-email.ps1',
   'data/free-notified.json',
@@ -15,6 +17,7 @@ export const FREE_RELEASE_FILES = Object.freeze([
   'free-site/styles.css',
   'free-site/sw.js',
   'package-lock.json',
+  'package.json',
   'install-local-schedule.cmd',
   'install-local-schedule.ps1',
   'run-local-update.ps1',
@@ -22,8 +25,10 @@ export const FREE_RELEASE_FILES = Object.freeze([
   'scripts/free-release-manifest.js',
   'scripts/free-site-lib.js',
   'scripts/free-update.js',
+  'scripts/local-email-diagnostics.ps1',
   'scripts/send-test-email.js',
   'src/policy-service.js',
+  'src/adapters/jilin-exam.js',
   'src/source-registry.js',
   'src/store.js',
   'src/sync-service.js',
@@ -31,8 +36,18 @@ export const FREE_RELEASE_FILES = Object.freeze([
   'start-free-lan.cmd',
   'start-free-lan.ps1',
   'test/free-site.test.js',
+  'test/local-email.test.js',
+  'test/mobile-display.test.js',
+  'test/jilin-exam.test.js',
+  'test/source-registry.test.js',
+  'test/source-baseline-retry.test.js',
+  'test/source-access.test.js',
   'test/policy-service.test.js',
   'test/sync-service.test.js',
   'uninstall-local-schedule.cmd',
   'uninstall-local-schedule.ps1'
 ]);
+
+// Existing deployments own these live files; never replace them from a local checkout.
+const CLOUD_MANAGED_FILES = new Set(['data/free-store.json', 'data/free-notified.json', 'free-site/data/policies.json']);
+export const FREE_UPGRADE_FILES = Object.freeze(FREE_RELEASE_FILES.filter((path) => !CLOUD_MANAGED_FILES.has(path)));
