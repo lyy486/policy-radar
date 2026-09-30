@@ -1,6 +1,7 @@
 import { createContentHash, JILIN_REGIONS, REQUEST_CATEGORIES, POLICY_TYPES } from './policy-service.js';
 import { parseJilinExamResponse } from './adapters/jilin-exam.js';
 import { parseChangchunTalentList } from './adapters/changchun-talent.js';
+import { parseChangchunDistrictList } from './adapters/changchun-district.js';
 
 const MAX_BYTES = 1_500_000;
 export const PARSER_VERSION = '2026-10-01.1';
@@ -190,6 +191,7 @@ export function parseOfficialList(html, source, now = new Date()) {
 function entriesForSource(html, source) {
   if (source.parser === 'jilin-exam') return parseJilinExamResponse(html, source);
   if (source.parser === 'changchun-talent') return parseChangchunTalentList(html, source);
+  if (source.parser === 'changchun-district') return parseChangchunDistrictList(html, source);
   return officialListEntries(html, source);
 }
 
