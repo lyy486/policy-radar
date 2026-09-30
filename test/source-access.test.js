@@ -34,8 +34,8 @@ test('approved city lists retain exact access scope after the verified district 
     assert.equal(registry.isApprovedFreeSource({ ...source, id: 'nanguan-education-notices' }), false);
   }
   const approvedHttp = registry.listSources().filter(item => item.url.startsWith('http:') && registry.isApprovedFreeSource(item));
-  assert.equal(approvedHttp.length, 7);
-  assert.equal(registry.listSources().find(item => item.id === 'nanguan-education-notices').enabled, false);
+  assert.equal(approvedHttp.length, 15);
+  assert.equal(registry.listSources().find(item => item.id === 'gongzhuling-government-candidate').enabled, false);
 });
 
 test('Jingkai general recruitment remains unconfirmed teacher lead with HTTP warning', async () => {
