@@ -1,9 +1,11 @@
 import { createContentHash, JILIN_REGIONS, REQUEST_CATEGORIES, POLICY_TYPES } from './policy-service.js';
+import { parseJilinExamResponse } from './adapters/jilin-exam.js';
 
 const MAX_BYTES = 1_500_000;
-export const PARSER_VERSION = '2026-09-26.2';
+export const PARSER_VERSION = '2026-09-30.4';
 const LINK_RE = /<a\b[^>]*href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
 const DETAIL_RE = /\.(?:s?html?|aspx|pdf)(?:$|[?#])/i;
+const NAVIGATION_PATH_RE = /\/(?:index|default|home|list|channel)(?:[_-]\d+)?\.(?:s?html?|aspx)$/i;
 const DATE_RE = /(20\d{2})[\/.-](\d{1,2})[\/.-](\d{1,2})/;
 const CN_DATE_RE = /(20\d{2})年(\d{1,2})月(\d{1,2})日?/;
 const COMPACT_DATE_RE = /(?:^|\D)(20\d{2})(\d{2})(\d{2})(?:\D|$)/;
@@ -41,7 +43,20 @@ function isSameOfficialHost(sourceUrl, candidateUrl) {
   try {
     const source = new URL(sourceUrl);
     const candidate = new URL(candidateUrl);
-    return candidate.protocol === source.protocol && candidate.hostname === source.hostname;
+    return candidate.origin === source.origin && !candidate.username && !candidate.password;
+  } catch { return false; }
+}
+function matchesDetailPath(source, candidateUrl) {
+  if (!source.detailPathPrefix) return true;
+  const configured = source.detailPathPrefix;
+  if (typeof configured !== 'string' || !/^\/(?!\/)/.test(configured) || /[?#%\\]/.test(configured)) return false;
+  const prefix = `${configured.replace(/\/+$/, '')}/`;
+  try {
+    if (new URL(prefix, source.url).pathname !== prefix) return false;
+    const decodedPath = decodeURIComponent(new URL(candidateUrl).pathname);
+    if (/[%\\]/.test(decodedPath)) return false;
+    const normalized = new URL(decodedPath, source.url);
+    return isSameOfficialHost(source.url, normalized.href) && normalized.pathname.startsWith(prefix);
   } catch { return false; }
 }
 function classifyPolicyType(title, fallback = '教师招聘') {
@@ -52,11 +67,13 @@ function classifyPolicyType(title, fallback = '教师招聘') {
 function classifyCategory(title, fallback = '招聘公告') {
   if (/教育政策/.test(fallback) && !/招聘|报名|笔试|面试|资格|体检|成绩|递补|拟聘|拟录用/.test(title)) return '教育政策';
   if (/报名/.test(title)) return '报名时间';
+  // Classify the announced event before generic exam-format words in its title.
+  if (/成绩|分数/.test(title)) return '成绩';
+  if (/准考证/.test(title) && !/(?:笔试|面试|考试)(?:时间|日期|安排)/.test(title)) return '招聘公告';
   if (/笔试/.test(title)) return '笔试时间';
   if (/资格审查|资格复审|资格审核|资格认定|认定申请/.test(title)) return '资格审查';
   if (/面试/.test(title)) return '面试';
   if (/体检/.test(title)) return '体检';
-  if (/成绩|分数/.test(title)) return '成绩';
   if (/递补/.test(title)) return '递补';
   if (/拟聘|拟录用/.test(title)) return '拟聘用名单';
   if (/教师资格|教资/.test(title)) return '资格审查';
@@ -117,28 +134,76 @@ function queueNotifications(store, policies) {
   return additions;
 }
 
-export function parseOfficialList(html, source, now = new Date()) {
-  const policies = [];
+function adjacentDateContext(html, match) {
+  const index = match.index ?? 0;
+  const before = html.slice(Math.max(0, index - 400), index);
+  const after = html.slice(index + match[0].length, index + match[0].length + 400);
+  const boundaries = [...before.matchAll(/<\/?(?:li|tr|article)\b[^>]*>/gi)];
+  const lastBoundary = boundaries.at(-1);
+  const withinItem = lastBoundary && !lastBoundary[0].startsWith('</');
+  const priorDate = withinItem ? before.slice(lastBoundary.index + lastBoundary[0].length).split(/<\/a>/i).pop() : '';
+  const nextDate = after.split(/<a\b|<\/?(?:li|tr|article|div|p)\b/i)[0];
+  return `${stripHtml(priorDate ?? '')} ${stripHtml(nextDate)}`;
+}
+
+function officialListEntries(html, source) {
+  const entries = [];
   for (const match of html.matchAll(LINK_RE)) {
     const href = match[1]; const title = stripHtml(match[2]);
     if (!href || !title || title.length < 4 || title.length > 180 || !DETAIL_RE.test(href)) continue;
     let sourceUrl;
     try { sourceUrl = absoluteUrl(source.url, href); } catch { continue; }
-    if (!isSameOfficialHost(source.url, sourceUrl)) continue;
-    // Government list pages often render the date beside the link rather than inside it.
-    // Restrict the surrounding text to the same list item so a neighboring notice's date
-    // cannot be assigned to this policy.
-    const afterAnchor = html.slice((match.index ?? 0) + match[0].length).split(/<a\b/i)[0].slice(0, 180);
-    const beforeAnchor = html.slice(Math.max(0, (match.index ?? 0) - 180), match.index ?? 0).split(/<\/a>/i).pop() ?? '';
-    const adjacentDateText = `${stripHtml(beforeAnchor)} ${stripHtml(afterAnchor)}`;
-    const publishedAt = parseDate(title, sourceUrl, adjacentDateText);
+    if (!isSameOfficialHost(source.url, sourceUrl) || !matchesDetailPath(source, sourceUrl) || NAVIGATION_PATH_RE.test(new URL(sourceUrl).pathname)) continue;
+    entries.push({ title, sourceUrl, publishedAt: parseDate(title, sourceUrl, adjacentDateContext(html, match)) });
+  }
+  return entries;
+}
+
+function policiesFromEntries(entries, source, now) {
+  const policies = [];
+  const seen = new Set();
+  for (const { title, sourceUrl, publishedAt, sourcePublishedAt } of entries) {
+    if (!matchesDetailPath(source, sourceUrl)) continue;
     const titlePattern = source.titlePattern ? new RegExp(source.titlePattern) : /教师|招聘|特岗|资格|报名|笔试|面试|体检|成绩|递补|拟聘|教育/;
     const excludedTitlePattern = source.excludeTitlePattern ? new RegExp(source.excludeTitlePattern) : null;
-    if (!titlePattern.test(title) || excludedTitlePattern?.test(title) || !isRelevantTeacherTitle(title)) continue;
+    const teacherRelevant = isRelevantTeacherTitle(title);
+    const requiresTeacherVerification = !teacherRelevant && source.includeGeneralRecruitment === true
+      && /事业单位/.test(title) && GENERIC_RECRUITMENT_RE.test(title) && !IRRELEVANT_TITLE_RE.test(title);
+    if (excludedTitlePattern?.test(title) || (!requiresTeacherVerification && (!titlePattern.test(title) || !teacherRelevant))) continue;
+    const contentHash = createContentHash(`${sourceUrl}|${title}`);
+    if (seen.has(contentHash)) continue;
+    seen.add(contentHash);
     const id = createContentHash(`${source.id}|${sourceUrl}|${title}|${publishedAt}`).slice(0, 24);
-    policies.push({ id, title, summary: '来自官方来源列表页，详情请打开原文核对。', regionId: inferRegionId(title, source.regionIds[0]), policyType: classifyPolicyType(title, source.policyType), category: classifyCategory(title, source.category), publishedAt, fetchedAt: now.toISOString(), sourceId: source.id, sourceName: source.name, sourceUrl, contentHash: createContentHash(`${sourceUrl}|${title}`), isDemo: false });
+    const summary = requiresTeacherVerification
+      ? '综合事业单位招聘线索，是否包含教师岗位、编制性质和考试安排，需核对官方正文及岗位表。'
+      : '来自官方来源列表页，详情请打开原文核对。';
+    policies.push({ id, title, summary, ...(requiresTeacherVerification ? { requiresTeacherVerification: true } : {}), regionId: inferRegionId(title, source.regionIds[0]), policyType: classifyPolicyType(title, source.policyType), category: classifyCategory(title, source.category), publishedAt, ...(sourcePublishedAt !== undefined ? { sourcePublishedAt } : {}), fetchedAt: now.toISOString(), sourceId: source.id, sourceName: source.name, sourceUrl, contentHash, isDemo: false });
   }
   return policies;
+}
+
+export function parseOfficialList(html, source, now = new Date()) {
+  return policiesFromEntries(officialListEntries(html, source), source, now);
+}
+
+function assertRecognizedList(html, entries) {
+  const maintenance = /维护中|正在维护|网站维护|系统维护|暂停访问|服务暂停|under maintenance/i;
+  const challenge = /验证码|访问验证|安全验证|人机验证|访问受限|访问被拒绝|拒绝访问|captcha|access denied|verify (?:you are|that you are)/i;
+  // A help/about link is not evidence of a notice list. Recognize dated records or
+  // notice-like titles, while checking explicit page status headings independently.
+  const recognized = entries.some(({ title, publishedAt }) => publishedAt || /公告|通知|公示|通告|简章|办法|方案|细则|公报/.test(title) || isRelevantTeacherTitle(title));
+  const statusHeadings = [...html.matchAll(/<(title|h[12])\b[^>]*>([\s\S]*?)<\/\1>/gi)]
+    .map((match) => stripHtml(match[2].replace(LINK_RE, '')))
+    .filter((heading) => !/公告|通知|公示|指南|说明|办法|方案|细则/.test(heading)).join(' ');
+  if (recognized && !maintenance.test(statusHeadings) && !challenge.test(statusHeadings)) return;
+  const visible = stripHtml(html);
+  if (maintenance.test(visible)) {
+    throw new Error('来源页面处于维护状态，未发现可识别的公开列表链接');
+  }
+  if (challenge.test(visible)) {
+    throw new Error('来源页面需要验证或已被拦截，未发现可识别的公开列表链接');
+  }
+  throw new Error('来源页面未发现可识别的公开列表链接');
 }
 
 function responseHeader(response, name) {
@@ -170,7 +235,7 @@ export async function fetchOfficialSource(source, fetchImpl = fetch, now = new D
   if (sourceProtocol === 'http:' && source.allowHttp !== true) throw new Error('HTTP 来源未明确获准，仅允许本地试验配置');
   const controller = new AbortController(); const timeout = setTimeout(() => controller.abort(), 20_000);
   try {
-    const headers = { accept: 'text/html,application/xhtml+xml', 'user-agent': source.userAgent };
+    const headers = { accept: source.parser === 'jilin-exam' ? 'application/json' : 'text/html,application/xhtml+xml', 'user-agent': source.userAgent };
     const cacheCompatible = sourceState.parserVersion === PARSER_VERSION;
     if (cacheCompatible && sourceState.etag) headers['if-none-match'] = String(sourceState.etag);
     if (cacheCompatible && sourceState.lastModified) headers['if-modified-since'] = String(sourceState.lastModified);
@@ -183,8 +248,9 @@ export async function fetchOfficialSource(source, fetchImpl = fetch, now = new D
     if (length > MAX_BYTES) throw new Error('来源响应过大');
     const html = await response.text();
     if (Buffer.byteLength(html, 'utf8') > MAX_BYTES) throw new Error('来源响应过大');
-    if (!/<a\b[^>]*href\s*=\s*["'][^"']+["']/i.test(html)) throw new Error('来源页面未发现公开列表链接');
-    return { notModified: false, policies: parseOfficialList(html, source, now), etag, lastModified, parserVersion: PARSER_VERSION };
+    const entries = source.parser === 'jilin-exam' ? parseJilinExamResponse(html, source) : officialListEntries(html, source);
+    if (source.parser !== 'jilin-exam') assertRecognizedList(html, entries);
+    return { notModified: false, policies: policiesFromEntries(entries, source, now), etag, lastModified, parserVersion: PARSER_VERSION };
   } finally { clearTimeout(timeout); }
 }
 
@@ -216,7 +282,7 @@ export async function syncSources({ store, sources, fetchImpl = fetch, onEvent =
       const incomingByHash = new Map(policies.map((policy) => [policy.contentHash, policy]));
       const refreshed = store.policies.map((policy) => {
         const incoming = incomingByHash.get(policy.contentHash);
-        return incoming ? { ...policy, publishedAt: incoming.publishedAt, fetchedAt: incoming.fetchedAt, policyType: incoming.policyType, category: incoming.category } : policy;
+        return incoming ? { ...policy, publishedAt: incoming.publishedAt, ...(incoming.sourcePublishedAt !== undefined ? { sourcePublishedAt: incoming.sourcePublishedAt } : {}), ...(incoming.requiresTeacherVerification ? { requiresTeacherVerification: true, summary: incoming.summary } : {}), fetchedAt: incoming.fetchedAt, policyType: incoming.policyType, category: incoming.category } : policy;
       });
       store.policies = [...refreshed, ...inserted];
       const notifications = queueNotifications(store, inserted);

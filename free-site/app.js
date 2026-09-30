@@ -1,11 +1,52 @@
-const CHANGCHUN_REGION_IDS = new Set(['changchun','chaoyang-cc','nanguan-cc','kuancheng-cc','erdao-cc','lvyuan-cc','shuangyang-cc','jiutai-cc','jingyue-cc','lianhuashan-cc','dehui-cc','yushu-cc','nong-an-cc']);
+const DEFAULT_FILTERS = Object.freeze({ region: 'changchun-all', type: 'all', category: 'all', keyword: '' });
 const state = { payload: null, knownHashes: new Set(), initialized: false, installPrompt: null, notifiedThisSession: new Set() };
 const element = (id) => document.getElementById(id);
 
-function safeDate(value) {
+function regionGroupIds(groupId) {
+  return state.payload?.regionGroups?.find((group) => group.id === groupId)?.regionIds ?? [];
+}
+
+function saveLocalState(key, value) {
+  try { localStorage.setItem(key, JSON.stringify(value)); } catch {
+    // Private browsing/storage limits must not prevent reading official notices.
+  }
+}
+
+function currentFilters() {
+  return Object.fromEntries(Object.keys(DEFAULT_FILTERS).map((key) => [key, element(key + '-filter').value]));
+}
+
+function restoreFilters() {
+  let filters = DEFAULT_FILTERS;
+  try {
+    const saved = JSON.parse(localStorage.getItem('policyRadarFilters') ?? 'null');
+    const validOptions = ['region', 'type', 'category'].every((key) =>
+      typeof saved?.[key] === 'string' && [...element(key + '-filter').options].some((option) => option.value === saved[key]));
+    if (validOptions && typeof saved.keyword === 'string' && saved.keyword.length <= 80) {
+      filters = Object.fromEntries(Object.keys(DEFAULT_FILTERS).map((key) => [key, saved[key]]));
+    }
+  } catch {
+    // Corrupt or unavailable local state falls back to the documented scope.
+  }
+  Object.entries(filters).forEach(([key, value]) => { element(key + '-filter').value = value; });
+}
+
+function filtersChanged() {
+  element('keyword-filter').value = element('keyword-filter').value.slice(0, 80);
+  saveLocalState('policyRadarFilters', currentFilters());
+  render();
+}
+
+function alertScopeNotice() {
+  const scope = state.payload?.alertScope;
+  if (!scope?.label || !Array.isArray(scope.policyTypes)) return '邮件提醒范围尚未核验，请检查部署配置；本页筛选不会修改邮件范围。';
+  return '邮件提醒范围：' + scope.label + '；类型：' + scope.policyTypes.join('、') + '。省级公告是否适用，请核对原文。';
+}
+
+function safeDate(value, includeTime = true) {
   if (!value) return '官网未标明';
   const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? '官网未标明' : new Intl.DateTimeFormat('zh-CN', { dateStyle: 'medium', timeStyle: 'short' }).format(date);
+  return Number.isNaN(date.getTime()) ? '官网未标明' : new Intl.DateTimeFormat('zh-CN', { dateStyle: 'medium', timeZone: 'Asia/Shanghai', ...(includeTime ? { timeStyle: 'short' } : {}) }).format(date);
 }
 
 function create(tag, options = {}) {
@@ -38,12 +79,13 @@ function readKnownHashes(policies) {
 function coverageNotice() {
   const coverage = state.payload?.coverage ?? [];
   const byRegion = new Map(coverage.map((item) => [item.regionId, item]));
-  const changchun = [...CHANGCHUN_REGION_IDS].map((id) => byRegion.get(id));
+  const changchunRegionIds = regionGroupIds('changchun-all');
+  const changchun = changchunRegionIds.map((id) => byRegion.get(id));
   const connected = changchun.filter((item) => item?.status === 'active').length;
-  const allConnected = connected === CHANGCHUN_REGION_IDS.size;
+  const allConnected = changchunRegionIds.length > 0 && connected === changchunRegionIds.length;
   const changchunNote = allConnected ? '长春市及各区县已有接入来源。'
     : connected > 0 ? '长春市及各区县仅部分来源已接入。'
-      : changchun.every((item) => item?.status === 'pending') ? '长春市及各区县官方来源尚未接入。'
+      : changchun.length > 0 && changchun.every((item) => item?.status === 'pending') ? '长春市及各区县官方来源尚未接入。'
         : '长春市及各区县来源接入状态尚未全部核验。';
   const region = element('region-filter').value;
   const selectionConnected = region === 'all' || (region === 'changchun-all' ? allConnected : byRegion.get(region)?.status === 'active');
@@ -53,7 +95,8 @@ function coverageNotice() {
   const activeCount = [...byRegion.values()].filter((item) => item.status === 'active').length;
   const failedCount = Object.values(state.payload?.sourceState ?? {}).filter((item) => item?.lastError).length;
   const failureNote = failedCount > 0 ? failedCount + ' 个来源最近一次读取失败，已保留此前公告；最新情况请核对官网。' : '';
-  return failureNote + activeCount + ' 个地区有已接入来源（不代表完整覆盖）。' + changchunNote + selectedNote + caution + provinceNote;
+  const httpNote = coverage.some(item => item.transport === 'http') ? '含已授权官方 HTTP 来源，传输未加密，请核对官网原文。' : '';
+  return failureNote + activeCount + ' 个地区有已接入来源（不代表完整覆盖）。' + changchunNote + selectedNote + caution + provinceNote + httpNote;
 }
 
 function matchesFilters(policy) {
@@ -61,7 +104,7 @@ function matchesFilters(policy) {
   const type = element('type-filter').value;
   const category = element('category-filter').value;
   const keyword = element('keyword-filter').value.trim().toLowerCase();
-  const regionMatch = region === 'all' || policy.regionId === region || policy.regionId === 'jilin' || (region === 'changchun-all' && CHANGCHUN_REGION_IDS.has(policy.regionId));
+  const regionMatch = region === 'all' || policy.regionId === region || policy.regionId === 'jilin' || regionGroupIds(region).includes(policy.regionId);
   return regionMatch && (type === 'all' || policy.policyType === type) && (category === 'all' || policy.category === category) && (!keyword || (policy.title + ' ' + policy.summary).toLowerCase().includes(keyword));
 }
 
@@ -69,11 +112,13 @@ function policyCard(policy) {
   const isNew = !state.knownHashes.has(policy.contentHash);
   const card = create('article', { className: 'policy-card' + (isNew ? ' is-new' : '') });
   const titleRow = create('div');
-  if (isNew) titleRow.append(create('span', { className: 'tag new-tag', text: '新' }));
+  if (isNew) titleRow.append(create('span', { className: 'tag new-tag', text: '未读' }));
   titleRow.append(create('h2', { text: policy.title }));
   card.append(titleRow, create('p', { text: policy.summary }));
+  if (policy.requiresTeacherVerification) card.append(create('p', { text: '综合招聘线索：教师岗位及编制性质需核对官方正文和岗位表。' }));
+  if (String(policy.sourceUrl).startsWith('http:')) card.append(create('p', { text: '官方 HTTP 来源，传输未加密，请核对官网原文。' }));
   const meta = create('div', { className: 'meta' });
-  [regionName(policy.regionId), policy.policyType, policy.category, '发布：' + safeDate(policy.publishedAt), policy.sourceName].forEach((text, index) => meta.append(create('span', { className: index < 3 ? 'tag' : '', text })));
+  [regionName(policy.regionId), policy.policyType, policy.category, '发布：' + safeDate(policy.publishedAt, false), policy.sourceName].forEach((text, index) => meta.append(create('span', { className: index < 3 ? 'tag' : '', text })));
   const link = create('a', { className: 'official-link', text: '查看官方原文 →' });
   link.href = safeExternalUrl(policy.sourceUrl);
   link.target = '_blank';
@@ -83,7 +128,7 @@ function policyCard(policy) {
 }
 
 function currentNewPolicies() {
-  return (state.payload?.policies ?? []).filter((policy) => !state.knownHashes.has(policy.contentHash));
+  return (state.payload?.policies ?? []).filter((policy) => matchesFilters(policy) && !state.knownHashes.has(policy.contentHash));
 }
 
 function render() {
@@ -93,6 +138,7 @@ function render() {
   policies.forEach((policy) => list.append(policyCard(policy)));
   if (!policies.length) list.append(create('div', { className: 'empty', text: '暂无匹配公告。当前无结果不代表没有公告，请同时关注官方渠道。免费版仅展示已接入的核验来源。' }));
   element('coverage-status').textContent = coverageNotice();
+  element('alert-scope').textContent = alertScopeNotice();
   element('result-count').textContent = String(policies.length);
   element('new-count').textContent = String(currentNewPolicies().length);
 }
@@ -108,11 +154,11 @@ function fillSelect(selectId, values, valueKey, labelKey) {
 }
 
 function notifyNewPolicies(policies) {
-  if (Notification.permission !== 'granted') return;
-  const fresh = policies.filter((policy) => !state.notifiedThisSession.has(policy.contentHash));
+  if (!('Notification' in window) || Notification.permission !== 'granted') return;
+  const fresh = policies.filter((policy) => matchesFilters(policy) && !state.notifiedThisSession.has(policy.contentHash));
   if (!fresh.length) return;
-  fresh.forEach((policy) => state.notifiedThisSession.add(policy.contentHash));
-  new Notification('政策雷达发现新公告', { body: fresh.length === 1 ? fresh[0].title : '发现 ' + fresh.length + ' 条新公告，请打开网页查看。', icon: './icon.svg' });
+  state.notifiedThisSession = new Set([...state.notifiedThisSession, ...fresh.map((policy) => policy.contentHash)]);
+  new Notification('政策雷达：新收录公告', { body: fresh.length === 1 ? fresh[0].title : '新收录 ' + fresh.length + ' 条公告，可能包含历史，请核对发布日期。', icon: './icon.svg' });
 }
 
 async function loadData({ background = false } = {}) {
@@ -121,15 +167,15 @@ async function loadData({ background = false } = {}) {
   const payload = await response.json();
   const previousHashes = new Set(state.payload?.policies?.map((policy) => policy.contentHash) ?? []);
   state.payload = payload;
-  fillSelect('region-filter', [{ id: 'changchun-all', name: '长春市及各区县' }, ...(payload.regions ?? [])], 'id', 'name');
+  fillSelect('region-filter', [...(payload.regionGroups ?? [{ id: 'changchun-all', name: '长春市及各区县' }]), ...(payload.regions ?? [])], 'id', 'name');
   fillSelect('type-filter', payload.policyTypes ?? [], '', '');
   fillSelect('category-filter', payload.categories ?? [], '', '');
   if (!state.initialized) {
     const knownState = readKnownHashes(payload.policies ?? []);
     state.knownHashes = knownState.hashes;
-    if (!knownState.hadSavedState) localStorage.setItem('policyRadarKnownHashes', JSON.stringify([...state.knownHashes]));
+    if (!knownState.hadSavedState) saveLocalState('policyRadarKnownHashes', [...state.knownHashes]);
     state.initialized = true;
-    element('region-filter').value = 'all';
+    restoreFilters();
   }
   const newlyFetched = (payload.policies ?? []).filter((policy) => !previousHashes.has(policy.contentHash));
   if (background) notifyNewPolicies(newlyFetched);
@@ -139,7 +185,7 @@ async function loadData({ background = false } = {}) {
 
 function markAllRead() {
   state.knownHashes = new Set((state.payload?.policies ?? []).map((policy) => policy.contentHash));
-  localStorage.setItem('policyRadarKnownHashes', JSON.stringify([...state.knownHashes]));
+  saveLocalState('policyRadarKnownHashes', [...state.knownHashes]);
   render();
 }
 
@@ -151,7 +197,7 @@ async function enableNotifications() {
 
 window.addEventListener('beforeinstallprompt', (event) => { event.preventDefault(); state.installPrompt = event; element('install-button').hidden = false; });
 element('install-button').addEventListener('click', async () => { if (!state.installPrompt) return; await state.installPrompt.prompt(); state.installPrompt = null; element('install-button').hidden = true; });
-['region-filter','type-filter','category-filter','keyword-filter'].forEach((id) => element(id).addEventListener(id === 'keyword-filter' ? 'input' : 'change', render));
+['region-filter','type-filter','category-filter','keyword-filter'].forEach((id) => element(id).addEventListener(id === 'keyword-filter' ? 'input' : 'change', filtersChanged));
 element('mark-read-button').addEventListener('click', markAllRead);
 element('notify-button').addEventListener('click', enableNotifications);
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(() => {});

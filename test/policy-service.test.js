@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createPolicyService, JILIN_REGIONS } from '../src/policy-service.js';
+import { createPolicyService, JILIN_REGIONS, CHANGCHUN_REGION_IDS, FREE_ALERT_SCOPE } from '../src/policy-service.js';
 
 function serviceWith(policies = []) {
   return createPolicyService({ store: { policies, subscriptions: [] } });
@@ -54,12 +54,14 @@ test('按政策 ID 查询详情不受列表分页限制且隐藏已归档记录'
   assert.equal(service.getPolicyById('missing'), null);
 });
 
-test('长春全选不包含行政上独立的公主岭市', () => {
+test('长春全选按吉林省政府目录包含公主岭市且邮件范围一致', () => {
   const service = serviceWith([
     { id: 'cc', title: '长春教师公告', summary: '', regionId: 'changchun', category: '招聘公告', publishedAt: '2026-01-02T00:00:00Z' },
     { id: 'gzl', title: '公主岭教师公告', summary: '', regionId: 'gongzhuling-cc', category: '招聘公告', publishedAt: '2026-01-03T00:00:00Z' }
   ]);
-  assert.deepEqual(service.listPolicies({ regionId: 'changchun-all' }).map((policy) => policy.id), ['cc']);
+  assert.deepEqual(service.listPolicies({ regionId: 'changchun-all' }).map((policy) => policy.id), ['gzl', 'cc']);
+  assert.ok(CHANGCHUN_REGION_IDS.has('gongzhuling-cc'));
+  assert.ok(FREE_ALERT_SCOPE.regionIds.includes('gongzhuling-cc'));
 });
 
 test('吉林省全选接口包含所有登记地区', () => {
@@ -90,7 +92,7 @@ test('订阅设置会去重、裁剪并拒绝空地区', () => {
   const service = serviceWith();
   assert.throws(() => service.replaceSubscription({ regionIds: [] }), /至少选择/);
   const subscription = service.replaceSubscription({ regionIds: ['changchun-all', 'changchun'], keywords: [' 报名 ', '', '报名'] });
-  assert.deepEqual(subscription.regionIds, ['changchun', 'chaoyang-cc', 'nanguan-cc', 'kuancheng-cc', 'erdao-cc', 'lvyuan-cc', 'shuangyang-cc', 'jiutai-cc', 'jingyue-cc', 'lianhuashan-cc', 'dehui-cc', 'yushu-cc', 'nong-an-cc']);
+  assert.deepEqual(subscription.regionIds, [...CHANGCHUN_REGION_IDS]);
   assert.deepEqual(subscription.keywords, ['报名']);
 });
 
@@ -98,10 +100,7 @@ test('首次使用默认关注长春市及各区县的三类教师考试政策',
   const service = serviceWith();
   const [subscription] = service.listSubscriptions();
   assert.equal(subscription.isDefault, true);
-  assert.deepEqual(subscription.regionIds, [
-    'changchun', 'chaoyang-cc', 'nanguan-cc', 'kuancheng-cc', 'erdao-cc', 'lvyuan-cc',
-    'shuangyang-cc', 'jiutai-cc', 'jingyue-cc', 'lianhuashan-cc', 'dehui-cc', 'yushu-cc', 'nong-an-cc'
-  ]);
+  assert.deepEqual(subscription.regionIds, [...CHANGCHUN_REGION_IDS]);
   assert.deepEqual(subscription.policyTypes, ['教师招聘', '特岗教师', '教师资格考试']);
   assert.equal(subscription.enabled, true);
 });
