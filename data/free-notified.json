@@ -68,7 +68,8 @@
     "3f1cbd7e7574fb2e18e95c0667d6c86f659d2595d9bd58c55e8bc627fe2ed030",
     "d7494dea61af82e640367ea43f00aba0007dd559c1f8d7cef18059a52ecc7061",
     "a19427d6873c688199d551bb44d0ff13660684cfa10472d348388e987f17c16a",
-    "d30fbd7ba0df2e8bdf37a859295a68547206de61791dc409e9d659b679786d70"
+    "d30fbd7ba0df2e8bdf37a859295a68547206de61791dc409e9d659b679786d70",
+    "d16e5f099ad62ac1005814f71476192f95e279f3a6c696809a980124e76da357"
   ],
   "initializedAt": "2026-09-26T18:18:30.072Z",
   "initializedSourceIds": [
@@ -92,5 +93,5 @@
     "yushu-education-notices",
     "nong-an-education-notices"
   ],
-  "updatedAt": "2026-11-12T11:08:56.539Z"
+  "updatedAt": "2026-11-16T09:43:29.289Z"
 }
